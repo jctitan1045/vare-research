@@ -89,6 +89,14 @@ body { background:#F5F5F3; font-family:-apple-system,"Helvetica Neue",Arial,sans
 </div>
 
 <div class="divider"></div>
+<div class="section-label" style="margin-bottom:12px">Services in demand</div>
+<div class="chart-card" style="margin-bottom:24px">
+  <div class="chart-title">Most wanted services</div>
+  <div class="chart-sub">How many participants mentioned each service across all calls</div>
+  <div style="position:relative" id="services-chart-wrap"><canvas id="servicesChart"></canvas></div>
+</div>
+
+<div class="divider"></div>
 <div class="section-label" style="margin-bottom:14px">Call profiles</div>
 <div id="call-profiles"></div>
 
@@ -132,11 +140,25 @@ const DATA = { participants: [
     locationPull:"Poblado / San Lucas / Las Palmas",
     call2:true, referrals:["Reggie (investor)","Brett (trainer)"],
     services:[
-      "Hot yoga","Beginner yoga","Tai Chi","Breathwork","Holotropic breathwork",
-      "Mobility classes","Boutique gym","Functional training","Calisthenics",
-      "Sauna","Cold plunge / ice bath","Massage chairs","Massage therapist",
-      "Osteopath / chiropractor","Clean food","Macros on menu","Protein shakes",
-      "Supplements","Weekly workshops","Accountability space","Coworking","IV therapy"
+      {name:"Hot yoga", note:"Paid 350k/mo for 108 Yoga alone — class format, instructor quality, and vibe drove the decision."},
+      {name:"Beginner / adaptive yoga", note:"Had injuries — loved that 108 had a basico class. Instructor met him where he was."},
+      {name:"Breathwork / holotropic breathwork", note:"Wants this as a weekly offering inside the yoga studio space."},
+      {name:"Tai Chi", note:"Part of a varied class schedule — slow movement alongside the more intense options."},
+      {name:"Mobility classes", note:"Foam rollers, balls, recovery-style class. Complements the gym without duplicating it."},
+      {name:"Boutique gym", note:"Functional, high-end — explicitly doesn't want SmartFit volume. More like a trainer-led private gym."},
+      {name:"Calisthenics area", note:"Bodyweight tools alongside the weights. Keeps the gym versatile without being a big-box gym."},
+      {name:"Sauna", note:"Used it 4–5 days/week at his previous building. Would come to the space just for this."},
+      {name:"Cold plunge / ice bath", note:"'Big selling feature.' Wants guided contrast sessions, not solo drop-ins."},
+      {name:"Massage chairs", note:"Passive recovery option as part of the wellness area."},
+      {name:"Massage therapist", note:"Currently pays ~160k/mo for massage. Wants practitioners on site, not just chairs."},
+      {name:"Osteopath / chiropractor", note:"Qualified practitioners on hand — recovery support beyond just massage."},
+      {name:"Clean food / restaurant", note:"Needs macros on the menu so members can fully delegate food prep to the space."},
+      {name:"Smoothies / juice bar", note:"Loved the bar at 108 Yoga — coffee, green juice, protein shakes. A reason to stay after class."},
+      {name:"Supplements retail", note:"Convenient access to supplements on site — not a major draw but removes friction."},
+      {name:"Weekly workshops", note:"Topic-based sessions aligned with the health / wellness avatar. Once-a-week format."},
+      {name:"Accountability / community space", note:"Men's group hybrid — a place to work alongside people with shared values."},
+      {name:"Coworking", note:"Would use it but it's not a draw. Nice to have once inside the space."},
+      {name:"IV vitamin therapy", note:"Periodic offering — someone who comes in weekly. Optional, not core."}
     ],
     quotes:[
       "I want to go because I'm just going to see people I know. I can train, shower, do a sauna and ice bath, work after, get good food. I could spend the whole day there without going out of my way.",
@@ -210,15 +232,38 @@ function render(){
       </div>
       <div class="inner" style="margin-bottom:10px">
         <div class="inner-label" style="margin-bottom:8px">Services they want</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px">
-          ${x.services.map(s=>`<span class="tag tag-green">${s}</span>`).join('')}
-        </div>
+        ${x.services.map(s=>`
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:0.5px solid #E8E8E5;">
+            <span class="tag tag-green" style="white-space:nowrap;margin-top:1px">${s.name}</span>
+            <span style="font-size:12px;color:#888;line-height:1.5">${s.note}</span>
+          </div>
+        `).join('')}
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
         ${x.quotes.map((q,i)=>`<div class="quote-block"><div class="quote-label">Quote ${i+1}</div><div class="quote-text">"${q}"</div></div>`).join('')}
       </div>
     </div>
   `).join('');
+
+  const svcCount = {};
+  p.forEach(x => x.services.forEach(s => { svcCount[s.name] = (svcCount[s.name]||0)+1; }));
+  const svcSorted = Object.entries(svcCount).sort((a,b)=>b[1]-a[1]);
+  const svcLabels = svcSorted.map(x=>x[0]);
+  const svcValues = svcSorted.map(x=>x[1]);
+  const svcWrap = document.getElementById('services-chart-wrap');
+  svcWrap.style.height = (svcLabels.length * 28 + 20) + 'px';
+  new Chart(document.getElementById('servicesChart'),{
+    type:'bar',
+    data:{labels:svcLabels,datasets:[{data:svcValues,backgroundColor:'#1D9E75',borderWidth:0,borderRadius:4}]},
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} of ${n} participant${n!==1?'s':''}`}}},
+      scales:{
+        x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{size:11},stepSize:1},max:n+1},
+        y:{grid:{display:false},ticks:{font:{size:11}}}
+      }
+    }
+  });
 
   document.getElementById('gap-section').innerHTML=`
     <div class="chart-title" style="margin-bottom:4px">What they need to see</div>
