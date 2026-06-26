@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vare — Research Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #F5F5F3; font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1A1A1A; padding: 40px 32px; }
+  .page { max-width: 960px; margin: 0 auto; }
+
+  .header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
+  .title { font-size: 20px; font-weight: 500; }
+  .badge { font-size: 11px; padding: 3px 10px; border-radius: 6px; background: #E1F5EE; color: #0F6E56; }
+  .subtitle { font-size: 13px; color: #888; margin-bottom: 24px; }
+
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .metric { background: #EBEBEA; border-radius: 8px; padding: 14px 16px; }
+  .metric-label { font-size: 12px; color: #888; margin-bottom: 4px; }
+  .metric-value { font-size: 26px; font-weight: 500; }
+  .metric-sub { font-size: 11px; color: #AAA; margin-top: 2px; }
+
+  .card { background: #fff; border: 0.5px solid #DDDDD9; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .card-title { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+  .card-sub { font-size: 12px; color: #888; margin-bottom: 16px; }
+
+  .call-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .call-name { font-size: 16px; font-weight: 500; }
+  .call-meta { font-size: 12px; color: #888; margin-top: 2px; }
+  .fathom-link { font-size: 12px; color: #378ADD; text-decoration: none; }
+  .fathom-link:hover { text-decoration: underline; }
+
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .inner { background: #F5F5F3; border-radius: 8px; padding: 12px; }
+  .inner-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .inner-row { font-size: 13px; line-height: 1.7; }
+  .inner-row.success { color: #0F6E56; }
+  .inner-row.danger { color: #A32D2D; }
+  .inner-row strong { font-weight: 500; }
+
+  .quote-block { border-left: 3px solid #378ADD; padding: 10px 14px; background: #E6F1FB; border-radius: 0 8px 8px 0; }
+  .quote-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .quote-text { font-size: 13px; font-style: italic; color: #1A1A1A; line-height: 1.7; }
+
+  .gap-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+  .gap-tag { font-size: 11px; padding: 2px 8px; border-radius: 6px; background: #EBEBEA; color: #666; white-space: nowrap; margin-top: 2px; }
+  .gap-text { font-size: 13px; line-height: 1.6; color: #333; }
+
+  .patterns { background: #EBEBEA; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .patterns-title { font-size: 13px; font-weight: 500; margin-bottom: 10px; }
+  .patterns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .pattern-item { font-size: 13px; color: #666; }
+
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .chart-wrap { background: #fff; border: 0.5px solid #DDDDD9; border-radius: 12px; padding: 20px; }
+  .chart-title { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+  .chart-sub { font-size: 12px; color: #888; margin-bottom: 14px; }
+  .chart-canvas { position: relative; height: 200px; }
+
+  .section-note { font-size: 12px; color: #AAA; text-align: center; padding: 20px; font-style: italic; }
+
+  @media (max-width: 700px) {
+    .metrics { grid-template-columns: 1fr 1fr; }
+    .three-col, .two-col, .charts-row, .patterns-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="title">Research dashboard</div>
+    <span class="badge">1 real call · Jun 25</span>
+  </div>
+  <p class="subtitle">Pulls from Fathom "Wellness Center Market Research Call" · Updates as new calls come in</p>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Calls completed</div>
+      <div class="metric-value">1</div>
+      <div class="metric-sub">Target: 30+</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Top draw so far</div>
+      <div class="metric-value">Food</div>
+      <div class="metric-sub">+ Mental + Movement</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Would replace</div>
+      <div class="metric-value">Yes</div>
+      <div class="metric-sub">gym + yoga separately</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Monthly ceiling</div>
+      <div class="metric-value">300k</div>
+      <div class="metric-sub">COP / month</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="call-header">
+      <div>
+        <div class="call-name">Andrew Topping</div>
+        <div class="call-meta">Call 1 · Jun 25, 2026 · Existing network</div>
+      </div>
+      <a class="fathom-link" href="https://fathom.video/calls/723475883" target="_blank">View in Fathom ↗</a>
+    </div>
+
+    <div class="three-col">
+      <div class="inner">
+        <div class="inner-label">Ranking (top 3)</div>
+        <div class="inner-row"><strong>1. Food</strong></div>
+        <div class="inner-row">2. Mental reset</div>
+        <div class="inner-row">3. Movement</div>
+        <div class="inner-row" style="color:#AAA;font-size:11px;margin-top:4px">Last: Place to work / Community</div>
+      </div>
+      <div class="inner">
+        <div class="inner-label">Current monthly spend</div>
+        <div class="inner-row">108 Yoga — 350k COP</div>
+        <div class="inner-row">SmartFit — 100k COP</div>
+        <div class="inner-row">Massage — ~160k COP</div>
+        <div class="inner-row">Food — ~400k COP</div>
+      </div>
+      <div class="inner">
+        <div class="inner-label">Price calibration</div>
+        <div class="inner-row">Good deal: <strong>175k/mo</strong></div>
+        <div class="inner-row">Ceiling: <strong>300k/mo</strong></div>
+        <div class="inner-row">Day pass: <strong>100–150k</strong></div>
+        <div class="inner-row" style="color:#AAA;font-size:11px;margin-top:4px">Hard no above 175k/day</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="inner">
+        <div class="inner-label">Competitors tried</div>
+        <div class="inner-row success">✓ 108 Yoga — stayed (vibe, staff, community)</div>
+        <div class="inner-row success">✓ SmartFit — stayed (price, functional)</div>
+        <div class="inner-row danger">✗ BodyTech — left (same as SmartFit, 4x price)</div>
+        <div class="inner-row danger">✗ Smash Yoga — left (location, vibe off)</div>
+      </div>
+      <div class="inner">
+        <div class="inner-label">Other signals</div>
+        <div class="inner-row">Location: Poblado / San Lucas / Las Palmas</div>
+        <div class="inner-row">Social mode: Solo + Group (yoga with friends)</div>
+        <div class="inner-row">Replace vs add-on: Replace (gym + yoga)</div>
+        <div class="inner-row">Call 2 permission: Yes</div>
+        <div class="inner-row">Referrals: Reggie (investor), Brett (trainer)</div>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-label">Key quote</div>
+      <div class="quote-text">"I want to go because I'm just going to see people I know. I can train, I can shower, do a sauna and ice bath, work after, get good food. I could spend the whole day there without going out of my way."</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">What Andrew needs to see</div>
+    <div class="card-sub">Gap diagnostic — what's between now and a founding membership yes</div>
+    <div class="gap-item">
+      <span class="gap-tag">Quality</span>
+      <span class="gap-text">Boutique gym + yoga (not SmartFit volume) — he left BodyTech for being overpriced for the same thing, so price alone doesn't justify it. Experience has to match.</span>
+    </div>
+    <div class="gap-item">
+      <span class="gap-tag">Staff</span>
+      <span class="gap-text">Someone at the front desk who knows your name. He paid 350k/mo for yoga specifically because of one woman who remembered him and his dog. This is the clearest signal in the whole call.</span>
+    </div>
+    <div class="gap-item">
+      <span class="gap-tag">Combo</span>
+      <span class="gap-text">All under one roof — he was paying SmartFit + 108 + massage separately. A single membership that replaces all three is the pitch.</span>
+    </div>
+    <div class="gap-item" style="margin-bottom:0">
+      <span class="gap-tag">Food</span>
+      <span class="gap-text">Menu with macros listed — he wants to "delegate his whole food prep" to a place he trusts. Clean, functional, trackable.</span>
+    </div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-wrap">
+      <div class="chart-title">Ranking — top picks</div>
+      <div class="chart-sub">How often each category was chosen as a top 3 (1 call)</div>
+      <div class="chart-canvas"><canvas id="rankChart"></canvas></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">Price calibration</div>
+      <div class="chart-sub">Good deal → ceiling per person (COP × 1,000/mo)</div>
+      <div class="chart-canvas"><canvas id="priceChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="patterns">
+    <div class="patterns-title">Patterns to watch as calls come in</div>
+    <div class="patterns-grid">
+      <div class="pattern-item">— Does food keep ranking above wellness, or is Andrew the outlier?</div>
+      <div class="pattern-item">— Does location keep pulling to Poblado, or does Laureles show up?</div>
+      <div class="pattern-item">— Does "home away from home" resonate universally?</div>
+      <div class="pattern-item">— Is the 175–300k range consistent, or does it vary by persona?</div>
+    </div>
+  </div>
+
+  <p class="section-note">Add more calls to see aggregate patterns. Each "Wellness Center Market Research Call" in Fathom feeds this dashboard.</p>
+
+</div>
+
+<script>
+const teal = '#1D9E75', coral = '#D85A30', blue = '#378ADD', purple = '#7F77DD', gray = '#B4B2A9';
+
+new Chart(document.getElementById('rankChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Food', 'Mental reset', 'Movement', 'Physical recovery', 'Place to work', 'Community'],
+    datasets: [{ data: [1, 1, 1, 0, 0, 0], backgroundColor: [teal, teal, teal, gray, gray, gray], borderWidth: 0, borderRadius: 4 }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.raw} of 1 calls` } } },
+    scales: {
+      x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: { size: 11 }, stepSize: 1 }, max: 1 },
+      y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('priceChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Andrew'],
+    datasets: [{
+      label: 'Price range',
+      data: [[175, 300]],
+      backgroundColor: 'rgba(29,158,117,0.35)',
+      borderColor: teal,
+      borderWidth: 1.5,
+      borderRadius: 3,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` Good deal: ${c.raw[0]}k → Ceiling: ${c.raw[1]}k COP/mo` } } },
+    scales: {
+      x: { min: 100, max: 400, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: { size: 11 }, callback: v => `${v}k` } },
+      y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
