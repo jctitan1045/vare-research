@@ -131,7 +131,11 @@ const DATA = { participants: [
     competitorsLeft:["BodyTech (overpriced vs SmartFit)","Smash Yoga (location / vibe off)"],
     locationPull:"Poblado / San Lucas / Las Palmas",
     call2:true, referrals:["Reggie (investor)","Brett (trainer)"],
-    keyQuote:"I want to go because I'm just going to see people I know. I can train, shower, do a sauna and ice bath, work after, get good food. I could spend the whole day there without going out of my way.",
+    quotes:[
+      "I want to go because I'm just going to see people I know. I can train, shower, do a sauna and ice bath, work after, get good food. I could spend the whole day there without going out of my way.",
+      "She'd say 'Hola Andrew, hola Chica' — and just really kind. She was one of the things I missed the most about being here. Going to yoga and seeing her with just a big smile every day.",
+      "I'd have a boutique gym, high-end with functional training. A really awesome yoga studio. Definitely sauna, ice bath. Clean food with macros calculated so if a guy's there he could just delegate his whole food prep to that menu."
+    ],
     gaps:[
       {tag:"Quality",text:"Boutique gym + yoga (not SmartFit volume) — left BodyTech for being overpriced for the same thing."},
       {tag:"Staff",text:"Someone who knows your name — paid 350k/mo for yoga specifically because one woman remembered him and his dog."},
@@ -197,7 +201,9 @@ function render(){
         <div class="inner"><div class="inner-label">Competitors</div>${x.competitorsStayed.map(c=>`<div class="inner-row success">✓ ${c}</div>`).join('')}${x.competitorsLeft.map(c=>`<div class="inner-row danger">✗ ${c}</div>`).join('')}</div>
         <div class="inner"><div class="inner-label">Other signals</div><div class="inner-row">Location pull: ${x.locationPull}</div><div class="inner-row">Social mode: ${x.socialMode}</div><div class="inner-row">Replace vs add-on: ${x.replaceVsAdd}</div><div class="inner-row">Call 2 permission: ${x.call2?'Yes':'No'}</div>${x.referrals.length?`<div class="inner-row">Referrals: ${x.referrals.join(', ')}</div>`:''}</div>
       </div>
-      <div class="quote-block"><div class="quote-label">Key quote</div><div class="quote-text">"${x.keyQuote}"</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+        ${x.quotes.map((q,i)=>`<div class="quote-block"><div class="quote-label">Quote ${i+1}</div><div class="quote-text">"${q}"</div></div>`).join('')}
+      </div>
     </div>
   `).join('');
 
