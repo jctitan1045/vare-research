@@ -6,248 +6,209 @@
 <title>Vare — Research Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #F5F5F3; font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1A1A1A; padding: 40px 32px; }
-  .page { max-width: 960px; margin: 0 auto; }
-
-  .header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
-  .title { font-size: 20px; font-weight: 500; }
-  .badge { font-size: 11px; padding: 3px 10px; border-radius: 6px; background: #E1F5EE; color: #0F6E56; }
-  .subtitle { font-size: 13px; color: #888; margin-bottom: 24px; }
-
-  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-  .metric { background: #EBEBEA; border-radius: 8px; padding: 14px 16px; }
-  .metric-label { font-size: 12px; color: #888; margin-bottom: 4px; }
-  .metric-value { font-size: 26px; font-weight: 500; }
-  .metric-sub { font-size: 11px; color: #AAA; margin-top: 2px; }
-
-  .card { background: #fff; border: 0.5px solid #DDDDD9; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-  .card-title { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
-  .card-sub { font-size: 12px; color: #888; margin-bottom: 16px; }
-
-  .call-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .call-name { font-size: 16px; font-weight: 500; }
-  .call-meta { font-size: 12px; color: #888; margin-top: 2px; }
-  .fathom-link { font-size: 12px; color: #378ADD; text-decoration: none; }
-  .fathom-link:hover { text-decoration: underline; }
-
-  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .inner { background: #F5F5F3; border-radius: 8px; padding: 12px; }
-  .inner-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-  .inner-row { font-size: 13px; line-height: 1.7; }
-  .inner-row.success { color: #0F6E56; }
-  .inner-row.danger { color: #A32D2D; }
-  .inner-row strong { font-weight: 500; }
-
-  .quote-block { border-left: 3px solid #378ADD; padding: 10px 14px; background: #E6F1FB; border-radius: 0 8px 8px 0; }
-  .quote-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-  .quote-text { font-size: 13px; font-style: italic; color: #1A1A1A; line-height: 1.7; }
-
-  .gap-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
-  .gap-tag { font-size: 11px; padding: 2px 8px; border-radius: 6px; background: #EBEBEA; color: #666; white-space: nowrap; margin-top: 2px; }
-  .gap-text { font-size: 13px; line-height: 1.6; color: #333; }
-
-  .patterns { background: #EBEBEA; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-  .patterns-title { font-size: 13px; font-weight: 500; margin-bottom: 10px; }
-  .patterns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .pattern-item { font-size: 13px; color: #666; }
-
-  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-  .chart-wrap { background: #fff; border: 0.5px solid #DDDDD9; border-radius: 12px; padding: 20px; }
-  .chart-title { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
-  .chart-sub { font-size: 12px; color: #888; margin-bottom: 14px; }
-  .chart-canvas { position: relative; height: 200px; }
-
-  .section-note { font-size: 12px; color: #AAA; text-align: center; padding: 20px; font-style: italic; }
-
-  @media (max-width: 700px) {
-    .metrics { grid-template-columns: 1fr 1fr; }
-    .three-col, .two-col, .charts-row, .patterns-grid { grid-template-columns: 1fr; }
-  }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#F5F5F3; font-family:-apple-system,"Helvetica Neue",Arial,sans-serif; color:#1A1A1A; padding:40px 32px; }
+.page { max-width:980px; margin:0 auto; }
+.page-header { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:4px; }
+.page-title { font-size:20px; font-weight:500; }
+.badge { font-size:11px; padding:3px 10px; border-radius:6px; background:#E1F5EE; color:#0F6E56; }
+.subtitle { font-size:13px; color:#888; margin-bottom:28px; }
+.section-label { font-size:11px; font-weight:500; color:#888; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px; }
+.metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
+.metric { background:#EBEBEA; border-radius:8px; padding:14px 16px; }
+.metric-label { font-size:12px; color:#888; margin-bottom:4px; }
+.metric-value { font-size:24px; font-weight:500; }
+.metric-sub { font-size:11px; color:#AAA; margin-top:2px; }
+.demo-charts { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px; }
+.demo-charts-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:28px; }
+.chart-card { background:#fff; border:0.5px solid #DDDDD9; border-radius:10px; padding:16px 18px; }
+.chart-title { font-size:13px; font-weight:500; margin-bottom:2px; }
+.chart-sub { font-size:11px; color:#888; margin-bottom:12px; }
+.chart-canvas-sm { position:relative; height:120px; }
+.divider { height:0.5px; background:#DDDDD9; margin:0 0 24px; }
+.call-card { background:#fff; border:0.5px solid #DDDDD9; border-radius:12px; padding:20px; margin-bottom:14px; }
+.call-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; }
+.call-name { font-size:15px; font-weight:500; }
+.call-meta { font-size:12px; color:#888; margin-top:2px; }
+.fathom-link { font-size:12px; color:#378ADD; text-decoration:none; }
+.fathom-link:hover { text-decoration:underline; }
+.tags-row { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+.tag { font-size:11px; padding:3px 9px; border-radius:20px; background:#EBEBEA; color:#555; }
+.tag-blue { background:#E6F1FB; color:#185FA5; }
+.tag-amber { background:#FAEEDA; color:#854F0B; }
+.tag-purple { background:#EEEDFE; color:#3C3489; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:10px; }
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+.inner { background:#F5F5F3; border-radius:8px; padding:12px; }
+.inner-label { font-size:10px; color:#888; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px; }
+.inner-row { font-size:13px; line-height:1.7; }
+.inner-row.success { color:#0F6E56; }
+.inner-row.danger { color:#A32D2D; }
+.quote-block { border-left:3px solid #378ADD; padding:10px 14px; background:#E6F1FB; border-radius:0 8px 8px 0; margin-top:10px; }
+.quote-label { font-size:10px; color:#888; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
+.quote-text { font-size:13px; font-style:italic; color:#1A1A1A; line-height:1.7; }
+.gap-card { background:#fff; border:0.5px solid #DDDDD9; border-radius:12px; padding:20px; margin-bottom:14px; }
+.gap-item { display:flex; gap:10px; align-items:flex-start; margin-bottom:10px; }
+.gap-item:last-child { margin-bottom:0; }
+.gap-tag { font-size:11px; padding:2px 8px; border-radius:6px; background:#EBEBEA; color:#666; white-space:nowrap; margin-top:2px; }
+.gap-text { font-size:13px; line-height:1.6; color:#333; }
+.patterns { background:#EBEBEA; border-radius:12px; padding:18px 20px; margin-bottom:16px; }
+.patterns-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+.pattern-item { font-size:13px; color:#666; }
+.note { font-size:12px; color:#AAA; text-align:center; padding:16px; font-style:italic; }
+@media(max-width:700px){.metrics,.demo-charts,.demo-charts-2,.three-col,.two-col,.patterns-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 <div class="page">
 
-  <div class="header">
-    <div class="title">Research dashboard</div>
-    <span class="badge">1 real call · Jun 25</span>
+<div class="page-header">
+  <div class="page-title">Vare — Research dashboard</div>
+  <span class="badge" id="badge-text">1 call · Jun 25</span>
+</div>
+<p class="subtitle">Pulls from Fathom "Wellness Center Market Research Call" · Updated after each call</p>
+
+<div class="section-label">Who's in this research</div>
+
+<div class="metrics">
+  <div class="metric"><div class="metric-label">Participants</div><div class="metric-value" id="m-total">—</div><div class="metric-sub">Target: 30+</div></div>
+  <div class="metric"><div class="metric-label">Nationalities</div><div class="metric-value" id="m-nations">—</div><div class="metric-sub">represented</div></div>
+  <div class="metric"><div class="metric-label">Work types</div><div class="metric-value" id="m-worktypes">—</div><div class="metric-sub">represented</div></div>
+  <div class="metric"><div class="metric-label">Communities</div><div class="metric-value" id="m-communities">—</div><div class="metric-sub">represented</div></div>
+</div>
+
+<div class="demo-charts">
+  <div class="chart-card"><div class="chart-title">Nationality</div><div class="chart-sub">Where they're from</div><div class="chart-canvas-sm"><canvas id="natChart"></canvas></div></div>
+  <div class="chart-card"><div class="chart-title">Work type</div><div class="chart-sub">How they earn</div><div class="chart-canvas-sm"><canvas id="workChart"></canvas></div></div>
+  <div class="chart-card"><div class="chart-title">Time in Medellín</div><div class="chart-sub">How long they've been here</div><div class="chart-canvas-sm"><canvas id="tenureChart"></canvas></div></div>
+</div>
+
+<div class="demo-charts-2">
+  <div class="chart-card"><div class="chart-title">Neighborhood</div><div class="chart-sub">Where they live</div><div class="chart-canvas-sm"><canvas id="hoodChart"></canvas></div></div>
+  <div class="chart-card"><div class="chart-title">Community</div><div class="chart-sub">Which community they came from or represent</div><div class="chart-canvas-sm"><canvas id="commChart"></canvas></div></div>
+</div>
+
+<div class="divider"></div>
+<div class="section-label" style="margin-bottom:14px">Call profiles</div>
+<div id="call-profiles"></div>
+
+<div class="section-label" style="margin-bottom:14px">What they need to see</div>
+<div class="gap-card" id="gap-section"></div>
+
+<div class="patterns">
+  <div class="section-label" style="margin-bottom:0">Patterns to watch as calls come in</div>
+  <div class="patterns-grid">
+    <div class="pattern-item">— Does food keep ranking above wellness, or is Andrew the outlier?</div>
+    <div class="pattern-item">— Does location keep pulling to Poblado, or does Laureles show up?</div>
+    <div class="pattern-item">— Does "home away from home" resonate universally?</div>
+    <div class="pattern-item">— Is 175–300k consistent, or does it vary by persona?</div>
+    <div class="pattern-item">— Do expats and locals have different price ceilings?</div>
+    <div class="pattern-item">— Which community produces the strongest founding signal?</div>
   </div>
-  <p class="subtitle">Pulls from Fathom "Wellness Center Market Research Call" · Updates as new calls come in</p>
+</div>
 
-  <div class="metrics">
-    <div class="metric">
-      <div class="metric-label">Calls completed</div>
-      <div class="metric-value">1</div>
-      <div class="metric-sub">Target: 30+</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Top draw so far</div>
-      <div class="metric-value">Food</div>
-      <div class="metric-sub">+ Mental + Movement</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Would replace</div>
-      <div class="metric-value">Yes</div>
-      <div class="metric-sub">gym + yoga separately</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Monthly ceiling</div>
-      <div class="metric-value">300k</div>
-      <div class="metric-sub">COP / month</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="call-header">
-      <div>
-        <div class="call-name">Andrew Topping</div>
-        <div class="call-meta">Call 1 · Jun 25, 2026 · Existing network</div>
-      </div>
-      <a class="fathom-link" href="https://fathom.video/calls/723475883" target="_blank">View in Fathom ↗</a>
-    </div>
-
-    <div class="three-col">
-      <div class="inner">
-        <div class="inner-label">Ranking (top 3)</div>
-        <div class="inner-row"><strong>1. Food</strong></div>
-        <div class="inner-row">2. Mental reset</div>
-        <div class="inner-row">3. Movement</div>
-        <div class="inner-row" style="color:#AAA;font-size:11px;margin-top:4px">Last: Place to work / Community</div>
-      </div>
-      <div class="inner">
-        <div class="inner-label">Current monthly spend</div>
-        <div class="inner-row">108 Yoga — 350k COP</div>
-        <div class="inner-row">SmartFit — 100k COP</div>
-        <div class="inner-row">Massage — ~160k COP</div>
-        <div class="inner-row">Food — ~400k COP</div>
-      </div>
-      <div class="inner">
-        <div class="inner-label">Price calibration</div>
-        <div class="inner-row">Good deal: <strong>175k/mo</strong></div>
-        <div class="inner-row">Ceiling: <strong>300k/mo</strong></div>
-        <div class="inner-row">Day pass: <strong>100–150k</strong></div>
-        <div class="inner-row" style="color:#AAA;font-size:11px;margin-top:4px">Hard no above 175k/day</div>
-      </div>
-    </div>
-
-    <div class="two-col">
-      <div class="inner">
-        <div class="inner-label">Competitors tried</div>
-        <div class="inner-row success">✓ 108 Yoga — stayed (vibe, staff, community)</div>
-        <div class="inner-row success">✓ SmartFit — stayed (price, functional)</div>
-        <div class="inner-row danger">✗ BodyTech — left (same as SmartFit, 4x price)</div>
-        <div class="inner-row danger">✗ Smash Yoga — left (location, vibe off)</div>
-      </div>
-      <div class="inner">
-        <div class="inner-label">Other signals</div>
-        <div class="inner-row">Location: Poblado / San Lucas / Las Palmas</div>
-        <div class="inner-row">Social mode: Solo + Group (yoga with friends)</div>
-        <div class="inner-row">Replace vs add-on: Replace (gym + yoga)</div>
-        <div class="inner-row">Call 2 permission: Yes</div>
-        <div class="inner-row">Referrals: Reggie (investor), Brett (trainer)</div>
-      </div>
-    </div>
-
-    <div class="quote-block">
-      <div class="quote-label">Key quote</div>
-      <div class="quote-text">"I want to go because I'm just going to see people I know. I can train, I can shower, do a sauna and ice bath, work after, get good food. I could spend the whole day there without going out of my way."</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">What Andrew needs to see</div>
-    <div class="card-sub">Gap diagnostic — what's between now and a founding membership yes</div>
-    <div class="gap-item">
-      <span class="gap-tag">Quality</span>
-      <span class="gap-text">Boutique gym + yoga (not SmartFit volume) — he left BodyTech for being overpriced for the same thing, so price alone doesn't justify it. Experience has to match.</span>
-    </div>
-    <div class="gap-item">
-      <span class="gap-tag">Staff</span>
-      <span class="gap-text">Someone at the front desk who knows your name. He paid 350k/mo for yoga specifically because of one woman who remembered him and his dog. This is the clearest signal in the whole call.</span>
-    </div>
-    <div class="gap-item">
-      <span class="gap-tag">Combo</span>
-      <span class="gap-text">All under one roof — he was paying SmartFit + 108 + massage separately. A single membership that replaces all three is the pitch.</span>
-    </div>
-    <div class="gap-item" style="margin-bottom:0">
-      <span class="gap-tag">Food</span>
-      <span class="gap-text">Menu with macros listed — he wants to "delegate his whole food prep" to a place he trusts. Clean, functional, trackable.</span>
-    </div>
-  </div>
-
-  <div class="charts-row">
-    <div class="chart-wrap">
-      <div class="chart-title">Ranking — top picks</div>
-      <div class="chart-sub">How often each category was chosen as a top 3 (1 call)</div>
-      <div class="chart-canvas"><canvas id="rankChart"></canvas></div>
-    </div>
-    <div class="chart-wrap">
-      <div class="chart-title">Price calibration</div>
-      <div class="chart-sub">Good deal → ceiling per person (COP × 1,000/mo)</div>
-      <div class="chart-canvas"><canvas id="priceChart"></canvas></div>
-    </div>
-  </div>
-
-  <div class="patterns">
-    <div class="patterns-title">Patterns to watch as calls come in</div>
-    <div class="patterns-grid">
-      <div class="pattern-item">— Does food keep ranking above wellness, or is Andrew the outlier?</div>
-      <div class="pattern-item">— Does location keep pulling to Poblado, or does Laureles show up?</div>
-      <div class="pattern-item">— Does "home away from home" resonate universally?</div>
-      <div class="pattern-item">— Is the 175–300k range consistent, or does it vary by persona?</div>
-    </div>
-  </div>
-
-  <p class="section-note">Add more calls to see aggregate patterns. Each "Wellness Center Market Research Call" in Fathom feeds this dashboard.</p>
-
+<p class="note">Each "Wellness Center Market Research Call" in Fathom feeds this dashboard.</p>
 </div>
 
 <script>
-const teal = '#1D9E75', coral = '#D85A30', blue = '#378ADD', purple = '#7F77DD', gray = '#B4B2A9';
+const PALETTE=['#1D9E75','#378ADD','#D85A30','#7F77DD','#EF9F27','#639922','#D4537E','#B4B2A9'];
 
-new Chart(document.getElementById('rankChart'), {
-  type: 'bar',
-  data: {
-    labels: ['Food', 'Mental reset', 'Movement', 'Physical recovery', 'Place to work', 'Community'],
-    datasets: [{ data: [1, 1, 1, 0, 0, 0], backgroundColor: [teal, teal, teal, gray, gray, gray], borderWidth: 0, borderRadius: 4 }]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.raw} of 1 calls` } } },
-    scales: {
-      x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: { size: 11 }, stepSize: 1 }, max: 1 },
-      y: { grid: { display: false }, ticks: { font: { size: 11 } } }
-    }
+const DATA = { participants: [
+  {
+    id:1, name:"Andrew Topping", date:"Jun 25, 2026",
+    fathomUrl:"https://fathom.video/calls/723475883",
+    nationality:"Canadian", age:null,
+    workType:"Entrepreneur / Coach", workDetail:"Holistic health coach for men",
+    tenure:"1–3 years", neighborhood:"Santa Elena (outside Medellín)",
+    community:"Men of Mastery", source:"Existing network",
+    wellnessNote:"Medicine path — ayahuasca / plant medicine",
+    rankingTop3:["Food","Mental reset","Movement"],
+    primaryDraw:"Food", socialMode:"Solo + Group",
+    monthlySpend:{"108 Yoga":350,"SmartFit":100,"Massage":160,"Food":400},
+    priceGoodDeal:175, priceCeiling:300, dayPassRange:[100,150],
+    replaceVsAdd:"Replace",
+    competitorsStayed:["108 Yoga","SmartFit"],
+    competitorsLeft:["BodyTech (overpriced vs SmartFit)","Smash Yoga (location / vibe off)"],
+    locationPull:"Poblado / San Lucas / Las Palmas",
+    call2:true, referrals:["Reggie (investor)","Brett (trainer)"],
+    keyQuote:"I want to go because I'm just going to see people I know. I can train, shower, do a sauna and ice bath, work after, get good food. I could spend the whole day there without going out of my way.",
+    gaps:[
+      {tag:"Quality",text:"Boutique gym + yoga (not SmartFit volume) — left BodyTech for being overpriced for the same thing."},
+      {tag:"Staff",text:"Someone who knows your name — paid 350k/mo for yoga specifically because one woman remembered him and his dog."},
+      {tag:"Combo",text:"All under one roof — was paying SmartFit + 108 + massage separately. One membership replaces all three."},
+      {tag:"Food",text:"Menu with macros listed — wants to delegate his whole food prep to a place he trusts."}
+    ]
   }
-});
+]};
 
-new Chart(document.getElementById('priceChart'), {
-  type: 'bar',
-  data: {
-    labels: ['Andrew'],
-    datasets: [{
-      label: 'Price range',
-      data: [[175, 300]],
-      backgroundColor: 'rgba(29,158,117,0.35)',
-      borderColor: teal,
-      borderWidth: 1.5,
-      borderRadius: 3,
-      borderSkipped: false
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` Good deal: ${c.raw[0]}k → Ceiling: ${c.raw[1]}k COP/mo` } } },
-    scales: {
-      x: { min: 100, max: 400, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: { size: 11 }, callback: v => `${v}k` } },
-      y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+function countBy(arr,fn){return arr.reduce((a,x)=>{const k=fn(x)||"Not recorded";a[k]=(a[k]||0)+1;return a;},{});}
+
+function barChart(id,data){
+  const labels=Object.keys(data), values=Object.values(data);
+  new Chart(document.getElementById(id),{
+    type:'bar',
+    data:{labels,datasets:[{data:values,backgroundColor:PALETTE.slice(0,labels.length),borderWidth:0,borderRadius:4}]},
+    options:{
+      indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} participant${c.raw!==1?'s':''}`}}},
+      scales:{
+        x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{size:11},stepSize:1},max:Math.max(...values)+1},
+        y:{grid:{display:false},ticks:{font:{size:11}}}
+      }
     }
-  }
-});
+  });
+}
+
+function render(){
+  const p=DATA.participants, n=p.length;
+  document.getElementById('badge-text').textContent=`${n} call${n!==1?'s':''} · Jun 25`;
+  document.getElementById('m-total').textContent=n;
+  document.getElementById('m-nations').textContent=new Set(p.map(x=>x.nationality).filter(Boolean)).size;
+  document.getElementById('m-worktypes').textContent=new Set(p.map(x=>x.workType).filter(Boolean)).size;
+  document.getElementById('m-communities').textContent=new Set(p.map(x=>x.community).filter(Boolean)).size;
+
+  barChart('natChart',countBy(p,x=>x.nationality));
+  barChart('workChart',countBy(p,x=>x.workType));
+  barChart('tenureChart',countBy(p,x=>x.tenure));
+  barChart('hoodChart',countBy(p,x=>x.neighborhood));
+  barChart('commChart',countBy(p,x=>x.community));
+
+  document.getElementById('call-profiles').innerHTML=p.map(x=>`
+    <div class="call-card">
+      <div class="call-header">
+        <div><div class="call-name">${x.name}</div><div class="call-meta">Call ${x.id} · ${x.date} · ${x.source}</div></div>
+        <a class="fathom-link" href="${x.fathomUrl}" target="_blank">View in Fathom ↗</a>
+      </div>
+      <div class="tags-row">
+        ${x.nationality?`<span class="tag tag-blue">${x.nationality}</span>`:''}
+        ${x.age?`<span class="tag">${x.age} yrs</span>`:''}
+        ${x.workType?`<span class="tag tag-purple">${x.workType}</span>`:''}
+        ${x.tenure?`<span class="tag">${x.tenure} in Medellín</span>`:''}
+        ${x.neighborhood?`<span class="tag">${x.neighborhood}</span>`:''}
+        ${x.community?`<span class="tag tag-amber">${x.community}</span>`:''}
+        ${x.wellnessNote?`<span class="tag">${x.wellnessNote}</span>`:''}
+      </div>
+      <div class="three-col">
+        <div class="inner"><div class="inner-label">Ranking (top 3)</div>${x.rankingTop3.map((r,i)=>`<div class="inner-row">${i===0?'<strong>':''}${i+1}. ${r}${i===0?'</strong>':''}</div>`).join('')}</div>
+        <div class="inner"><div class="inner-label">Monthly spend (COP)</div>${Object.entries(x.monthlySpend).map(([k,v])=>`<div class="inner-row">${k} — ${v}k</div>`).join('')}</div>
+        <div class="inner"><div class="inner-label">Price calibration</div><div class="inner-row">Good deal: <strong>${x.priceGoodDeal}k/mo</strong></div><div class="inner-row">Ceiling: <strong>${x.priceCeiling}k/mo</strong></div>${x.dayPassRange?`<div class="inner-row">Day pass: <strong>${x.dayPassRange[0]}–${x.dayPassRange[1]}k</strong></div>`:''}</div>
+      </div>
+      <div class="two-col">
+        <div class="inner"><div class="inner-label">Competitors</div>${x.competitorsStayed.map(c=>`<div class="inner-row success">✓ ${c}</div>`).join('')}${x.competitorsLeft.map(c=>`<div class="inner-row danger">✗ ${c}</div>`).join('')}</div>
+        <div class="inner"><div class="inner-label">Other signals</div><div class="inner-row">Location pull: ${x.locationPull}</div><div class="inner-row">Social mode: ${x.socialMode}</div><div class="inner-row">Replace vs add-on: ${x.replaceVsAdd}</div><div class="inner-row">Call 2 permission: ${x.call2?'Yes':'No'}</div>${x.referrals.length?`<div class="inner-row">Referrals: ${x.referrals.join(', ')}</div>`:''}</div>
+      </div>
+      <div class="quote-block"><div class="quote-label">Key quote</div><div class="quote-text">"${x.keyQuote}"</div></div>
+    </div>
+  `).join('');
+
+  document.getElementById('gap-section').innerHTML=`
+    <div class="chart-title" style="margin-bottom:4px">What they need to see</div>
+    <div class="chart-sub" style="margin-bottom:14px">Gap diagnostic — what's between now and a founding membership yes</div>
+    ${DATA.participants.flatMap(x=>x.gaps).map(g=>`<div class="gap-item"><span class="gap-tag">${g.tag}</span><span class="gap-text">${g.text}</span></div>`).join('')}
+  `;
+}
+
+render();
 </script>
 </body>
 </html>
