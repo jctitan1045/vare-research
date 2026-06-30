@@ -1,0 +1,35 @@
+name: Daily Fathom sync
+
+on:
+  schedule:
+    # 11 PM Colombia time = 4 AM UTC (Colombia is UTC-5)
+    - cron: '0 4 * * *'
+  workflow_dispatch: # allow manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run Fathom sync
+        env:
+          FATHOM_API_KEY: ${{ secrets.FATHOM_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/update_calls.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --staged --quiet || git commit -m "Auto: add $(date +%b\ %-d) call from Fathom"
+          git push
