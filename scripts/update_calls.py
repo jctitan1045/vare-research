@@ -160,7 +160,7 @@ def main():
 
     print("Fetching recent Fathom meetings...")
     try:
-        data = fathom_request("/meetings", {"created_after": cutoff, "created_before": tomorrow})
+        data = fathom_request("/meetings", {"created_after": cutoff, "created_before": tomorrow, "include_transcript": "true"})
     except urllib.error.HTTPError as e:
         print(f"Fathom API error: {e.code} {e.reason}")
         sys.exit(1)
@@ -182,26 +182,22 @@ def main():
     changed = False
 
     for meeting in research_calls:
-        mid = meeting.get("id")
+        mid = meeting.get("recording_id") or meeting.get("id")
         title = meeting.get("title") or ""
-        started = meeting.get("created_at") or meeting.get("started_at") or ""
-        recording_url = meeting.get("url") or f"https://fathom.video/calls/{mid}"
+        started = meeting.get("created_at") or meeting.get("scheduled_start_time") or ""
+        recording_url = meeting.get("share_url") or meeting.get("url") or f"https://fathom.video/calls/{mid}"
 
         print(f"Processing: {title} ({started[:10]})")
 
-        # Get full meeting detail (includes transcript)
-        try:
-            detail = fathom_request(f"/meetings/{mid}")
-        except urllib.error.HTTPError as e:
-            print(f"  Could not fetch meeting detail: {e.code} — skipping")
-            continue
-
-        transcript_text = detail.get("transcript") or detail.get("text") or ""
-        if not transcript_text:
-            utterances = detail.get("utterances") or detail.get("segments") or []
+        # Transcript is already in the meeting object (included via include_transcript=true)
+        raw_tx = meeting.get("transcript") or []
+        if isinstance(raw_tx, list):
             transcript_text = "\n".join(
-                f"{u.get('speaker','')}: {u.get('text','')}" for u in utterances
+                f"{u['speaker']['display_name']}: {u['text']}"
+                for u in raw_tx if u.get("text")
             )
+        else:
+            transcript_text = str(raw_tx)
 
         if not transcript_text.strip():
             print("  Empty transcript — skipping")
