@@ -348,12 +348,22 @@ const AVATARS = [
     gap: "No Medellín venue combines aesthetics + capacity + working AV + fast internet. Everything is either beautiful or functional, never both.",
     quote: "En Medellín no existen lugares que piensen en comunidad. Existen restaurantes, discotecas, clubs, pero nada está pensado en integrar gente alrededor de conversación.",
     participants: ["Isabella Wuman"]
+  },
+  {
+    name: "The Nervous System–First Practitioner",
+    handle: "1 participant · Laurel Van Woerkom",
+    emoji: "🌀",
+    color: "#F5EEF8",
+    desc: "American coach and hypnotherapist, 2.5 yrs in Laureles. Hosts breathwork, hypnosis, cacao ceremonies, and ecstatic dance. Community is her #1 value — she shows up 3–5x/week socially and hosts events almost every week. Has Hashimoto's, eats strict paleo, needs the space to feel like a nervous system reset from the moment she walks in.",
+    traits: ["Coach / Hypnotherapist", "Event Facilitator", "Paleo / Hashimoto's", "Laureles-based", "Soulpreneur community"],
+    draws: "<strong>Primary pull:</strong> Therapy room rental + event hosting slots with membership. <strong>Secondary:</strong> Nervous system environment — quiet, wood floors, curated scent + light. <strong>Converts if:</strong> All-in-one membership in Laureles or Belén at $200–250 USD/mo.",
+    gap: "No bookable private therapy room in Medellín. No quiet venue with reliable bookings she can trust for facilitated sessions. Most quality wellness is too far (Envigado / Poblado).",
+    quote: "The moment you walk onto that property, you just feel your nervous system relax.",
+    participants: ["Laurel Van Woerkom"]
   }
 ];
 
-const AVATAR_PLACEHOLDERS = [
-  { label: "Avatar 5", hint: "Emerging from next 5–10 calls" }
-];
+const AVATAR_PLACEHOLDERS = [];
 
 const DATA = { participants: [
   {
@@ -536,6 +546,45 @@ const DATA = { participants: [
       {tag:"Owner mindset", text:"Venue owners think in 2-year trend cycles, not community retention. They optimize for Instagrammable moments, not repeat loyalty. Varé needs to be explicit about the opposite."},
       {tag:"Price segmentation", text:"Her community spans $30/event nomads → $250 digital entrepreneurs → $2,500 high-ticket buyers. A founding membership needs tiered access to capture all three."},
       {tag:"Partnership model", text:"Wants paid partnerships (brand pays her to bring crowd) or revenue share on tickets. Free venue access alone doesn't work for her economics."}
+    ]
+  },
+  {
+    id:5, name:"Laurel Van Woerkom", date:"Jul 1, 2026",
+    fathomUrl:"https://fathom.video/calls/729811838",
+    nationality:"American", age:37, gender:"Female",
+    workType:"Coach / Hypnotherapist", workDetail:"Life coach and hypnotherapist — hosts breathwork, hypnosis, cacao ceremonies, speed dating, ecstatic dance collaborations",
+    tenure:"2.5 years", neighborhood:"Laureles — Las Acacias",
+    community:"Conscious / soulpreneur community", source:"Existing network",
+    wellnessNote:"Hashimoto's autoimmune condition — eating strict paleo. Practices breathwork and meditation daily. Works out at home, rarely attends gym classes.",
+    rankingTop3:["Community","Healthy food","Mental reset"],
+    primaryDraw:"All-in-one space with therapy room rental + nervous system reset environment + event hosting slots",
+    socialMode:"Community",
+    monthlySpend:{"Eating out (Avocalia, Smadge via Rappi)":1200,"Events (attending)":200},
+    priceGoodDeal:800, priceCeiling:1000, dayPassRange:null,
+    replaceVsAdd:"Add-on",
+    competitorsStayed:["Avocalia (delivery)","Smadge (delivery)","Alma Cristal coworking (Envigado)"],
+    competitorsLeft:[],
+    locationPull:"Laureles / Belén",
+    call2:true,
+    referrals:[],
+    roles:["Consumer","Instructor / Facilitator","Community builder"],
+    services:[
+      {name:"Therapy room rental", note:"Needs quiet private room with couch/bed + desk for hypnotherapy client sessions — a gap she can't fill anywhere in Medellín right now."},
+      {name:"Event hosting space", note:"Wood floors, 15–25 capacity, staff on-site for setup and door, no surprise cleaning fees. Membership perk of free booking slots would close her on the spot."},
+      {name:"Breathwork / meditation classes", note:"Prefers to be guided in these practices. Would attend on-site classes consistently if bundled into membership — especially since she'd already be there to work or host."},
+      {name:"Healthy food / restaurant", note:"Paleo-friendly menu with dietary icons, substitution options, lots of vegetables. Eats out 5+ times/week and spends ~1.2M COP/month on health food delivery."},
+      {name:"Sauna + cold plunge", note:"Loves contrast therapy. Specifically excited about facilitating hypnotherapy sessions inside a sauna — sees it as a unique offering she could bring to the space."}
+    ],
+    quotes:[
+      "The moment you walk onto that property, you just feel your nervous system relax.",
+      "What is rare to find in Medellín is a venue that has a big enough space where people can move freely — with wood floors, warm, homey, peaceful.",
+      "If it was convenient and it offered all of this, I can see myself going maybe four or five times a week."
+    ],
+    gaps:[
+      {tag:"Therapy room", text:"No Medellín space has a bookable private therapy room. A quiet room with couch + desk would be a membership-closing offer for her — it's her #1 unmet need as a practitioner."},
+      {tag:"Noise", text:"Breathwork and hypnosis require silence. Most venues in Medellín can't guarantee noise control, making them unreliable for facilitated sessions — she's been burned repeatedly."},
+      {tag:"Venue reliability", text:"Double-bookings, forgotten reservations, last-minute space swaps, free agreements not honored under new management. Reliability and written agreements are baseline requirements."},
+      {tag:"Laureles gap", text:"Quality wellness venues cluster in Envigado, Poblado, and Santa Elena — all too far for weekday use. A Laureles or Belén location would make a 4–5x/week habit realistic for her."}
     ]
   }
 ]};
@@ -846,11 +895,11 @@ function render(){
 }
 
 const HYPOTHESES = [
-  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral"}, note:"Andrew + Sebastian confirmed unprompted. Juliana and Isabella are food-focused but care more about freshness and quality than macro tracking specifically." },
-  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm","Isabella Wuman":"confirm"}, note:"All four. Isabella's entire Parceros model is built on personal relationships. She stayed at CRU and Smash because of people, not equipment." },
-  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm","Isabella Wuman":"neutral"}, note:"Andrew and Juliana rank food #1. Isabella ranks mental reset #1, food #2. Sebastian cooks at home. Food is top-2 for most but not universal #1." },
-  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"confirm"}, note:"Andrew: 300k. Sebastian: 300–400k. Isabella pays 300k at CRU — confirms the band. Juliana was vague and may skew lower as a local instructor." },
-  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral"}, note:"Still only Sebastian. Isabella has the opposite problem — she needs MORE capacity, not less crowding. Not a universal driver." }
+  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral"}, note:"Andrew + Sebastian confirmed unprompted. Juliana and Isabella care more about freshness and quality. Laurel needs dietary icons + substitution options (paleo/GF) — aligned on intent, not specifically macros." },
+  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm","Isabella Wuman":"confirm","Laurel Van Woerkom":"confirm"}, note:"All five. Laurel left her Valencia co-working space as a compelling model precisely because staff knew her and she felt 'at home.' Nervous system safety = being known." },
+  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral"}, note:"Andrew and Juliana rank food #1. Laurel ranks it #2 (after community). Has Hashimoto's and eats strict paleo — high food sensitivity but community still wins." },
+  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"confirm","Laurel Van Woerkom":"refute"}, note:"Laurel is a clear outlier — cited $200–250 USD/mo (~800–1,000k COP), benchmarked against her €250/mo Valencia membership. Significantly above the local COP band. Suggests expat practitioners may price differently." },
+  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral"}, note:"Still only Sebastian. Laurel's concern is noise and unreliability, not crowding per se. Not a universal driver." }
 ];
 
 
