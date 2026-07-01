@@ -748,10 +748,93 @@ function render(){
     }
   });
 
+  const ROLE_SEGMENTS = [
+    {
+      role: "Consumer",
+      cls: "consumer",
+      desc: "What they need to see before saying yes to a founding membership",
+      // gaps that speak to a buyer's perspective — exclude supply-side tags
+      excludeTags: ["Instructor pay","Partnership model","Owner mindset"]
+    },
+    {
+      role: "Instructor / Facilitator",
+      cls: "instructor",
+      desc: "What makes this worth teaching at — supply-side expectations",
+      includeTags: ["Instructor pay","Dual-market pricing","No current home","Location trade-off","Quality"]
+    },
+    {
+      role: "Community builder",
+      cls: "builder",
+      desc: "What they need to bring their audience here",
+      includeTags: ["Venue gap","Owner mindset","Price segmentation","Partnership model","Safe space"]
+    },
+    {
+      role: "Potential hire",
+      cls: "hire",
+      desc: "Hiring bar — what would make them commit to Varé as a place to build a career",
+      includeTags: ["Instructor pay","No current home","Dual-market pricing","Location trade-off"]
+    }
+  ];
+
+  const segmentHtml = ROLE_SEGMENTS.map(seg => {
+    const members = DATA.participants.filter(x => x.roles.includes(seg.role));
+    if (!members.length) return '';
+
+    const memberChips = members.map(x => {
+      const av = AVATARS.find(a=>a.id===x.id);
+      return `<span style="display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3px 10px 3px 4px;font-size:12px;color:var(--mid)">
+        <span style="width:20px;height:20px;border-radius:50%;background:${av?av.bg:'#ccc'};display:flex;align-items:center;justify-content:center;font-size:10px;color:white;font-weight:600">${x.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</span>
+        ${x.name.split(' ')[0]}
+      </span>`;
+    }).join('');
+
+    const gapItems = members.flatMap(x => {
+      const relevantGaps = seg.includeTags
+        ? x.gaps.filter(g => seg.includeTags.includes(g.tag))
+        : seg.excludeTags
+          ? x.gaps.filter(g => !seg.excludeTags.includes(g.tag))
+          : x.gaps;
+      return relevantGaps.map(g => ({ ...g, person: x.name.split(' ')[0] }));
+    });
+
+    if (!gapItems.length) return '';
+
+    const roleColors = {
+      consumer:   { bg:'#E8F4ED', border:'#B8D9C4', label:'#1A6A3A' },
+      instructor: { bg:'#FFF0E6', border:'#F5C8A0', label:'#A04010' },
+      builder:    { bg:'#E6F0FF', border:'#A8C0F0', label:'#1030A0' },
+      hire:       { bg:'#F0EBFF', border:'#C8B8F0', label:'#4020A0' }
+    };
+    const c = roleColors[seg.cls];
+
+    return `
+      <div style="border:1px solid ${c.border};border-radius:10px;overflow:hidden;margin-bottom:14px">
+        <div style="background:${c.bg};padding:10px 14px 8px">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:${c.label};text-transform:uppercase">${seg.role}</span>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">${memberChips}</div>
+          </div>
+          <div style="font-size:12px;color:${c.label};opacity:0.75;margin-top:4px">${seg.desc}</div>
+        </div>
+        <div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+          ${gapItems.map(g=>`
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <span style="font-size:10px;padding:3px 8px;border-radius:6px;background:${c.bg};color:${c.label};border:1px solid ${c.border};white-space:nowrap;margin-top:2px;letter-spacing:0.04em;font-weight:600">${g.tag}</span>
+              <div style="flex:1">
+                <span style="font-size:11px;color:var(--light);font-style:italic;margin-right:4px">${members.length > 1 ? g.person + ' —' : ''}</span>
+                <span style="font-size:13px;line-height:1.6;color:var(--mid)">${g.text}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+
   document.getElementById('gap-section').innerHTML=`
     <div class="chart-title" style="margin-bottom:4px">What they need to see</div>
-    <div class="chart-sub" style="margin-bottom:14px">Gap diagnostic — what's between now and a founding membership yes</div>
-    ${DATA.participants.flatMap(x=>x.gaps).map(g=>`<div class="gap-item"><span class="gap-tag">${g.tag}</span><span class="gap-text">${g.text}</span></div>`).join('')}
+    <div class="chart-sub" style="margin-bottom:14px">Gaps by role — what stands between each persona and a yes</div>
+    ${segmentHtml}
   `;
 
   renderSignals();
