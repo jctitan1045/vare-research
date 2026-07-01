@@ -152,6 +152,20 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 
 /* ── CALL CARD COLLAPSE ── */
 .call-summary { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.role-tag { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; padding:2px 8px; border-radius:4px; white-space:nowrap; }
+.role-tag.consumer { background:#E8F4ED; color:#2A7A4A; }
+.role-tag.instructor { background:#FFF0E6; color:#C05010; }
+.role-tag.hire { background:#F0EBFF; color:#5828B0; }
+.role-tag.builder { background:#E6F0FF; color:#1840A0; }
+.pipeline-section { display:flex; flex-direction:column; gap:8px; margin-bottom:28px; }
+.pipeline-group { background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.pipeline-group-header { display:flex; align-items:center; gap:10px; padding:12px 16px; border-bottom:1px solid var(--border); background:var(--cream-bright); }
+.pipeline-group-title { font-size:12px; font-weight:600; color:var(--dark); }
+.pipeline-group-desc { font-size:11px; color:var(--light); }
+.pipeline-person { display:flex; align-items:center; gap:12px; padding:11px 16px; border-bottom:0.5px solid var(--border); }
+.pipeline-person:last-child { border-bottom:none; }
+.pipeline-person-name { font-size:13px; font-weight:500; color:var(--dark); min-width:140px; }
+.pipeline-person-note { font-size:12px; color:var(--light); flex:1; line-height:1.4; }
 .call-avatar { width:38px; height:38px; border-radius:50%; background:var(--dark); color:var(--cream-bright); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:500; flex-shrink:0; }
 .expand-chevron { font-size:14px; color:var(--light); transition:transform 0.2s; }
 .call-detail { overflow:hidden; }
@@ -257,6 +271,11 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 <div id="hypo-board" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
+<div class="divider"></div>
+<div class="section-label" style="margin-bottom:10px">People pipeline</div>
+<div class="pipeline-section" id="people-pipeline" style="margin-bottom:28px"></div>
+
+<div class="divider"></div>
 <div class="section-label" style="margin-bottom:14px">Call profiles</div>
 <div id="call-profiles"></div>
 
@@ -353,6 +372,7 @@ const DATA = { participants: [
     competitorsStayed:["108 Yoga","SmartFit"],
     competitorsLeft:["BodyTech (overpriced vs SmartFit)","Smash Yoga (location / vibe off)"],
     locationPull:"Poblado / San Lucas / Las Palmas",
+    roles:["Consumer"],
     call2:true, referrals:["Reggie (investor)","Brett (trainer)"],
     services:[
       {name:"Hot yoga", note:"Paid 350k/mo for 108 Yoga alone — class format, instructor quality, and vibe drove the decision."},
@@ -403,6 +423,7 @@ const DATA = { participants: [
     competitorsStayed:["Rivertown (work/coffee — daily)","Nordica (monthly sauna)","Salud Kwan (healthy food)"],
     competitorsLeft:["SmartFit (too hot and packed)","Run club (social anxiety around strangers)","Kin in Poblado (too far from Laureles)"],
     locationPull:"Laureles — Conquistadores / must be walkable",
+    roles:["Consumer"],
     call2:true, referrals:[],
     services:[
       {name:"Coworking / place to work", note:"Comes to Rivertown 4x/week afternoons. Needs guaranteed seat, outlets, WiFi. 'Everyone knows my name' — the third-home feeling is non-negotiable."},
@@ -448,6 +469,7 @@ const DATA = { participants: [
     competitorsStayed:["SmartFit (multi-location)","Juan Pablo's (medicine community)"],
     competitorsLeft:["Smash (closed)","108 Yoga","Samar"],
     locationPull:"Poblado (for business); Sabaneta (personal home base)",
+    roles:["Consumer","Instructor / Facilitator","Potential hire"],
     call2:true,
     referrals:[],
     services:[
@@ -491,6 +513,7 @@ const DATA = { participants: [
     competitorsStayed:["CRU (300k/mo)","Olivia","Pergamino","Mero (delivery)"],
     competitorsLeft:["Healing Forest (too expensive)","Smash (closed)"],
     locationPull:"Poblado",
+    roles:["Consumer","Community builder"],
     call2:true,
     referrals:["Akram (AI events organizer — high-ticket crowd)","ClickClack (existing venue partner)"],
     services:[
@@ -516,6 +539,74 @@ const DATA = { participants: [
     ]
   }
 ]};
+
+const ROLE_CONFIG = {
+  "Consumer":                { cls:"consumer", label:"Consumer" },
+  "Instructor / Facilitator":{ cls:"instructor", label:"Instructor / Facilitator" },
+  "Potential hire":          { cls:"hire", label:"Potential hire" },
+  "Community builder":       { cls:"builder", label:"Community builder" }
+};
+
+function roleTag(role){
+  const cfg = ROLE_CONFIG[role] || { cls:"consumer", label:role };
+  return `<span class="role-tag ${cfg.cls}">${cfg.label}</span>`;
+}
+
+const PIPELINE_GROUPS = [
+  {
+    key:"Instructor / Facilitator",
+    label:"Instructors & Facilitators",
+    dot:"#F07030",
+    desc:"People who could teach, lead sessions, or run programming",
+    note: p => `${p.workDetail} — ${p.services.slice(0,2).map(s=>s.name).join(', ')}`
+  },
+  {
+    key:"Potential hire",
+    label:"Potential hires",
+    dot:"#7040D0",
+    desc:"People you could bring onto the team in an operational or leadership role",
+    note: p => p.workDetail
+  },
+  {
+    key:"Community builder",
+    label:"Community builders",
+    dot:"#1E3028",
+    desc:"People with networks — partnerships, event hosts, founding member pipeline",
+    note: p => `${p.community} — referrals: ${p.referrals.length ? p.referrals.join(', ') : 'none yet'}`
+  },
+  {
+    key:"Consumer",
+    label:"Consumers & customers",
+    dot:"#30B860",
+    desc:"Primary customer persona — founding membership targets",
+    note: p => `${p.rankingTop3[0]} first · ceiling ${p.priceCeiling}k/mo · ${p.locationPull}`
+  }
+];
+
+function renderPipeline(){
+  const p = DATA.participants;
+  document.getElementById('people-pipeline').innerHTML = PIPELINE_GROUPS.map(grp => {
+    const members = p.filter(x => (x.roles||[]).includes(grp.key));
+    if (!members.length) return '';
+    return `
+      <div class="pipeline-group">
+        <div class="pipeline-group-header">
+          <span style="width:10px;height:10px;border-radius:50%;background:${grp.dot};flex-shrink:0;display:inline-block"></span>
+          <span class="pipeline-group-title">${grp.label}</span>
+          <span class="pipeline-group-desc">— ${grp.desc}</span>
+          <span style="margin-left:auto;font-size:11px;color:var(--light);background:var(--faint);padding:1px 7px;border-radius:10px">${members.length}</span>
+        </div>
+        ${members.map(x => `
+          <div class="pipeline-person">
+            <div class="pipeline-person-name">${x.name}</div>
+            <div class="pipeline-person-note">${grp.note(x)}</div>
+            <a class="fathom-link" href="${x.fathomUrl}" target="_blank" style="flex-shrink:0">Fathom ↗</a>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }).join('');
+}
 
 function renderAvatars(){
   const filled = AVATARS.map(a=>`
@@ -585,6 +676,7 @@ function render(){
         <div>
           <div class="call-name">${x.name}</div>
           <div class="call-meta">${x.date} · ${x.nationality||''} · ${x.workType||''}</div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">${(x.roles||[]).map(r=>roleTag(r)).join('')}</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:16px">
@@ -664,6 +756,7 @@ function render(){
 
   renderSignals();
   renderActionItems();
+  renderPipeline();
   renderHypotheses();
   renderLocationMap();
   renderInsightsCharts();
