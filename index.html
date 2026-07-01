@@ -317,11 +317,23 @@ const AVATARS = [
     gap: "No space in Medellín currently makes her feel 'safe and seen.' Gap is emotional, not amenity-based.",
     quote: "If I could recreate that — even for a stranger — if somebody could feel safe and seen. That's what I would want.",
     participants: ["Juliana Trujillo"]
+  },
+  {
+    name: "The Community Architect",
+    handle: "1 participant · Isabella Wuman",
+    emoji: "🏛️",
+    color: "#EDF5F0",
+    desc: "Colombian community founder (Parceros — 3 yrs), bridges expats and locals across Medellín. Thinks in events and experiences, not just personal consumption. Needs venues that hold 50–250 people with working projectors and fast internet. A venue that earns her partnership = instant access to her entire network.",
+    traits: ["Community Founder", "Event Organizer", "Colombian", "Poblado-based", "High-network operator"],
+    draws: "<strong>Primary pull:</strong> Event-ready community space + aesthetic food. <strong>Secondary:</strong> Pilates + mental reset space. <strong>Converts if:</strong> Partnership model works — she brings the crowd, venue shares the upside.",
+    gap: "No Medellín venue combines aesthetics + capacity + working AV + fast internet. Everything is either beautiful or functional, never both.",
+    quote: "En Medellín no existen lugares que piensen en comunidad. Existen restaurantes, discotecas, clubs, pero nada está pensado en integrar gente alrededor de conversación.",
+    participants: ["Isabella Wuman"]
   }
 ];
 
 const AVATAR_PLACEHOLDERS = [
-  { label: "Avatar 4", hint: "Emerging from next 5–10 calls" }
+  { label: "Avatar 5", hint: "Emerging from next 5–10 calls" }
 ];
 
 const DATA = { participants: [
@@ -459,6 +471,48 @@ const DATA = { participants: [
       {tag:"No current home", text:"No space in Medellín currently makes her feel 'safe and seen.' The market gap is emotional, not just amenity-based."},
       {tag:"Dual-market pricing", text:"Ethical tension between charging Colombians and expats the same price. She sees it as a real issue that needs a deliberate answer, not an afterthought."},
       {tag:"Location trade-off", text:"Sabaneta girl — Poblado is far, but she drove 30 min to Smash daily because it was worth it. Place has to earn the commute with exceptional energy."}
+    ]
+  },
+  {
+    id:4, name:"Isabella Wuman", date:"Jul 1, 2026",
+    fathomUrl:"https://fathom.video/calls/729811853",
+    nationality:"Colombian", age:32, gender:"Female",
+    workType:"Community Founder", workDetail:"Founder of Parceros Community — 3 years running networking events and local experiences connecting expats and locals in Medellín",
+    tenure:"7 years (intermittent)", neighborhood:"El Poblado — Los Bálfares",
+    community:"Parceros (founder), Breakfast Club, Entrepreneurs House, Run Club, 11AM",
+    source:"Existing network",
+    wellnessNote:"Goes to CRU (300k/mo). Loves Pilates most — formerly at Healing Forest, now paused (too expensive). Not a daily gym-goer.",
+    rankingTop3:["Mental reset","Healthy food","Community"],
+    primaryDraw:"Community event space + food + spiritual/mental reset environment",
+    socialMode:"Community",
+    monthlySpend:{"CRU":300,"Groceries":875,"Eating out (avg)":89},
+    priceGoodDeal:250, priceCeiling:400, dayPassRange:null,
+    replaceVsAdd:"Replace + consolidate",
+    competitorsStayed:["CRU (300k/mo)","Olivia","Pergamino","Mero (delivery)"],
+    competitorsLeft:["Healing Forest (too expensive)","Smash (closed)"],
+    locationPull:"Poblado",
+    call2:true,
+    referrals:["Akram (AI events organizer — high-ticket crowd)","ClickClack (existing venue partner)"],
+    services:[
+      {name:"Community event space", note:"Needs 50–250 capacity, projector, mic, fast internet, fast drink service. No venue in Medellín currently combines all of this with aesthetics. This is her #1 unmet need."},
+      {name:"Healthy food / restaurant", note:"Smash was her benchmark — colorful, macro-balanced, fresh. Also likes Olivia, Mero bowls. Wants quality she can trust without thinking about it."},
+      {name:"Mental reset / spiritual space", note:"1–2 hours of prayer and devotional daily. Ranks it #1 in her life. Wants a space that supports quiet, intentional mornings."},
+      {name:"Pilates", note:"Her single favorite movement form. Was at Healing Forest until it got too expensive. Would prioritize this in a membership over gym access."},
+      {name:"Group fitness / semi-personalized", note:"CRU semi-personalized classes (6–7 people per trainer). Also tried boxing and loved it. Values variety and energy over equipment."},
+      {name:"Coworking", note:"Needs aesthetic + functional: projector, mic, reliable internet, cafe. Every venue in Medellín is one or the other, never both."},
+      {name:"Cold plunge / ice bath", note:"Planning an 'Inmersión en Hielo for Founders' event with Open Sauna. High-ticket small-group format. Interest is entrepreneurial, not just personal recovery."},
+      {name:"Sauna", note:"Exploring Open Sauna partnership. Capacity constraint (25 max) is a business problem for her events, but personal interest is there."}
+    ],
+    quotes:[
+      "En Medellín no existen lugares que piensen en comunidad. Existen restaurantes, discotecas, clubs, pero nada está pensado en integrar gente alrededor de conversación.",
+      "Conseguir espacios pensados en comunidad es imposible. Si tuvieras esa varita mágica — un espacio que se pueda convertir entre un café para coworking y un salón de eventos.",
+      "Ellos siguen apostando por la marca que la gente vaya, tome la foto, la suba en Instagram — una experiencia instagrameable, pero no una experiencia más allá de eso."
+    ],
+    gaps:[
+      {tag:"Venue gap", text:"No Medellín space combines aesthetics + 50–250 capacity + projector/mic + fast internet + food. Always one or the other. This is her primary business bottleneck."},
+      {tag:"Owner mindset", text:"Venue owners think in 2-year trend cycles, not community retention. They optimize for Instagrammable moments, not repeat loyalty. Varé needs to be explicit about the opposite."},
+      {tag:"Price segmentation", text:"Her community spans $30/event nomads → $250 digital entrepreneurs → $2,500 high-ticket buyers. A founding membership needs tiered access to capture all three."},
+      {tag:"Partnership model", text:"Wants paid partnerships (brand pays her to bring crowd) or revenue share on tickets. Free venue access alone doesn't work for her economics."}
     ]
   }
 ]};
@@ -616,11 +670,11 @@ function render(){
 }
 
 const HYPOTHESES = [
-  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral"}, note:"Andrew + Sebastian confirmed unprompted. Juliana is deeply food-focused but didn't mention macros specifically — she cares more about freshness, color, and sourcing." },
-  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm"}, note:"All three. Juliana never left Smash once Adi (her teacher) was there. The personal relationship was the product." },
-  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm"}, note:"Andrew and Juliana both rank food #1. Sebastian cooks at home — food is an enabler, not a draw for him." },
-  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral"}, note:"Andrew: 300k. Sebastian: 300–400k. Juliana was vague on numbers — she pays ~200k range and thinks in per-class terms (~60k). Likely a different price sensitivity as a local." },
-  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral"}, note:"Sebastian's primary churn driver. Juliana stays at SmartFit despite crowds because of multi-location flexibility. Andrew left for quality/price. Not universal." }
+  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral"}, note:"Andrew + Sebastian confirmed unprompted. Juliana and Isabella are food-focused but care more about freshness and quality than macro tracking specifically." },
+  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm","Isabella Wuman":"confirm"}, note:"All four. Isabella's entire Parceros model is built on personal relationships. She stayed at CRU and Smash because of people, not equipment." },
+  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm","Isabella Wuman":"neutral"}, note:"Andrew and Juliana rank food #1. Isabella ranks mental reset #1, food #2. Sebastian cooks at home. Food is top-2 for most but not universal #1." },
+  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"confirm"}, note:"Andrew: 300k. Sebastian: 300–400k. Isabella pays 300k at CRU — confirms the band. Juliana was vague and may skew lower as a local instructor." },
+  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral"}, note:"Still only Sebastian. Isabella has the opposite problem — she needs MORE capacity, not less crowding. Not a universal driver." }
 ];
 
 
