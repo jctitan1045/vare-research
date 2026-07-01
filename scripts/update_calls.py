@@ -12,7 +12,7 @@ Required env vars:
 """
 
 import os, re, json, sys, datetime
-import urllib.request, urllib.error
+import urllib.request, urllib.error, urllib.parse
 
 FATHOM_API_KEY    = os.environ["FATHOM_API_KEY"]
 ANTHROPIC_API_KEY = os.environ["ANTHROPIC_API_KEY"]
@@ -77,11 +77,11 @@ Transcript:
 
 
 def fathom_request(path, params=None):
-    url = f"https://api.fathom.video/v1{path}"
+    url = f"https://api.fathom.ai/external/v1{path}"
     if params:
-        query = "&".join(f"{k}={v}" for k, v in params.items())
+        query = "&".join(f"{k}={urllib.parse.quote(str(v))}" for k, v in params.items())
         url = f"{url}?{query}"
-    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {FATHOM_API_KEY}"})
+    req = urllib.request.Request(url, headers={"X-Api-Key": FATHOM_API_KEY})
     with urllib.request.urlopen(req) as r:
         return json.loads(r.read())
 
@@ -153,24 +153,26 @@ def format_date(iso_str):
 
 
 def main():
-    cutoff = (datetime.datetime.utcnow() - datetime.timedelta(hours=48)).isoformat() + "Z"
+    today = datetime.date.today()
+    yesterday = today - datetime.timedelta(days=1)
+    cutoff = f"{yesterday.isoformat()}T00:00:00Z"
+    tomorrow = f"{(today + datetime.timedelta(days=1)).isoformat()}T00:00:00Z"
 
     print("Fetching recent Fathom meetings...")
     try:
-        data = fathom_request("/meetings", {"limit": 50})
+        data = fathom_request("/meetings", {"created_after": cutoff, "created_before": tomorrow})
     except urllib.error.HTTPError as e:
         print(f"Fathom API error: {e.code} {e.reason}")
         sys.exit(1)
 
-    meetings = data.get("data") or data.get("meetings") or []
+    meetings = data.get("items", [])
     research_calls = [
         m for m in meetings
-        if CALL_NAME_MATCH.lower() in (m.get("title") or m.get("name") or "").lower()
-        and (m.get("started_at") or m.get("created_at") or "") >= cutoff
+        if CALL_NAME_MATCH.lower() in (m.get("title") or "").lower()
     ]
 
     if not research_calls:
-        print("No new research calls found in the past 48 hours.")
+        print("No new research calls found.")
         return
 
     with open(INDEX_HTML, "r") as f:
@@ -180,23 +182,23 @@ def main():
     changed = False
 
     for meeting in research_calls:
-        mid = meeting.get("id") or meeting.get("recording_id")
-        title = meeting.get("title") or meeting.get("name") or ""
-        started = meeting.get("started_at") or meeting.get("created_at") or ""
-        recording_url = meeting.get("share_url") or meeting.get("url") or f"https://fathom.video/calls/{mid}"
+        mid = meeting.get("id")
+        title = meeting.get("title") or ""
+        started = meeting.get("created_at") or meeting.get("started_at") or ""
+        recording_url = meeting.get("url") or f"https://fathom.video/calls/{mid}"
 
         print(f"Processing: {title} ({started[:10]})")
 
-        # Get transcript
+        # Get full meeting detail (includes transcript)
         try:
-            tx_data = fathom_request(f"/meetings/{mid}/transcript")
+            detail = fathom_request(f"/meetings/{mid}")
         except urllib.error.HTTPError as e:
-            print(f"  Could not fetch transcript: {e.code} — skipping")
+            print(f"  Could not fetch meeting detail: {e.code} — skipping")
             continue
 
-        transcript_text = tx_data.get("transcript") or tx_data.get("text") or ""
+        transcript_text = detail.get("transcript") or detail.get("text") or ""
         if not transcript_text:
-            utterances = tx_data.get("utterances") or tx_data.get("segments") or []
+            utterances = detail.get("utterances") or detail.get("segments") or []
             transcript_text = "\n".join(
                 f"{u.get('speaker','')}: {u.get('text','')}" for u in utterances
             )
