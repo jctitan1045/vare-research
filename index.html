@@ -233,17 +233,17 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
     <div class="chart-canvas-sm"><canvas id="rankingChart"></canvas></div>
   </div>
   <div class="chart-card">
-    <div class="chart-title">Price range — good deal → ceiling</div>
-    <div class="chart-sub">COP ×1,000 / month per participant</div>
-    <div class="chart-canvas-sm"><canvas id="priceChart"></canvas></div>
+    <div class="chart-title">Willingness to pay — range per person</div>
+    <div class="chart-sub">COP ×1,000/mo · bar = good deal → ceiling</div>
+    <div style="position:relative" id="price-chart-wrap"><canvas id="priceChart"></canvas></div>
   </div>
 </div>
 <div class="divider"></div>
-<div class="section-label" style="margin-bottom:12px">Location pull — neighborhood heat map</div>
+<div class="section-label" style="margin-bottom:12px">Where they want the space</div>
 <div class="chart-card" style="margin-bottom:28px">
-  <div class="chart-title">Where participants want the space</div>
-  <div class="chart-sub">Each call adds weight. Larger circles = more mentions.</div>
-  <div id="location-map" style="height:340px;border-radius:10px;overflow:hidden;margin-top:12px"></div>
+  <div class="chart-title">Explicit location preference</div>
+  <div class="chart-sub">Based on how each person answered "where would you put it?" — not where they live. Click a circle for names.</div>
+  <div id="location-map" style="height:360px;border-radius:10px;overflow:hidden;margin-top:12px"></div>
 </div>
 
 <div class="divider"></div>
@@ -501,8 +501,8 @@ const DATA = { participants: [
     nationality:"Colombian", age:32, gender:"Female",
     workType:"Community Founder", workDetail:"Founder of Parceros Community — 3 years running networking events and local experiences connecting expats and locals in Medellín",
     tenure:"7 years (intermittent)", neighborhood:"El Poblado — Los Bálfares",
-    community:"Parceros (founder), Breakfast Club, Entrepreneurs House, Run Club, 11AM",
-    source:"Existing network",
+    community:"Parceros",
+    source:"Parceros community",
     wellnessNote:"Goes to CRU (300k/mo). Loves Pilates most — formerly at Healing Forest, now paused (too expensive). Not a daily gym-goer.",
     rankingTop3:["Mental reset","Healthy food","Community"],
     primaryDraw:"Community event space + food + spiritual/mental reset environment",
@@ -899,12 +899,20 @@ const NEIGHBORHOOD_COORDS = {
 
 function renderLocationMap(){
   const p = DATA.participants;
-  const counts = {};
+  // Only use locationPull (explicit answer), not neighborhood (where they live)
+  // Each locationPull may name multiple areas — split on common delimiters and take each mention
+  const counts = {};   // neighborhood key → count
+  const names  = {};   // neighborhood key → [participant names]
   p.forEach(x => {
-    [x.locationPull, x.neighborhood].forEach(loc => {
-      if (!loc) return;
-      const key = Object.keys(NEIGHBORHOOD_COORDS).find(k => loc.toLowerCase().includes(k.toLowerCase())) || loc;
+    if (!x.locationPull) return;
+    // Split on ; / · and take each segment
+    const segments = x.locationPull.split(/[;\/·]/).map(s=>s.trim()).filter(Boolean);
+    segments.forEach(seg => {
+      const key = Object.keys(NEIGHBORHOOD_COORDS).find(k => seg.toLowerCase().includes(k.toLowerCase()));
+      if (!key) return;
       counts[key] = (counts[key]||0) + 1;
+      names[key]  = names[key] || [];
+      if (!names[key].includes(x.name)) names[key].push(x.name);
     });
   });
 
@@ -919,25 +927,29 @@ function renderLocationMap(){
   const maxCount = Math.max(...Object.values(counts), 1);
 
   Object.entries(counts).forEach(([name, count]) => {
-    const coords = Object.entries(NEIGHBORHOOD_COORDS).find(([k]) => name.toLowerCase().includes(k.toLowerCase()));
-    if (!coords) return;
-    const [, latlng] = coords;
-    const radius = 30 + (count / maxCount) * 50;
-    const opacity = 0.15 + (count / maxCount) * 0.35;
+    const latlng = NEIGHBORHOOD_COORDS[name];
+    if (!latlng) return;
+    const pct = count / maxCount;
+    const radius = (800 + pct * 1200) * count;
+    const people = (names[name]||[]).join('<br>');
 
     L.circle(latlng, {
       color: '#1E3028',
       fillColor: '#F07030',
-      fillOpacity: opacity,
+      fillOpacity: 0.18 + pct * 0.32,
       weight: 1.5,
-      radius: radius * 30
-    }).addTo(map).bindPopup(`<strong>${name}</strong><br>${count} mention${count!==1?'s':''}`);
+      radius
+    }).addTo(map).bindPopup(`
+      <strong style="font-size:13px">${name}</strong><br>
+      <span style="font-size:11px;color:#666">${count} vote${count!==1?'s':''}</span><br>
+      <span style="font-size:11px">${people}</span>
+    `);
 
     L.marker(latlng, {
       icon: L.divIcon({
         className: '',
-        html: `<div style="font-family:Inter,sans-serif;font-size:11px;font-weight:500;color:#1E3028;white-space:nowrap;text-shadow:0 0 3px #EDE9D8,0 0 3px #EDE9D8">${name.split('—')[0].trim()} ×${count}</div>`,
-        iconAnchor: [0, 0]
+        html: `<div style="font-family:Inter,sans-serif;font-size:11px;font-weight:600;color:#1E3028;white-space:nowrap;background:rgba(237,233,216,0.85);padding:2px 5px;border-radius:4px">${name} · ${count}</div>`,
+        iconAnchor: [0, -10]
       })
     }).addTo(map);
   });
@@ -973,25 +985,30 @@ function renderInsightsCharts(){
       }
     }
   });
-  // Price range
-  const priceLabels = p.map(x=>x.name.split(' ')[0]);
-  const goodDeal = p.map(x=>x.priceGoodDeal);
-  const ceiling = p.map(x=>x.priceCeiling);
+  // Price range — floating bars [goodDeal, ceiling] per person, horizontal
+  const priceWrap = document.getElementById('price-chart-wrap');
+  priceWrap.style.height = (p.length * 36 + 20) + 'px';
   new Chart(document.getElementById('priceChart'),{
     type:'bar',
     data:{
-      labels:priceLabels,
-      datasets:[
-        {label:'Good deal',data:goodDeal,backgroundColor:'#30B860',borderWidth:0,borderRadius:4},
-        {label:'Ceiling',data:ceiling,backgroundColor:'#D04090',borderWidth:0,borderRadius:4}
-      ]
+      labels: p.map(x=>x.name.split(' ')[0]),
+      datasets:[{
+        label:'Good deal → Ceiling (COP k/mo)',
+        data: p.map(x=>[x.priceGoodDeal, x.priceCeiling]),
+        backgroundColor:'rgba(30,48,40,0.75)',
+        borderRadius:4,
+        borderSkipped:false
+      }]
     },
     options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:true,labels:{font:{size:10},boxWidth:10}}},
+      indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>`${c.raw[0]}k – ${c.raw[1]}k COP/mo`}}
+      },
       scales:{
-        y:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{size:10},callback:v=>v+'k'}},
-        x:{grid:{display:false},ticks:{font:{size:11}}}
+        x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{size:11},callback:v=>v+'k'},min:0},
+        y:{grid:{display:false},ticks:{font:{size:11}}}
       }
     }
   });
