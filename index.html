@@ -308,8 +308,22 @@ const AVATARS = [
   }
 ];
 
+  ,{
+    name: "The Bridge-Culture Creative",
+    handle: "1 participant · Juliana Trujillo",
+    emoji: "🌿",
+    color: "#F0EEE4",
+    desc: "Colombian-American third-culture kid, psychotherapist + yoga instructor + medicine keeper. Deeply rooted in Medellín but bilingual and bicultural. Seeks spaces with authentic energy, creative freedom, and food sovereignty. Potential instructor.",
+    traits: ["Psychotherapist", "Yoga Instructor", "Medicine Keeper", "Colombian-American", "Community-first"],
+    draws: "<strong>Primary pull:</strong> Food quality + space energy + creative freedom. <strong>Secondary:</strong> Yoga (multi-style) + sound healing + cacao ceremony. <strong>Converts if:</strong> Instructor experience is genuinely valued and paid fairly.",
+    gap: "No space in Medellín currently makes her feel 'safe and seen.' Gap is emotional, not amenity-based.",
+    quote: "If I could recreate that — even for a stranger — if somebody could feel safe and seen. That's what I would want.",
+    participants: ["Juliana Trujillo"]
+  }
+];
+
 const AVATAR_PLACEHOLDERS = [
-  { label: "Avatar 3", hint: "Emerging from next 5–10 calls" }
+  { label: "Avatar 4", hint: "Emerging from next 5–10 calls" }
 ];
 
 const DATA = { participants: [
@@ -405,6 +419,49 @@ const DATA = { participants: [
       {tag:"Combo", text:"Currently splits across Rivertown (work), Nordica (sauna), Salud Kwan (food) separately. One place doing all three — with macros listed and a guaranteed seat — is the pitch."},
       {tag:"Safe space", text:"Stays at Rivertown because everyone knows his name. The third-home feeling is built through repetition and recognition, not just amenities. He needs to feel known."}
     ]
+  },
+  {
+    id:3, name:"Juliana Trujillo", date:"Jul 1, 2026",
+    fathomUrl:"https://fathom.video/calls/729811846",
+    nationality:"Colombian-American", age:38, gender:"Female",
+    workType:"Psychotherapist / Yoga Instructor", workDetail:"Licensed psychotherapist (creativity-based), yoga instructor (vinyasa/yin/Bikram/power), medicine keeper (cacao + mushrooms)",
+    tenure:"Born here — splits time between Medellín and US (FL, TX, NY)",
+    neighborhood:"Sabaneta", community:"Expat wellness + Medicine community + Colombian family network",
+    source:"Existing network",
+    wellnessNote:"Teaches yoga 6 days/week, lifts 4–6 days/week. Obsessed with fascia, CNS regulation, quantum field.",
+    rankingTop3:["Healthy food","Movement & fitness","Physical recovery"],
+    primaryDraw:"Food quality + energy of the space + creative instructor freedom",
+    socialMode:"Community",
+    monthlySpend:{"SmartFit":80,"Classes (misc)":120},
+    priceGoodDeal:150, priceCeiling:250, dayPassRange:null,
+    replaceVsAdd:"Add-on",
+    competitorsStayed:["SmartFit (multi-location)","Juan Pablo's (medicine community)"],
+    competitorsLeft:["Smash (closed)","108 Yoga","Samar"],
+    locationPull:"Poblado (for business); Sabaneta (personal home base)",
+    call2:true,
+    referrals:[],
+    services:[
+      {name:"Yoga (multi-style)", note:"Vinyasa, yin, Bikram, power. Would teach and practice. Wants creative freedom — no micromanagement of class style or music."},
+      {name:"Healthy food / restaurant", note:"Food sovereignty is core identity. Wants colorful, macro-balanced, fresh juice, good protein, plant-based options. Smash model was the benchmark."},
+      {name:"Sauna + cold plunge", note:"Mentioned as part of what makes Medellín's wellness scene great. Sees it as standard recovery stack."},
+      {name:"Breathwork", note:"Certified practitioner. Passionate but treats it as adjacent to yoga rather than a standalone product."},
+      {name:"Sound healing / mantra", note:"Ran sound healing workshops at Smash. Wants venues that give instructors room to bring their full repertoire."},
+      {name:"Cacao / medicine ceremonies", note:"Medicine keeper. Would want to integrate ceremonial offerings if the venue's energy is right."},
+      {name:"Lifting / strength", note:"Lifts 4–6 days/week at SmartFit. Values multi-location flexibility to stay stimulated. Boutique gym would need variety to compete."},
+      {name:"Instructor cross-training", note:"Proposed idea: instructors teach workshops to each other as part of staff membership. Builds community and distributes knowledge."},
+      {name:"Community events", note:"Drawn to authentic, heart-centered gatherings. Referenced Jordan's house event as the energy archetype. Not interested in bars or superficial networking."}
+    ],
+    quotes:[
+      "If I could recreate that — even for a stranger — if somebody could feel safe and seen. That's what I would want. Because I don't think we get a lot of those places anymore.",
+      "Smash was my happy place. It was my home. It was my second home. Like, I could take three classes in one day and I would not be tired.",
+      "I just really believe in kindness and respect. Everything can't be like, how am I going to make money off this person? That's my philosophy in life."
+    ],
+    gaps:[
+      {tag:"Instructor pay", text:"Nobody in Colombia pays instructors enough. Base rate + bonuses + transport stipend + free classes + food on teaching days would be a category-defining offer."},
+      {tag:"No current home", text:"No space in Medellín currently makes her feel 'safe and seen.' The market gap is emotional, not just amenity-based."},
+      {tag:"Dual-market pricing", text:"Ethical tension between charging Colombians and expats the same price. She sees it as a real issue that needs a deliberate answer, not an afterthought."},
+      {tag:"Location trade-off", text:"Sabaneta girl — Poblado is far, but she drove 30 min to Smash daily because it was worth it. Place has to earn the commute with exceptional energy."}
+    ]
   }
 ]};
 
@@ -455,7 +512,7 @@ function barChart(id,data){
 function render(){
   renderAvatars();
   const p=DATA.participants, n=p.length;
-  document.getElementById('badge-text').textContent=`${n} call${n!==1?'s':''} · Jun 25`;
+  document.getElementById('badge-text').textContent=`${n} call${n!==1?'s':''} · Research in progress`;
   document.getElementById('m-total').textContent=n;
   document.getElementById('m-nations').textContent=new Set(p.map(x=>x.nationality).filter(Boolean)).size;
   document.getElementById('m-worktypes').textContent=new Set(p.map(x=>x.workType).filter(Boolean)).size;
@@ -561,11 +618,11 @@ function render(){
 }
 
 const HYPOTHESES = [
-  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm"}, note:"Both independently brought this up without prompting." },
-  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm"}, note:"Andrew paid 350k/mo for yoga because of one staff member. Sebastian stays at Rivertown for the same reason." },
-  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral"}, note:"Andrew yes. Sebastian cooks at home — food is an enabler, not a draw." },
-  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm"}, note:"Andrew: 300k. Sebastian: 300–400k for the full package." },
-  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm"}, note:"Sebastian left SmartFit and avoids Nordica when crowded. Andrew left BodyTech for quality/price, not crowding specifically." }
+  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral"}, note:"Andrew + Sebastian confirmed unprompted. Juliana is deeply food-focused but didn't mention macros specifically — she cares more about freshness, color, and sourcing." },
+  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm"}, note:"All three. Juliana never left Smash once Adi (her teacher) was there. The personal relationship was the product." },
+  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm"}, note:"Andrew and Juliana both rank food #1. Sebastian cooks at home — food is an enabler, not a draw for him." },
+  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral"}, note:"Andrew: 300k. Sebastian: 300–400k. Juliana was vague on numbers — she pays ~200k range and thinks in per-class terms (~60k). Likely a different price sensitivity as a local." },
+  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral"}, note:"Sebastian's primary churn driver. Juliana stays at SmartFit despite crowds because of multi-location flexibility. Andrew left for quality/price. Not universal." }
 ];
 
 
