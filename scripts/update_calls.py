@@ -27,6 +27,7 @@ PARTICIPANT_SCHEMA = """\
   fathomUrl,    // direct link to recording
   nationality,  // "Canadian" / "American" / etc.
   age,          // number or null
+  gender,       // "Male" / "Female" / "Non-binary" / null
   workType,     // "Entrepreneur" / "Remote employee" / etc.
   workDetail,   // one-line description
   tenure,       // "1-3yrs" / "7yrs on/off" / etc.
