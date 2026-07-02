@@ -360,6 +360,18 @@ const AVATARS = [
     gap: "No bookable private therapy room in Medellín. No quiet venue with reliable bookings she can trust for facilitated sessions. Most quality wellness is too far (Envigado / Poblado).",
     quote: "The moment you walk onto that property, you just feel your nervous system relax.",
     participants: ["Laurel Van Woerkom"]
+  },
+  {
+    name: "The Social Hub Connector",
+    handle: "1 participant · Alex Salinsky",
+    emoji: "🤝",
+    color: "#FEF3E6",
+    desc: "American ops consultant, 6 yrs in Medellín (Belén). Community is his #1 — he's always arriving with a pod. Hosts reading club, men's group, circle of words. Pays for memberships he barely uses because the booking friction kills the habit. If the door is open and the people are there, he'll show up 3x a week.",
+    traits: ["Ops Consultant", "Community Host", "Belén-based", "Long-term resident", "Plant medicine / men's group"],
+    draws: "<strong>Primary pull:</strong> Cowork + contrast therapy + pod event space in one. <strong>Secondary:</strong> Clean food + gym. <strong>Converts if:</strong> Walk-in access, Soho House-style guest policy, pod-friendly layout.",
+    gap: "Reset membership is wasted — WhatsApp booking, no cold plunge, no towels. Nordica is too expensive per visit to make routine. No single place lets him bring his pod and stay all day.",
+    quote: "If I was there like three times a week, hanging out for the whole day — participating in events, connecting with people, contrast therapy — I would probably do 300.",
+    participants: ["Alex Salinsky"]
   }
 ];
 
@@ -585,6 +597,45 @@ const DATA = { participants: [
       {tag:"Noise", text:"Breathwork and hypnosis require silence. Most venues in Medellín can't guarantee noise control, making them unreliable for facilitated sessions — she's been burned repeatedly."},
       {tag:"Venue reliability", text:"Double-bookings, forgotten reservations, last-minute space swaps, free agreements not honored under new management. Reliability and written agreements are baseline requirements."},
       {tag:"Laureles gap", text:"Quality wellness venues cluster in Envigado, Poblado, and Santa Elena — all too far for weekday use. A Laureles or Belén location would make a 4–5x/week habit realistic for her."}
+    ]
+  },
+  {
+    id:6, name:"Alex Salinsky", date:"Jul 1, 2026",
+    fathomUrl:"https://fathom.video/calls/729811848",
+    nationality:"American", age:41, gender:"Male",
+    workType:"Operations Consultant", workDetail:"Online operations consultant via Zoom. Hosts reading club in the park, men's group, and circle of words community events.",
+    tenure:"6 years (in and out)", neighborhood:"Belén",
+    community:"Run club, men's group, plant medicine, spiritual community", source:"Existing network",
+    wellnessNote:"Gym 3–4x/week (Action Black). Sauna socially 1–2x/month. Pays for Reset spa membership but barely uses it due to booking friction. Prefers healthy baseline food, not strict.",
+    rankingTop3:["Community","Movement & fitness","Place to work"],
+    primaryDraw:"All-in-one hub — cowork, gym, contrast therapy, clean food, and room to bring his pod of 5–10",
+    socialMode:"Community (brings pods) / Solo for work",
+    monthlySpend:{"Action Black (gym)":130,"Reset (spa membership — underused)":130,"Co-working cafes (Kenwa, Pergamino, etc.)":600,"Nordica (sauna — social)":200},
+    priceGoodDeal:200, priceCeiling:300, dayPassRange:null,
+    replaceVsAdd:"Replace + consolidate",
+    competitorsStayed:["Action Black (gym — 3–4x/wk)","Nordica (sauna — social events)","Kenwa (cowork)","Pergamino Laureles (cowork/cafe)"],
+    competitorsLeft:["Body Tech San Juan (left neighborhood)","Samia Cafe (overcrowded, weird hours)"],
+    locationPull:"Laureles / Conquistadores / Belén",
+    call2:true,
+    referrals:[],
+    roles:["Consumer","Community builder"],
+    services:[
+      {name:"Co-working space", note:"Uses 3 different cafes per week (~600k/mo combined). Needs outlets, stable table, good view, fresh air, reliable internet. Would consolidate if the space had everything else too."},
+      {name:"Contrast therapy (sauna + cold plunge)", note:"Pays for Reset membership but barely uses it — booking via WhatsApp bot takes days and there's no cold break between rooms. Walk-in access + real contrast sequence would immediately win him."},
+      {name:"Group/pod event space", note:"Hosts reading club, men's group, circle of words (10–20 people). Needs flexible seating (cushions, movable), some visual separation from main floor — not a private room, just a 'bubble'."},
+      {name:"Gym / fitness", note:"Currently at Action Black 3–4x/week (130k/mo). Would seriously consider switching if membership bundled movement + contrast therapy + cowork in one place."},
+      {name:"Healthy food / cafe", note:"Eggs, bacon, salads, soups — baseline clean. Not bread or pastries. Healthy caffeinated shake preferred over a croissant. Not picky but won't order junk."}
+    ],
+    quotes:[
+      "If I was there like three times a week, hanging out for the whole day — participating in events, connecting with people, contrast therapy — I would probably do 300.",
+      "If all or most of this was in one place, I would go there two or three times a week and be willing to pay for it.",
+      "The ability to book five or six people or even ten into an activity — some way that I can keep my pod together."
+    ],
+    gaps:[
+      {tag:"Walk-in access", text:"Reset membership goes to waste because booking via WhatsApp bot takes days and slots are already gone. Body Tech was daily because the spa was just there, no booking needed. Frictionless = actual use."},
+      {tag:"No contrast", text:"Reset routes you dry sauna → wet sauna → jacuzzi with no cold break. That's not contrast therapy. A real cold plunge sequence after the heat would immediately win him as a regular."},
+      {tag:"Guest policy", text:"Wants to bring 1 guest per visit for business, dates, or community. Reset caps the same guest once every 6 months. A Soho House-style guest policy would be a direct purchase trigger."},
+      {tag:"Pod layout", text:"Groups of 5–10 get scattered in most venues. Needs a zone where his pod stays together — not a private room, just enough visual and acoustic separation to feel 'in a bubble.'"}
     ]
   }
 ]};
@@ -895,11 +946,11 @@ function render(){
 }
 
 const HYPOTHESES = [
-  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral"}, note:"Andrew + Sebastian confirmed unprompted. Juliana and Isabella care more about freshness and quality. Laurel needs dietary icons + substitution options (paleo/GF) — aligned on intent, not specifically macros." },
-  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm","Isabella Wuman":"confirm","Laurel Van Woerkom":"confirm"}, note:"All five. Laurel left her Valencia co-working space as a compelling model precisely because staff knew her and she felt 'at home.' Nervous system safety = being known." },
-  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral"}, note:"Andrew and Juliana rank food #1. Laurel ranks it #2 (after community). Has Hashimoto's and eats strict paleo — high food sensitivity but community still wins." },
-  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"confirm","Laurel Van Woerkom":"refute"}, note:"Laurel is a clear outlier — cited $200–250 USD/mo (~800–1,000k COP), benchmarked against her €250/mo Valencia membership. Significantly above the local COP band. Suggests expat practitioners may price differently." },
-  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral"}, note:"Still only Sebastian. Laurel's concern is noise and unreliability, not crowding per se. Not a universal driver." }
+  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral"}, note:"Andrew + Sebastian confirmed unprompted. Alex, Juliana, Isabella, and Laurel care more about baseline clean / dietary compatibility than macro tracking specifically. Directionally aligned, not literal." },
+  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm","Isabella Wuman":"confirm","Laurel Van Woerkom":"confirm","Alex Salinsky":"confirm"}, note:"All six. Alex explicitly said he goes to Nordica and Reset for community, not recovery — and Body Tech was a daily habit because staff knew him. Recognition = routine." },
+  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral"}, note:"Still Andrew and Juliana. Alex ranks community #1 and movement #2 — food is baseline important but not the draw. Pattern holds: food #1 only for the most health-obsessed profiles." },
+  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"confirm","Laurel Van Woerkom":"refute","Alex Salinsky":"confirm"}, note:"Alex confirmed: 200k = good deal, 300k = ceiling if going 3x/week. Laurel remains the outlier at $200–250 USD (~800–1,000k COP) — her benchmark is a European membership model. Local expat band holding at 200–400k COP." },
+  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral"}, note:"Still only Sebastian. Alex's frustrations are booking friction and no contrast sequence — not crowding. Not a universal driver." }
 ];
 
 
