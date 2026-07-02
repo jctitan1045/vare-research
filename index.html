@@ -203,21 +203,19 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 <div class="page">
 <p class="subtitle">Research dashboard · Pulls from Fathom "Wellness Center Market Research Call" · Updated after each call</p>
 
+<!-- ① WHO ARE THEY? -->
 <div class="section-label">Who's in this research</div>
-
 <div class="metrics">
   <div class="metric"><div class="metric-label">Participants</div><div class="metric-value" id="m-total">—</div><div class="metric-sub">Target: 30+</div></div>
   <div class="metric"><div class="metric-label">Nationalities</div><div class="metric-value" id="m-nations">—</div><div class="metric-sub">represented</div></div>
   <div class="metric"><div class="metric-label">Work types</div><div class="metric-value" id="m-worktypes">—</div><div class="metric-sub">represented</div></div>
   <div class="metric"><div class="metric-label">Communities</div><div class="metric-value" id="m-communities">—</div><div class="metric-sub">represented</div></div>
 </div>
-
 <div class="demo-charts">
   <div class="chart-card"><div class="chart-title">Nationality</div><div class="chart-sub">Where they're from</div><div class="chart-canvas-sm"><canvas id="natChart"></canvas></div></div>
   <div class="chart-card"><div class="chart-title">Work type</div><div class="chart-sub">How they earn</div><div class="chart-canvas-sm"><canvas id="workChart"></canvas></div></div>
   <div class="chart-card"><div class="chart-title">Time in Medellín</div><div class="chart-sub">How long they've been here</div><div class="chart-canvas-sm"><canvas id="tenureChart"></canvas></div></div>
 </div>
-
 <div class="demo-charts-2">
   <div class="chart-card"><div class="chart-title">Neighborhood</div><div class="chart-sub">Where they live</div><div class="chart-canvas-sm"><canvas id="hoodChart"></canvas></div></div>
   <div class="chart-card"><div class="chart-title">Community</div><div class="chart-sub">Which community they came from or represent</div><div class="chart-canvas-sm"><canvas id="commChart"></canvas></div></div>
@@ -225,11 +223,13 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 </div>
 
 <div class="divider"></div>
+<!-- ② CUSTOMER AVATARS -->
 <div class="section-label" style="margin-bottom:14px">Customer avatars</div>
 <div class="avatar-grid" id="avatar-grid"></div>
 
 <div class="divider"></div>
-<div class="section-label" style="margin-bottom:12px">Ranking consensus &amp; pricing</div>
+<!-- ③ WHAT DO THEY WANT & WHAT WILL THEY PAY? -->
+<div class="section-label" style="margin-bottom:12px">What they want &amp; what they'll pay</div>
 <div class="insights-row" style="margin-bottom:12px">
   <div class="chart-card">
     <div class="chart-title">Which categories keep ranking top 3</div>
@@ -242,59 +242,47 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
     <div style="position:relative" id="price-chart-wrap"><canvas id="priceChart"></canvas></div>
   </div>
 </div>
+<div class="chart-card" style="margin-bottom:28px">
+  <div class="chart-title">Services in demand</div>
+  <div class="chart-sub">Size = how many people asked for it. Bold = mentioned by ≥50% of participants. Hover for count.</div>
+  <div id="signals-section"></div>
+</div>
+
 <div class="divider"></div>
-<div class="section-label" style="margin-bottom:12px">Where they want the space</div>
+<!-- ④ WHERE IS THE EVIDENCE POINTING? -->
+<div class="section-label" style="margin-bottom:12px">Where is the evidence pointing?</div>
+<div class="chart-card" style="margin-bottom:12px">
+  <div class="chart-title">Hypothesis board</div>
+  <div class="chart-sub">What we're testing across calls — confirmed, emerging, or refuted</div>
+  <div id="hypo-board"></div>
+</div>
 <div class="chart-card" style="margin-bottom:28px">
   <div class="chart-title">Explicit location preference</div>
-  <div class="chart-sub">Based on how each person answered "where would you put it?" — not where they live. Click a circle for names.</div>
-  <div id="location-map" style="height:360px;border-radius:10px;overflow:hidden;margin-top:12px"></div>
+  <div class="chart-sub">Where they said they'd put it — not where they live. Click a dot for names.</div>
+  <div id="location-map" style="height:280px;border-radius:10px;overflow:hidden;margin-top:12px"></div>
 </div>
 
 <div class="divider"></div>
-<div class="section-label" style="margin-bottom:12px">Services in demand</div>
-<div class="chart-card" style="margin-bottom:24px">
-  <div class="chart-title">Most wanted services</div>
-  <div class="chart-sub">How many participants mentioned each service across all calls</div>
-  <div style="position:relative" id="services-chart-wrap"><canvas id="servicesChart"></canvas></div>
-</div>
+<!-- ⑤ WHAT'S BLOCKING A YES? -->
+<div class="section-label" style="margin-bottom:10px">What's blocking a yes?</div>
+<div class="gap-card" id="gap-section" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
-<div class="section-label" style="margin-bottom:10px">Confirmed signals</div>
-<div id="signals-section" style="margin-bottom:28px"></div>
-
-<div class="divider"></div>
-<div class="section-label" style="margin-bottom:10px">Recommended actions</div>
+<!-- ⑥ WHAT TO DO NEXT -->
+<div class="section-label" style="margin-bottom:10px">What to do next</div>
 <div id="action-items" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
-<div class="section-label" style="margin-bottom:10px">Hypothesis board</div>
-<div id="hypo-board" style="margin-bottom:28px"></div>
-
-<div class="divider"></div>
-<div class="divider"></div>
+<!-- ⑦ PEOPLE PIPELINE -->
 <div class="section-label" style="margin-bottom:10px">People pipeline</div>
 <div class="pipeline-section" id="people-pipeline" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
+<!-- ⑧ RAW CALL PROFILES -->
 <div class="section-label" style="margin-bottom:14px">Call profiles</div>
 <div id="call-profiles"></div>
 
-<div class="section-label" style="margin-bottom:14px">What they need to see</div>
-<div class="gap-card" id="gap-section"></div>
-
-<div class="patterns">
-  <div class="section-label" style="margin-bottom:0">Patterns to watch as calls come in</div>
-  <div class="patterns-grid">
-    <div class="pattern-item">— Does food keep ranking above wellness, or is Andrew the outlier?</div>
-    <div class="pattern-item">— Does location keep pulling to Poblado, or does Laureles show up?</div>
-    <div class="pattern-item">— Does "home away from home" resonate universally?</div>
-    <div class="pattern-item">— Is 175–300k consistent, or does it vary by persona?</div>
-    <div class="pattern-item">— Do expats and locals have different price ceilings?</div>
-    <div class="pattern-item">— Which community produces the strongest founding signal?</div>
-  </div>
-</div>
-
-<p class="note">Each "Wellness Center Market Research Call" in Fathom feeds this dashboard.</p>
+<p class="note" style="margin-top:28px">Each "Wellness Center Market Research Call" in Fathom feeds this dashboard.</p>
 </div>
 
 <script>
@@ -878,26 +866,6 @@ function render(){
     </div>
   </div>
 `).join('');
-
-  const svcCount = {};
-  p.forEach(x => x.services.forEach(s => { svcCount[s.name] = (svcCount[s.name]||0)+1; }));
-  const svcSorted = Object.entries(svcCount).sort((a,b)=>b[1]-a[1]);
-  const svcLabels = svcSorted.map(x=>x[0]);
-  const svcValues = svcSorted.map(x=>x[1]);
-  const svcWrap = document.getElementById('services-chart-wrap');
-  svcWrap.style.height = (svcLabels.length * 28 + 20) + 'px';
-  new Chart(document.getElementById('servicesChart'),{
-    type:'bar',
-    data:{labels:svcLabels,datasets:[{data:svcValues,backgroundColor:'#1D9E75',borderWidth:0,borderRadius:4}]},
-    options:{
-      indexAxis:'y',responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} of ${n} participant${n!==1?'s':''}`}}},
-      scales:{
-        x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{size:11},stepSize:1},max:n+1},
-        y:{grid:{display:false},ticks:{font:{size:11}}}
-      }
-    }
-  });
 
   const ROLE_SEGMENTS = [
     {
