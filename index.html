@@ -372,6 +372,18 @@ const AVATARS = [
     gap: "Reset membership is wasted — WhatsApp booking, no cold plunge, no towels. Nordica is too expensive per visit to make routine. No single place lets him bring his pod and stay all day.",
     quote: "If I was there like three times a week, hanging out for the whole day — participating in events, connecting with people, contrast therapy — I would probably do 300.",
     participants: ["Alex Salinsky"]
+  },
+  {
+    name: "The Reluctant Wellness Convert",
+    handle: "1 participant · Adam Anschel",
+    emoji: "🏛️",
+    color: "#EEF4FC",
+    desc: "American medical sales exec, 60, 3 years in Medellín (Poblado). Physical recovery is his top priority but he's never set foot in a cold plunge — body image holds him back. Compares everything to US lifetime fitness and country clubs. Has high willingness to pay ($300–350/mo USD) if the experience matches. Gets lazy to go out by evening; needs frictionless access and near-zero activation energy.",
+    traits: ["Medical sales / self-employed", "Poblado-based", "Older expat", "High WTP", "Investor / minority partner"],
+    draws: "<strong>Primary pull:</strong> Recovery (sauna + cold plunge) + kettlebells + healthy food + outdoor terrace. <strong>Secondary:</strong> Networking events with business/learning angle. <strong>Converts if:</strong> Non-judgmental environment, online booking, membership freeze option.",
+    gap: "Body image anxiety is the #1 barrier to cold plunge/sauna — has never tried despite wanting to. Low evening energy and social anxiety make spontaneous visits unlikely. Friction-free online booking is non-negotiable.",
+    quote: "If it had like a comfortable kind of mini country club feel, that would be appealing.",
+    participants: ["Adam Anschel"]
   }
 ];
 
@@ -636,6 +648,45 @@ const DATA = { participants: [
       {tag:"No contrast", text:"Reset routes you dry sauna → wet sauna → jacuzzi with no cold break. That's not contrast therapy. A real cold plunge sequence after the heat would immediately win him as a regular."},
       {tag:"Guest policy", text:"Wants to bring 1 guest per visit for business, dates, or community. Reset caps the same guest once every 6 months. A Soho House-style guest policy would be a direct purchase trigger."},
       {tag:"Pod layout", text:"Groups of 5–10 get scattered in most venues. Needs a zone where his pod stays together — not a private room, just enough visual and acoustic separation to feel 'in a bubble.'"}
+    ]
+  },
+  {
+    id:7, name:"Adam Anschel", date:"Jul 2, 2026",
+    fathomUrl:"https://fathom.video/calls/733008468",
+    nationality:"American", age:60, gender:"Male",
+    workType:"Medical Sales & Marketing (self-employed)", workDetail:"Self-employed in medical sales and marketing for most of his career. Minority investor in Grudavita smoothie store and the Balconist Hotel.",
+    tenure:"~3 years", neighborhood:"Poblado (Castropole)",
+    community:"Thomas's entrepreneur network, real estate meetups", source:"Existing network",
+    wellnessNote:"SmartFit 2–3x/week (shifted to home kettlebells). Has never been to a cold plunge/sauna — body image barrier. Physical recovery is his top priority.",
+    rankingTop3:["Physical recovery","Healthy food","Community"],
+    primaryDraw:"Mini country club feel — kettlebells, sauna/cold plunge, healthy food, outdoor terrace, community events. Ambient membership where he can drop in without booking.",
+    socialMode:"Solo / reluctant social",
+    monthlySpend:{"SmartFit (gym)":100,"Rappi food delivery":500},
+    priceGoodDeal:1200, priceCeiling:1400, dayPassRange:null,
+    replaceVsAdd:"Add-on",
+    competitorsStayed:["SmartFit (gym — 2–3x/wk, now mostly home kettlebells)","Hardin coworking (occasional lunch / hangout)","Thomas's entrepreneur meetups"],
+    competitorsLeft:[],
+    locationPull:"Poblado / Envigado",
+    call2:true,
+    referrals:[],
+    roles:["Consumer"],
+    services:[
+      {name:"Physical recovery (sauna + cold plunge)", note:"Has never gone because he doesn't want to be shirtless at sub-optimal fitness. Would go if the environment felt comfortable and non-judgmental — 'I want to feel confident.'"},
+      {name:"Kettlebell / functional gym", note:"Dropped SmartFit and built a home setup because he prefers kettlebells. Having kettlebells at the venue would pull him in immediately."},
+      {name:"Healthy food", note:"Orders Mediterranean (Tabun) and Colombian soups regularly. Often orders double for convenience. Wants clean options he doesn't have to think about."},
+      {name:"Community events (learning / networking)", note:"Goes to entrepreneur meetups and real estate events but admits he gets lazy. Compelling topic (learning + business angle) would override low energy and get him out."},
+      {name:"Outdoor space with views", note:"Explicitly called out outdoor terrace and natural light as major motivators. Open roof, plants, high ceilings — cited Hardin at Envigado Mall as the gold standard feel."}
+    ],
+    quotes:[
+      "If it had like a comfortable kind of mini country club feel, that would be appealing.",
+      "I have to text them every single time on WhatsApp. 95% of the time that I request a service, it's not available. Someone else has booked it.",
+      "I think, to be brutally honest, I don't want to be walking around in a bathing suit — I want to be in better shape. But that's definitely part of it."
+    ],
+    gaps:[
+      {tag:"Body image barrier", text:"Has never used a cold plunge or sauna because he doesn't want to be shirtless while not at his target fitness. A non-judgmental, comfortable environment is the unlock — not price or location."},
+      {tag:"Booking friction", text:"Strongly resonated with Jordan's Reset booking horror story. Wants lifetime-style online booking — pick a class, press a button, done. WhatsApp scheduling is a hard no."},
+      {tag:"Social bandwidth", text:"Gets lazy to leave home by evening; low social energy some days. Needs a place close enough and frictionless enough that the activation energy to show up is near zero."},
+      {tag:"Expat flexibility", text:"Travels back to the U.S. for months at a time. Needs membership freeze and couple/family pricing — the competing venue's rigid individual-only policy was a red flag."}
     ]
   }
 ]};
@@ -946,11 +997,11 @@ function render(){
 }
 
 const HYPOTHESES = [
-  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral"}, note:"Andrew + Sebastian confirmed unprompted. Alex, Juliana, Isabella, and Laurel care more about baseline clean / dietary compatibility than macro tracking specifically. Directionally aligned, not literal." },
-  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm","Isabella Wuman":"confirm","Laurel Van Woerkom":"confirm","Alex Salinsky":"confirm"}, note:"All six. Alex explicitly said he goes to Nordica and Reset for community, not recovery — and Body Tech was a daily habit because staff knew him. Recognition = routine." },
-  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral"}, note:"Still Andrew and Juliana. Alex ranks community #1 and movement #2 — food is baseline important but not the draw. Pattern holds: food #1 only for the most health-obsessed profiles." },
-  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"confirm","Laurel Van Woerkom":"refute","Alex Salinsky":"confirm"}, note:"Alex confirmed: 200k = good deal, 300k = ceiling if going 3x/week. Laurel remains the outlier at $200–250 USD (~800–1,000k COP) — her benchmark is a European membership model. Local expat band holding at 200–400k COP." },
-  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral"}, note:"Still only Sebastian. Alex's frustrations are booking friction and no contrast sequence — not crowding. Not a universal driver." }
+  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral"}, note:"Andrew + Sebastian confirmed unprompted. Others care about baseline clean food / dietary compatibility but not macro tracking specifically. Adam orders Mediterranean and Colombian soups — healthy, not obsessive. Directionally aligned, not literal." },
+  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm","Isabella Wuman":"confirm","Laurel Van Woerkom":"confirm","Alex Salinsky":"confirm","Adam Anschel":"neutral"}, note:"Six of seven. Adam joined Thomas's community for networking and prefers places where he can make connections, but didn't explicitly name recognition as a retention driver. Overall pattern remains very strong." },
+  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral"}, note:"Still Andrew and Juliana. Adam's #1 is Physical recovery, not food. Pattern holds: food #1 only for the most health-obsessed profiles." },
+  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"confirm","Laurel Van Woerkom":"refute","Alex Salinsky":"confirm","Adam Anschel":"refute"}, note:"Adam said $300–350/mo USD (~1,200–1,400k COP) — citing Ejecutivo Country Club as reference. He'd pay at US country-club pricing if amenities matched. Two outliers now (Adam + Laurel) suggesting a premium tier is viable for older, wealthier expats." },
+  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral"}, note:"Still only Sebastian. Adam's barriers are body image and booking friction — not crowding. Not a universal driver." }
 ];
 
 
