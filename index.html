@@ -157,6 +157,7 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .role-tag.instructor { background:#FFF0E6; color:#C05010; }
 .role-tag.hire { background:#F0EBFF; color:#5828B0; }
 .role-tag.builder { background:#E6F0FF; color:#1840A0; }
+.role-tag.investor { background:#FEF3C7; color:#92400E; }
 .pipeline-section { display:flex; flex-direction:column; gap:8px; margin-bottom:28px; }
 .pipeline-group { background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
 .pipeline-group-header { display:flex; align-items:center; gap:10px; padding:12px 16px; border-bottom:1px solid var(--border); background:var(--cream-bright); }
@@ -657,7 +658,7 @@ const DATA = { participants: [
     locationPull:"Poblado / Envigado",
     call2:true,
     referrals:[],
-    roles:["Consumer"],
+    roles:["Consumer","Investor"],
     services:[
       {name:"Physical recovery (sauna + cold plunge)", note:"Has never gone because he doesn't want to be shirtless at sub-optimal fitness. Would go if the environment felt comfortable and non-judgmental — 'I want to feel confident.'"},
       {name:"Kettlebell / functional gym", note:"Dropped SmartFit and built a home setup because he prefers kettlebells. Having kettlebells at the venue would pull him in immediately."},
@@ -683,7 +684,8 @@ const ROLE_CONFIG = {
   "Consumer":                { cls:"consumer", label:"Consumer" },
   "Instructor / Facilitator":{ cls:"instructor", label:"Instructor / Facilitator" },
   "Potential hire":          { cls:"hire", label:"Potential hire" },
-  "Community builder":       { cls:"builder", label:"Community builder" }
+  "Community builder":       { cls:"builder", label:"Community builder" },
+  "Investor":                { cls:"investor", label:"Investor" }
 };
 
 function roleTag(role){
@@ -719,6 +721,13 @@ const PIPELINE_GROUPS = [
     dot:"#30B860",
     desc:"Primary customer persona — founding membership targets",
     note: p => `${p.rankingTop3[0]} first · ceiling ${p.priceCeiling}k/mo · ${p.locationPull}`
+  },
+  {
+    key:"Investor",
+    label:"Potential investors",
+    dot:"#D97706",
+    desc:"People who expressed interest in backing the project financially",
+    note: p => `Ceiling ${p.priceCeiling}k/mo as member · ${p.community}`
   }
 ];
 
@@ -892,6 +901,12 @@ function render(){
       cls: "hire",
       desc: "Hiring bar — what would make them commit to Varé as a place to build a career",
       includeTags: ["Instructor pay","No current home","Dual-market pricing","Location trade-off"]
+    },
+    {
+      role: "Investor",
+      cls: "investor",
+      desc: "What they need to see before writing a check — trust, returns, and membership upside",
+      includeTags: ["Body image barrier","Booking friction","Expat flexibility","Social bandwidth"]
     }
   ];
 
@@ -922,7 +937,8 @@ function render(){
       consumer:   { bg:'#E8F4ED', border:'#B8D9C4', label:'#1A6A3A' },
       instructor: { bg:'#FFF0E6', border:'#F5C8A0', label:'#A04010' },
       builder:    { bg:'#E6F0FF', border:'#A8C0F0', label:'#1030A0' },
-      hire:       { bg:'#F0EBFF', border:'#C8B8F0', label:'#4020A0' }
+      hire:       { bg:'#F0EBFF', border:'#C8B8F0', label:'#4020A0' },
+      investor:   { bg:'#FEF3C7', border:'#FCD34D', label:'#92400E' }
     };
     const c = roleColors[seg.cls];
 
