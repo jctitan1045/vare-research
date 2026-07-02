@@ -205,6 +205,10 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .quote-wall-roles { display:flex; flex-wrap:wrap; gap:4px; }
 
 /* ── DESIGN PROMPTS ── */
+.design-moodboard-wrap { padding:16px 20px 4px; border-bottom:1px solid var(--border); }
+.design-moodboard { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:10px; display:block; border:1px solid var(--border); background:var(--cream-bright); }
+.design-moodboard-placeholder { width:100%; aspect-ratio:16/9; border-radius:10px; border:1.5px dashed var(--border); background:var(--cream-bright); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:var(--light); font-size:11px; }
+.design-moodboard-placeholder-icon { font-size:32px; opacity:0.25; }
 .design-card { background:var(--white); border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:16px; }
 .design-card-header { padding:16px 20px 12px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; gap:14px; }
 .design-card-emoji { font-size:22px; flex-shrink:0; margin-top:2px; }
@@ -1608,6 +1612,7 @@ function renderInsightsCharts(){
 
 const DESIGN_PROMPTS = [
   {
+    id:"wellness",
     emoji:"🧖",
     title:"Sauna + Cold Plunge",
     accent:"#1E3028",
@@ -1617,6 +1622,7 @@ const DESIGN_PROMPTS = [
     dalle:`A boutique wellness spa interior in Medellín, Colombia. Cedar wood sauna walls with soft amber lighting visible through a glass panel. An adjacent natural stone cold plunge pool surrounded by lush tropical plants — palms, ferns, climbing vines. A covered outdoor terrace with hanging plants. No people. Warm, private, body-safe atmosphere. Architectural Digest editorial photography style.`
   },
   {
+    id:"yoga",
     emoji:"🧘",
     title:"Yoga Studio",
     accent:"#4A6358",
@@ -1626,6 +1632,7 @@ const DESIGN_PROMPTS = [
     dalle:`A spacious yoga studio in a tropical Colombian wellness club. Warm oak hardwood floors. Large arched open windows with soft morning light filtering through tropical palms and ferns outside. Ceiling fans overhead. Yoga mats, blocks, and straps stored neatly at the walls. 20-30 person capacity. Warm, airy, community-oriented atmosphere. No people. Editorial interior photography style.`
   },
   {
+    id:"restaurant",
     emoji:"🍽️",
     title:"Restaurant & Herbal Bar",
     accent:"#D97706",
@@ -1635,6 +1642,7 @@ const DESIGN_PROMPTS = [
     dalle:`A health-focused restaurant and herbal bar interior in Medellín, Colombia. Colorful macro bowls and fresh ingredients displayed on a clean counter. A herbal drinks bar with adaptogen elixirs, ceremonial cacao, and functional drinks in apothecary-style bottles. Natural wood shelving, tropical plants, warm light through large windows. Clean, bright, inviting. No people. Editorial food photography style.`
   },
   {
+    id:"social",
     emoji:"🎉",
     title:"Social & Event Space",
     accent:"#7040D0",
@@ -1644,6 +1652,7 @@ const DESIGN_PROMPTS = [
     dalle:`A flexible community event space in a Medellín wellness club. Warm wood floors. Floor cushions and movable rattan chairs arranged in small intimate circles. Exposed wood beam ceiling. Lush tropical plants throughout. Open archways leading to a terrace with natural light. Soft warm evening lighting. No people. Designed for community gathering — circle formats, not rows. Architectural photography style.`
   },
   {
+    id:"coworking",
     emoji:"💻",
     title:"Co-working Zone",
     accent:"#4A6358",
@@ -1671,6 +1680,18 @@ function renderDesignVision(){
         <div class="design-card-meta">
           <div class="design-card-title">${d.title}</div>
           <div class="design-card-feels">${d.feels.map(f=>`<span class="design-feel-chip">${f}</span>`).join('')}</div>
+        </div>
+      </div>
+      <div class="design-moodboard-wrap">
+        <img class="design-moodboard"
+          src="assets/moodboards/${d.id}.png"
+          alt="${d.title} mood board"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+        >
+        <div class="design-moodboard-placeholder" style="display:none">
+          <span class="design-moodboard-placeholder-icon">${d.emoji}</span>
+          <span>Mood board not yet generated</span>
+          <span style="font-size:10px;opacity:0.7">Run the GitHub Action to generate with DALL-E 3</span>
         </div>
       </div>
       <div class="design-card-body">
