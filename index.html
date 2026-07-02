@@ -363,6 +363,18 @@ const AVATARS = [
     participants: ["Alex Salinsky"]
   },
   {
+    name: "The Community-Led Healer",
+    handle: "1 participant · Angie La Mas Linda",
+    emoji: "🎶",
+    color: "#F0F5E8",
+    desc: "Colombian yoga instructor, 35, Medellín native (Belén). She IS the product — her community follows her everywhere she teaches. Currently splitting her energy between Nordica and SaunaSpace, doing all her own marketing at both. Mental reset and daily movement are non-negotiables. Wants to be contracted, not freelance — show up, teach, get paid.",
+    traits: ["Yoga instructor", "Musician", "Medellín native", "Community builder", "Run Club", "Bilingual"],
+    draws: "<strong>Primary pull:</strong> Proper yoga space + full contrast stack (sauna, jacuzzi, cold plunge). <strong>Secondary:</strong> Venue handles marketing so she just teaches. <strong>Converts if:</strong> Stable base pay + bonus per head, booking managed by venue.",
+    gap: "At Nordica she fills classes entirely from her own network. At SaunaSpace she splits revenue 3 ways. Neither has a real yoga room. She wants to show up, teach, and go home — not run a marketing agency.",
+    quote: "Toda la comunidad cae sobre mí — yo soy la que tengo que moverlo y llenarlo.",
+    participants: ["Angie La Mas Linda"]
+  },
+  {
     name: "The Reluctant Wellness Convert",
     handle: "1 participant · Adam Anschel",
     emoji: "🏛️",
@@ -677,6 +689,47 @@ const DATA = { participants: [
       {tag:"Social bandwidth", text:"Gets lazy to leave home by evening; low social energy some days. Needs a place close enough and frictionless enough that the activation energy to show up is near zero."},
       {tag:"Expat flexibility", text:"Travels back to the U.S. for months at a time. Needs membership freeze and couple/family pricing — the competing venue's rigid individual-only policy was a red flag."}
     ]
+  },
+  {
+    id:8, name:"Angie La Mas Linda", date:"Jul 2, 2026",
+    fathomUrl:"https://fathom.video/calls/731099801",
+    nationality:"Colombian", age:35, gender:"Female",
+    workType:"Yoga Instructor / Musician", workDetail:"Independent yoga instructor at Nordica (weekly Thursday class) and SaunaSpace (with Jonas). Also an instrumentalist. Brings her own community to every venue she works at.",
+    tenure:"Entire life (Medellín native, Belén Rosales)",
+    neighborhood:"Belén Rosales",
+    community:"Run Club, expat / digital nomad community, SaunaSpace Wellness Circle", source:"Existing network (Run Club)",
+    wellnessNote:"Practices yoga daily. Goes to Nordica 1–2x/month for recovery (sauna + cold plunge, ~200k COP/mo). Underwater rugby club member. Movement is a daily non-negotiable.",
+    rankingTop3:["Mental reset","Movement & fitness","Community"],
+    primaryDraw:"Proper yoga space (20–30 people, mats, blocks, straps) + sauna/jacuzzi/cold plunge combo + a venue that handles marketing so she can just teach",
+    socialMode:"Community",
+    monthlySpend:{"Nordica (recovery visits)":200,"Underwater rugby club":85},
+    priceGoodDeal:null, priceCeiling:null, dayPassRange:null,
+    replaceVsAdd:null,
+    competitorsStayed:["Nordica (yoga instructor + recovery)", "SaunaSpace (yoga with Jonas)", "Underwater rugby club"],
+    competitorsLeft:[],
+    locationPull:"Belén / Laureles / Manila",
+    call2:true,
+    referrals:[],
+    roles:["Consumer","Instructor / Facilitator","Potential hire"],
+    services:[
+      {name:"Dedicated yoga space", note:"Neither Nordica nor SaunaSpace has an ideal yoga room. Needs 20–30 person capacity, proper mats, blocks, straps, good sound system, and both a covered option for sun and an indoor option for evenings."},
+      {name:"Sauna + jacuzzi + cold plunge", note:"Loves Nordica's vibe but it lacks a covered space. Wants the full contrast stack: sauna, Turkish bath, jacuzzi, ice immersion — all in one place."},
+      {name:"Marketing & booking handled by venue", note:"At Nordica she has to do ALL marketing herself — fills classes entirely from her own community. SaunaSpace handles content but still relies on her community. She wants a venue that drives attendance so she can just show up and teach."},
+      {name:"Stable instructor pay model", note:"Nordica: earns 40k/person (60k under 10, 150k over 10 — risky). SaunaSpace: 40k/person split with Jonas. Jordan's proposed base rate + per-head bonus is exactly what she wants — predictable income, upside if popular."},
+      {name:"Community events & sound healing", note:"Always closes yoga class with 10–15 min sound healing / meditation. Wants space to host themed events (DJ nights, breathwork, collaborations with content creators) — Nordica allows this flexibly."}
+    ],
+    quotes:[
+      "Toda la comunidad cae sobre mí — yo soy la que tengo que moverlo y llenarlo.",
+      "Me siento como en familia. Cuando voy a Nórdica, los chicos que trabajan allá son súper buenas gentes conmigo.",
+      "Para que me tengo que hacer las cosas fáciles para hacerlo — si yo quiero un gimnasio, voy a buscar el más cerca a mi casa."
+    ],
+    gaps:[
+      {tag:"Marketing burden", text:"At Nordica 100% of class-filling falls on Angie. She has to do her own Instagram, Luma events, WhatsApp blasts. She finds it difficult, hates it, and it limits her growth. A venue with a marketing team is a direct unlock."},
+      {tag:"No proper yoga space", text:"Both Nordica and SaunaSpace lack a dedicated yoga room sized for 20–30 people with full equipment. She's working around the limitation, not in an ideal setup."},
+      {tag:"Luma/booking access", text:"As a Colombian she can't fully use Luma (payment processing is restricted). Venue-managed booking and payment removes this bottleneck entirely."},
+      {tag:"Income instability", text:"Current model: earns nothing if class doesn't fill, full payout if it does. Wants a base rate she can count on regardless of turnout — Jordan's proposed model directly addresses this."},
+      {tag:"Instructor pay", text:"Nordica: 40k/person (Angie) + 20k (Tapio) up to 10 people, 150k/person all to Angie above 10. SaunaSpace: 40k Angie / 40k Jonas / 30k Dominic per person. Wants simpler, more stable split with bonus upside."}
+    ]
   }
 ]};
 
@@ -981,11 +1034,11 @@ function render(){
 }
 
 const HYPOTHESES = [
-  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral"}, note:"Andrew + Sebastian confirmed unprompted. Others care about baseline clean food / dietary compatibility but not macro tracking specifically. Adam orders Mediterranean and Colombian soups — healthy, not obsessive. Directionally aligned, not literal." },
-  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm","Isabella Wuman":"confirm","Laurel Van Woerkom":"confirm","Alex Salinsky":"confirm","Adam Anschel":"neutral"}, note:"Six of seven. Adam joined Thomas's community for networking and prefers places where he can make connections, but didn't explicitly name recognition as a retention driver. Overall pattern remains very strong." },
-  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral"}, note:"Still Andrew and Juliana. Adam's #1 is Physical recovery, not food. Pattern holds: food #1 only for the most health-obsessed profiles." },
-  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"confirm","Laurel Van Woerkom":"refute","Alex Salinsky":"confirm","Adam Anschel":"refute"}, note:"Adam said $300–350/mo USD (~1,200–1,400k COP) — citing Ejecutivo Country Club as reference. He'd pay at US country-club pricing if amenities matched. Two outliers now (Adam + Laurel) suggesting a premium tier is viable for older, wealthier expats." },
-  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral"}, note:"Still only Sebastian. Adam's barriers are body image and booking friction — not crowding. Not a universal driver." }
+  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral","Angie La Mas Linda":"neutral"}, note:"Andrew + Sebastian confirmed unprompted. Angie ranked food 4th — it's part of overall wellness but not her driver. Pattern holds: macro-obsession is persona-specific, not universal." },
+  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm","Isabella Wuman":"confirm","Laurel Van Woerkom":"confirm","Alex Salinsky":"confirm","Adam Anschel":"neutral","Angie La Mas Linda":"confirm"}, note:"Seven of eight. Angie explicitly said feeling like family at Nordica and SaunaSpace is what keeps her going back — staff stayed late for her birthday, help with everything. Strongest pattern on the board." },
+  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral","Angie La Mas Linda":"neutral"}, note:"Still only Andrew and Juliana. Angie's #1 is mental reset, not food. Pattern holds: food #1 only for the most health-obsessed entrepreneur profiles." },
+  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"confirm","Laurel Van Woerkom":"refute","Alex Salinsky":"confirm","Adam Anschel":"refute","Angie La Mas Linda":"neutral"}, note:"Angie is primarily an instructor — consumer pricing wasn't relevant for her. She spends ~200k/mo on Nordica recovery visits, which fits the band. Two outliers (Adam + Laurel) still suggest a premium tier exists for older/wealthier expats." },
+  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral","Angie La Mas Linda":"neutral"}, note:"Still only Sebastian. Angie's frustrations are marketing burden and income instability — not crowding. Not a universal driver." }
 ];
 
 
