@@ -363,6 +363,18 @@ const AVATARS = [
     participants: ["Alex Salinsky"]
   },
   {
+    name: "The Performance-Oriented Local",
+    handle: "1 participant · Juan Pablo Madrid",
+    emoji: "🏃",
+    color: "#FFF7ED",
+    desc: "Colombian, 36, lifelong Envigado resident. Remote analyst for a U.S. company — earns in dollars, thinks locally. Runs 2–3x/week, gyms 3–4x/week, saunas when he can. First purely local Colombian consumer in the research. His friends say Nordica is 'a dollar price' — he's the bridge to making this place accessible to the local market.",
+    traits: ["Colombian local", "Envigado native", "Remote worker (USD income)", "Runner", "South-side loyal", "Community connector"],
+    draws: "<strong>Primary pull:</strong> All-in-one south-side location — gym + sauna/cold plunge + healthy food. <strong>Secondary:</strong> Guided breathwork, community events. <strong>Converts if:</strong> Close to Poblado/Envigado, unlimited membership at 350–425k COP/mo.",
+    gap: "Nordica is too far and too expensive to go regularly. His local friend group sees wellness venues as 'dollar prices.' Free intro events are the proven entry point — Colombians show up en masse for free, and convert if the experience lands.",
+    quote: "People in Colombia really enjoy when any event is free and it is easy to access — it's very massive that they attend.",
+    participants: ["Juan Pablo Madrid"]
+  },
+  {
     name: "The Community-Led Healer",
     handle: "1 participant · Angie La Mas Linda",
     emoji: "🎶",
@@ -730,6 +742,46 @@ const DATA = { participants: [
       {tag:"Income instability", text:"Current model: earns nothing if class doesn't fill, full payout if it does. Wants a base rate she can count on regardless of turnout — Jordan's proposed model directly addresses this."},
       {tag:"Instructor pay", text:"Nordica: 40k/person (Angie) + 20k (Tapio) up to 10 people, 150k/person all to Angie above 10. SaunaSpace: 40k Angie / 40k Jonas / 30k Dominic per person. Wants simpler, more stable split with bonus upside."}
     ]
+  },
+  {
+    id:9, name:"Juan Pablo Madrid", date:"Jul 2, 2026",
+    fathomUrl:"https://fathom.video/calls/731099778",
+    nationality:"Colombian", age:36, gender:"Male",
+    workType:"Remote Healthcare Analyst", workDetail:"Remote analyst for a U.S. healthcare company, handling billing and insurance for private hospitals. Previously West Virginia client, now California. Works from home in Envigado.",
+    tenure:"Entire life (Envigado native)",
+    neighborhood:"Envigado",
+    community:"Medellín Run Club, south-side running communities (Envigado, Sabaneta, Poblado)", source:"Existing network (Run Club)",
+    wellnessNote:"SmartFit 3–4x/week (100k/mo). Runs 2–3x/week at Dorado track and the stadium. Local cheap sauna (Dorado, 25k/session) ~3x/month. Nordica ~1x/month but feels far and expensive.",
+    rankingTop3:["Movement & fitness","Healthy food","Physical recovery"],
+    primaryDraw:"South-side all-in-one: gym + sauna/cold plunge + healthy restaurant in one place. Nature, natural light, greenery, modern equipment — close enough to go on a weekday.",
+    socialMode:"Community / Solo",
+    monthlySpend:{"SmartFit (gym)":100,"Local Dorado sauna (25k/session)":75,"Nordica (occasional)":100,"Eating out (Smash, Vina Greta)":400},
+    priceGoodDeal:200, priceCeiling:425, dayPassRange:[80,150],
+    replaceVsAdd:"Replace + consolidate",
+    competitorsStayed:["SmartFit (gym — 3–4x/wk)","Local Dorado sauna (25k/session, ~3x/mo)","Nordica (occasional, ~1x/mo)","Smash (healthy food)"],
+    competitorsLeft:[],
+    locationPull:"Poblado / Envigado",
+    call2:true,
+    referrals:[],
+    roles:["Consumer","Community builder"],
+    services:[
+      {name:"Gym / functional fitness", note:"SmartFit 3–4x/week. Would switch if a better-equipped gym was bundled with recovery and food in one membership. Movement is non-negotiable — he'd structure his whole day around it."},
+      {name:"Sauna + cold plunge", note:"Goes to a cheap local sauna (25k) and occasionally Nordica. Wants to go more but time and distance hold him back. Would go weekly if it was close and bundled into a membership."},
+      {name:"Healthy restaurant", note:"Eats out 2–3x/week at Smash and Vina Greta. A good restaurant on-site is a major draw — saves a trip and makes the whole visit feel worth it."},
+      {name:"Guided breathwork / meditation", note:"Has attended Jordan's breathwork sessions and wants to go deeper. Looking for a guide who knows what they're doing — would attend regularly if accessible."},
+      {name:"Free intro events for locals", note:"His Colombian friends see places like Nordica as 'dollar prices.' Free events are the proven entry point for the local market — Colombians show up en masse for free, and convert if the experience is good."}
+    ],
+    quotes:[
+      "For me, movement is life.",
+      "People in Colombia really enjoy when any event is free and it is easy to access — it's very massive that they attend.",
+      "I feel that I really reset. I really take a time to relax. That would be, like, the key."
+    ],
+    gaps:[
+      {tag:"Location", text:"Nordica is far from the south. Goes only ~1x/month vs. 3x/month at the cheap local sauna that's walking distance. The closer to Envigado/Poblado, the more often he goes — proximity directly drives frequency."},
+      {tag:"Local price ceiling", text:"His Colombian friends call Nordica 'a dollar price' and opt out. Local market access requires a dual pricing strategy or free intro events — not just a lower price point, but a reason to walk in the first time."},
+      {tag:"Schedule / convenience", text:"Wants to go to sauna more often but can't fit it in during busy school and work weeks. An all-in-one location means fewer scheduling decisions — gym, recovery, food in one stop."},
+      {tag:"Guided practice", text:"Wants consistent access to guided breathwork and meditation but hasn't found it. One trusted guide who shows up regularly would be enough to convert him into a regular attendee."}
+    ]
   }
 ]};
 
@@ -1034,11 +1086,11 @@ function render(){
 }
 
 const HYPOTHESES = [
-  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral","Angie La Mas Linda":"neutral"}, note:"Andrew + Sebastian confirmed unprompted. Angie ranked food 4th — it's part of overall wellness but not her driver. Pattern holds: macro-obsession is persona-specific, not universal." },
-  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm","Isabella Wuman":"confirm","Laurel Van Woerkom":"confirm","Alex Salinsky":"confirm","Adam Anschel":"neutral","Angie La Mas Linda":"confirm"}, note:"Seven of eight. Angie explicitly said feeling like family at Nordica and SaunaSpace is what keeps her going back — staff stayed late for her birthday, help with everything. Strongest pattern on the board." },
-  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral","Angie La Mas Linda":"neutral"}, note:"Still only Andrew and Juliana. Angie's #1 is mental reset, not food. Pattern holds: food #1 only for the most health-obsessed entrepreneur profiles." },
-  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"confirm","Laurel Van Woerkom":"refute","Alex Salinsky":"confirm","Adam Anschel":"refute","Angie La Mas Linda":"neutral"}, note:"Angie is primarily an instructor — consumer pricing wasn't relevant for her. She spends ~200k/mo on Nordica recovery visits, which fits the band. Two outliers (Adam + Laurel) still suggest a premium tier exists for older/wealthier expats." },
-  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral","Angie La Mas Linda":"neutral"}, note:"Still only Sebastian. Angie's frustrations are marketing burden and income instability — not crowding. Not a universal driver." }
+  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral","Angie La Mas Linda":"neutral","Juan Pablo Madrid":"confirm"}, note:"Andrew, Sebastian, and Juan confirmed. Juan explicitly mentioned macros and micros as essential to balanced eating — ranked food #2 overall. Pattern: macro-tracking resonates with the performance-oriented persona." },
+  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm","Isabella Wuman":"confirm","Laurel Van Woerkom":"confirm","Alex Salinsky":"confirm","Adam Anschel":"neutral","Angie La Mas Linda":"confirm","Juan Pablo Madrid":"neutral"}, note:"Seven of nine. Juan's driver is proximity and convenience — didn't cite staff recognition as a factor. Still the strongest pattern on the board." },
+  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral","Angie La Mas Linda":"neutral","Juan Pablo Madrid":"neutral"}, note:"Still only Andrew and Juliana. Juan ranked food #2 but movement #1 — performance-first, food is support not the draw. Pattern holds." },
+  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"confirm","Laurel Van Woerkom":"refute","Alex Salinsky":"confirm","Adam Anschel":"refute","Angie La Mas Linda":"neutral","Juan Pablo Madrid":"confirm"}, note:"Juan: 200–300k instinct, stretched to 350 yes, 400 probably, 425 ceiling, 450 too much. Fits the band at the top. Five confirms, two refutes (Adam + Laurel — older, wealthier expats). Local Colombian market sits at the lower end of the band." },
+  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral","Angie La Mas Linda":"neutral","Juan Pablo Madrid":"neutral"}, note:"Still only Sebastian. Juan's barrier is distance and price, not crowding. Not a universal driver." }
 ];
 
 
