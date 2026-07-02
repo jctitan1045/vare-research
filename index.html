@@ -1164,15 +1164,14 @@ function renderLocationMap(){
     const latlng = NEIGHBORHOOD_COORDS[name];
     if (!latlng) return;
     const pct = count / maxCount;
-    const radius = (800 + pct * 1200) * count;
     const people = (names[name]||[]).join('<br>');
 
-    L.circle(latlng, {
+    L.circleMarker(latlng, {
+      radius: 5 + pct * 4,
       color: '#1E3028',
       fillColor: '#F07030',
-      fillOpacity: 0.18 + pct * 0.32,
-      weight: 1.5,
-      radius
+      fillOpacity: 0.85,
+      weight: 1.5
     }).addTo(map).bindPopup(`
       <strong style="font-size:13px">${name}</strong><br>
       <span style="font-size:11px;color:#666">${count} vote${count!==1?'s':''}</span><br>
