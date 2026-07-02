@@ -31,5 +31,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --staged --quiet || git commit -m "Auto: add $(date +%b\ %-d) call from Fathom"
-          git push
+          git diff --staged --quiet || (git commit -m "Auto: add $(date +%b\ %-d) call from Fathom" && git pull --rebase && git push)
