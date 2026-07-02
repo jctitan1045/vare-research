@@ -114,7 +114,8 @@ def anthropic_extract(transcript, url):
 
 def get_existing_names(html):
     """Extract names already in DATA.participants to avoid duplicates."""
-    return set(re.findall(r'name:\s*["\']([^"\']+)["\']', html))
+    # Match both JS (name:"...") and JSON ("name":"...") formats
+    return set(re.findall(r'"?name"?\s*:\s*["\']([^"\']+)["\']', html))
 
 
 def get_next_id(html):
