@@ -177,7 +177,38 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .replace-num { font-family:'Cormorant Garamond',serif; font-size:36px; color:var(--cream-bright); line-height:1; }
 .replace-label { font-size:10px; color:var(--faint); text-transform:uppercase; letter-spacing:0.06em; text-align:center; }
 
-@media(max-width:700px){.metrics,.demo-charts,.demo-charts-2,.three-col,.two-col,.patterns-grid,.avatar-grid,.insights-row,.kanban-board{grid-template-columns:1fr;}}
+/* ── PRODUCT ROADMAP ── */
+.product-vertical { background:var(--white); border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:16px; }
+.product-vertical-header { padding:14px 20px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border); }
+.product-vertical-emoji { font-size:20px; }
+.product-vertical-title { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:500; color:var(--dark); }
+.product-kanban { display:grid; grid-template-columns:1fr 1fr 1fr; }
+.product-col { padding:14px; border-right:1px solid var(--border); }
+.product-col:last-child { border-right:none; }
+.product-col-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.09em; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+.product-feature-card { background:var(--white); border:1px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:8px; }
+.product-feature-card:last-child { margin-bottom:0; }
+.product-feature-name { font-size:13px; font-weight:500; color:var(--dark); margin-bottom:6px; line-height:1.4; }
+.product-feature-count { display:inline-flex; align-items:center; font-size:10px; color:var(--light); background:var(--cream-bright); border:1px solid var(--border); border-radius:10px; padding:2px 8px; margin-bottom:5px; }
+.product-feature-who { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:6px; }
+.product-feature-who-chip { font-size:10px; color:var(--mid); background:var(--cream-bright); border:1px solid var(--border); border-radius:10px; padding:1px 7px; }
+.product-feature-gaps { margin-top:6px; padding-top:6px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:3px; }
+.product-feature-gap { font-size:11px; color:var(--light); line-height:1.5; padding-left:12px; position:relative; }
+.product-feature-gap::before { content:'–'; position:absolute; left:0; color:var(--faint); }
+.product-feature-next { display:inline-flex; font-size:10px; font-weight:600; color:#1A5C38; background:#E4F5EC; border:1px solid #B8D9C4; border-radius:6px; padding:3px 8px; margin-top:7px; line-height:1.4; }
+
+/* ── QUOTE WALL ── */
+.quote-wall-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.quote-wall-card { background:var(--white); border:1px solid var(--border); border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:10px; }
+.quote-wall-text { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; color:var(--dark); line-height:1.65; flex:1; }
+.quote-wall-name { font-size:12px; font-weight:500; color:var(--dark); margin-bottom:4px; }
+.quote-wall-roles { display:flex; flex-wrap:wrap; gap:4px; }
+
+/* ── LEAFLET TOOLTIP ── */
+.leaflet-tooltip-clean { background:rgba(237,233,216,0.95); border:1px solid #D5D0BC; border-radius:4px; padding:3px 8px; color:#1E3028; font-family:'Inter',sans-serif; box-shadow:none; }
+.leaflet-tooltip-clean::before { display:none; }
+
+@media(max-width:700px){.metrics,.demo-charts,.demo-charts-2,.three-col,.two-col,.patterns-grid,.avatar-grid,.insights-row,.kanban-board,.product-kanban,.quote-wall-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -250,28 +281,23 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 </div>
 
 <div class="divider"></div>
-<!-- ④ WHERE IS THE EVIDENCE POINTING? -->
-<div class="section-label" style="margin-bottom:12px">Where is the evidence pointing?</div>
-<div class="chart-card" style="margin-bottom:12px">
-  <div class="chart-title">Hypothesis board</div>
-  <div class="chart-sub">What we're testing across calls — confirmed, emerging, or refuted</div>
-  <div id="hypo-board"></div>
-</div>
+<!-- ④ LOCATION PREFERENCE -->
+<div class="section-label" style="margin-bottom:12px">Where they want it</div>
 <div class="chart-card" style="margin-bottom:28px">
   <div class="chart-title">Explicit location preference</div>
-  <div class="chart-sub">Where they said they'd put it — not where they live. Click a dot for names.</div>
+  <div class="chart-sub">Where they said they'd put it — not where they live. Click a dot for names. Hover for label.</div>
   <div id="location-map" style="height:280px;border-radius:10px;overflow:hidden;margin-top:12px"></div>
 </div>
 
 <div class="divider"></div>
-<!-- ⑤ WHAT'S BLOCKING A YES? -->
-<div class="section-label" style="margin-bottom:10px">What's blocking a yes?</div>
-<div class="gap-card" id="gap-section" style="margin-bottom:28px"></div>
+<!-- ⑤ PRODUCT ROADMAP -->
+<div class="section-label" style="margin-bottom:12px">Product roadmap by vertical</div>
+<div id="product-roadmap" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
-<!-- ⑥ WHAT TO DO NEXT -->
-<div class="section-label" style="margin-bottom:10px">What to do next</div>
-<div id="action-items" style="margin-bottom:28px"></div>
+<!-- ⑥ QUOTE WALL -->
+<div class="section-label" style="margin-bottom:12px">What they said</div>
+<div id="quote-wall" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
 <!-- ⑦ PEOPLE PIPELINE -->
@@ -981,118 +1007,184 @@ function render(){
   </div>
 `).join('');
 
-  const ROLE_SEGMENTS = [
-    {
-      role: "Consumer",
-      cls: "consumer",
-      desc: "What they need to see before saying yes to a founding membership",
-      // gaps that speak to a buyer's perspective — exclude supply-side tags
-      excludeTags: ["Instructor pay","Partnership model","Owner mindset"]
-    },
-    {
-      role: "Instructor / Facilitator",
-      cls: "instructor",
-      desc: "What makes this worth teaching at — supply-side expectations",
-      includeTags: ["Instructor pay","Dual-market pricing","No current home","Location trade-off","Quality"]
-    },
-    {
-      role: "Community builder",
-      cls: "builder",
-      desc: "What they need to bring their audience here",
-      includeTags: ["Venue gap","Owner mindset","Price segmentation","Partnership model","Safe space"]
-    },
-    {
-      role: "Potential hire",
-      cls: "hire",
-      desc: "Hiring bar — what would make them commit to Varé as a place to build a career",
-      includeTags: ["Instructor pay","No current home","Dual-market pricing","Location trade-off"]
-    },
-    {
-      role: "Investor",
-      cls: "investor",
-      desc: "What they need to see before writing a check — trust, returns, and membership upside",
-      includeTags: ["Body image barrier","Booking friction","Expat flexibility","Social bandwidth"]
-    }
-  ];
-
-  const segmentHtml = ROLE_SEGMENTS.map(seg => {
-    const members = DATA.participants.filter(x => x.roles.includes(seg.role));
-    if (!members.length) return '';
-
-    const memberChips = members.map(x => {
-      const av = AVATARS.find(a=>a.id===x.id);
-      return `<span style="display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3px 10px 3px 4px;font-size:12px;color:var(--mid)">
-        <span style="width:20px;height:20px;border-radius:50%;background:${av?av.bg:'#ccc'};display:flex;align-items:center;justify-content:center;font-size:10px;color:white;font-weight:600">${x.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</span>
-        ${x.name.split(' ')[0]}
-      </span>`;
-    }).join('');
-
-    const gapItems = members.flatMap(x => {
-      const relevantGaps = seg.includeTags
-        ? x.gaps.filter(g => seg.includeTags.includes(g.tag))
-        : seg.excludeTags
-          ? x.gaps.filter(g => !seg.excludeTags.includes(g.tag))
-          : x.gaps;
-      return relevantGaps.map(g => ({ ...g, person: x.name.split(' ')[0] }));
-    });
-
-    if (!gapItems.length) return '';
-
-    const roleColors = {
-      consumer:   { bg:'#E8F4ED', border:'#B8D9C4', label:'#1A6A3A' },
-      instructor: { bg:'#FFF0E6', border:'#F5C8A0', label:'#A04010' },
-      builder:    { bg:'#E6F0FF', border:'#A8C0F0', label:'#1030A0' },
-      hire:       { bg:'#F0EBFF', border:'#C8B8F0', label:'#4020A0' },
-      investor:   { bg:'#FEF3C7', border:'#FCD34D', label:'#92400E' }
-    };
-    const c = roleColors[seg.cls];
-
-    return `
-      <div style="border:1px solid ${c.border};border-radius:10px;overflow:hidden;margin-bottom:14px">
-        <div style="background:${c.bg};padding:10px 14px 8px">
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-            <span style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:${c.label};text-transform:uppercase">${seg.role}</span>
-            <div style="display:flex;gap:6px;flex-wrap:wrap">${memberChips}</div>
-          </div>
-          <div style="font-size:12px;color:${c.label};opacity:0.75;margin-top:4px">${seg.desc}</div>
-        </div>
-        <div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px">
-          ${gapItems.map(g=>`
-            <div style="display:flex;gap:10px;align-items:flex-start">
-              <span style="font-size:10px;padding:3px 8px;border-radius:6px;background:${c.bg};color:${c.label};border:1px solid ${c.border};white-space:nowrap;margin-top:2px;letter-spacing:0.04em;font-weight:600">${g.tag}</span>
-              <div style="flex:1">
-                <span style="font-size:11px;color:var(--light);font-style:italic;margin-right:4px">${members.length > 1 ? g.person + ' —' : ''}</span>
-                <span style="font-size:13px;line-height:1.6;color:var(--mid)">${g.text}</span>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  document.getElementById('gap-section').innerHTML=`
-    <div class="chart-title" style="margin-bottom:4px">What they need to see</div>
-    <div class="chart-sub" style="margin-bottom:14px">Gaps by role — what stands between each persona and a yes</div>
-    ${segmentHtml}
-  `;
-
   renderSignals();
-  renderActionItems();
+  renderProductRoadmap();
+  renderQuoteWall();
   renderPipeline();
-  renderHypotheses();
   renderLocationMap();
   renderInsightsCharts();
 }
 
-const HYPOTHESES = [
-  { id:1, text:"Macros on the menu is a universal requirement", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral","Angie La Mas Linda":"neutral","Juan Pablo Madrid":"confirm"}, note:"Andrew, Sebastian, and Juan confirmed. Juan explicitly mentioned macros and micros as essential to balanced eating — ranked food #2 overall. Pattern: macro-tracking resonates with the performance-oriented persona." },
-  { id:2, text:"Being known by name drives retention more than any amenity", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"confirm","Isabella Wuman":"confirm","Laurel Van Woerkom":"confirm","Alex Salinsky":"confirm","Adam Anschel":"neutral","Angie La Mas Linda":"confirm","Juan Pablo Madrid":"neutral"}, note:"Seven of nine. Juan's driver is proximity and convenience — didn't cite staff recognition as a factor. Still the strongest pattern on the board." },
-  { id:3, text:"Food ranks #1 for the health-first entrepreneur persona", status:{"Andrew Topping":"confirm","Sebastian Krestin":"neutral","Juliana Trujillo":"confirm","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral","Angie La Mas Linda":"neutral","Juan Pablo Madrid":"neutral"}, note:"Still only Andrew and Juliana. Juan ranked food #2 but movement #1 — performance-first, food is support not the draw. Pattern holds." },
-  { id:4, text:"Price ceiling clusters around 300–400k COP/mo", status:{"Andrew Topping":"confirm","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"confirm","Laurel Van Woerkom":"refute","Alex Salinsky":"confirm","Adam Anschel":"refute","Angie La Mas Linda":"neutral","Juan Pablo Madrid":"confirm"}, note:"Juan: 200–300k instinct, stretched to 350 yes, 400 probably, 425 ceiling, 450 too much. Fits the band at the top. Five confirms, two refutes (Adam + Laurel — older, wealthier expats). Local Colombian market sits at the lower end of the band." },
-  { id:5, text:"Crowding is the #1 reason people stop using wellness venues", status:{"Andrew Topping":"neutral","Sebastian Krestin":"confirm","Juliana Trujillo":"neutral","Isabella Wuman":"neutral","Laurel Van Woerkom":"neutral","Alex Salinsky":"neutral","Adam Anschel":"neutral","Angie La Mas Linda":"neutral","Juan Pablo Madrid":"neutral"}, note:"Still only Sebastian. Juan's barrier is distance and price, not crowding. Not a universal driver." }
+const PRODUCT_PRIORITIES = [
+  {
+    id:"wellness", label:"Gym, Movement & Wellness", emoji:"🧘", accent:"#1E3028",
+    must:[
+      { feature:"Sauna + cold plunge", count:7, total:9,
+        who:["Andrew","Sebastian","Isabella","Laurel","Alex","Adam","Juan Pablo"],
+        gaps:["Non-judgmental environment is the unlock — Adam won't use a sauna where he feels body shame","Walk-in access matters — booking friction kills frequency for everyone","Distance from south is a real barrier for Envigado residents (Juan)"],
+        next:"Lock sauna + cold plunge in Phase 1 spec" },
+      { feature:"Functional gym / movement space", count:5, total:9,
+        who:["Andrew","Sebastian","Alex","Adam","Juan Pablo"],
+        gaps:["SmartFit is the default — bundle value must clearly outperform a standalone gym membership","Adam specifically wants kettlebells + functional movement, not machines"],
+        next:"Define equipment list: kettlebells non-negotiable" },
+      { feature:"Yoga space (20–30 person capacity)", count:4, total:9,
+        who:["Juliana","Laurel","Angie","Alex"],
+        gaps:["Neither Nordica nor SaunaSpace has a proper yoga room — clear gap in the market","Instructor needs: mats, blocks, straps on-site — Angie can't transport gear daily"],
+        next:"Spec yoga room at 20–30 person capacity with gear storage" }
+    ],
+    should:[
+      { feature:"Contrast therapy sequence (heat → cold → rest)", count:3, total:9,
+        who:["Alex","Angie","Juan Pablo"],
+        gaps:["Reset Routes has dry + wet sauna but no cold break — not real contrast therapy","Sequence design is the product, not just the equipment list"],
+        next:null },
+      { feature:"Massage / bodywork services", count:3, total:9,
+        who:["Isabella","Juliana","Laurel"],
+        gaps:["Laurel needs a bookable private therapy room — doesn't exist at any Medellín venue she's tried","Quality and privacy are the bar — not just having a massage table in a corner"],
+        next:null }
+    ],
+    nice:[
+      { feature:"Jacuzzi + Turkish bath (Turco)", count:2, total:9,
+        who:["Angie","Juan Pablo"],
+        gaps:["Enhances recovery stack — not a standalone draw"],
+        next:null },
+      { feature:"Guided breathwork with expert facilitator", count:2, total:9,
+        who:["Juan Pablo","Isabella"],
+        gaps:["Juan attended Jordan's session — wants reliable access to a trusted guide, not just a room"],
+        next:null }
+    ]
+  },
+  {
+    id:"restaurant", label:"Restaurant & Bar", emoji:"🍽️", accent:"#D97706",
+    must:[
+      { feature:"Healthy food with macros on menu", count:7, total:9,
+        who:["Andrew","Sebastian","Juliana","Alex","Adam","Angie","Juan Pablo"],
+        gaps:["Macro-tracking is non-negotiable for the performance persona — macros on menu, full stop","Local price sensitivity — menu needs a local-accessible tier, not only dollar-priced items"],
+        next:"Macros on menu in product spec — non-negotiable" },
+      { feature:"Non-alcoholic herbal bar", count:3, total:9,
+        who:["Laurel","Andrew","Juliana"],
+        gaps:["No equivalent exists anywhere in Medellín — strong differentiation opportunity","The conscious sober-curious community (Laurel's network) is the anchor market for this"],
+        next:"Define drink menu with herbalist — Valentina is the contact" }
+    ],
+    should:[
+      { feature:"Fast, frictionless ordering", count:3, total:9,
+        who:["Adam","Alex","Juan Pablo"],
+        gaps:["Adam orders double on Rappi for convenience — venue food must be at least as fast","Bureaucratic ordering (WhatsApp menus, complex waitstaff) is a hard dealbreaker"],
+        next:null },
+      { feature:"Day-long menu (coffee, snacks, lunch, dinner)", count:2, total:9,
+        who:["Sebastian","Alex"],
+        gaps:["Sebastian wants to stay 8+ hours — needs food options throughout the day","Alex's pattern: arrive, eat, sauna, work, eat again — venue must support full-day stays"],
+        next:null }
+    ],
+    nice:[
+      { feature:"Post-workout shakes / smoothies", count:2, total:9,
+        who:["Alex","Juan Pablo"],
+        gaps:["High-protein shake preferred over pastry — simple, no-frills option post-session"],
+        next:null }
+    ]
+  },
+  {
+    id:"social", label:"Social & Event Space", emoji:"🎉", accent:"#7040D0",
+    must:[
+      { feature:"Regular community programming", count:6, total:9,
+        who:["Andrew","Alex","Laurel","Angie","Juan Pablo","Adam"],
+        gaps:["Adam only leaves home for a compelling topic — learning + business angle needed","Juan: free events are the proven unlock for local Colombian attendance","Programming is what makes a venue a community, not just a gym with good water"],
+        next:"Build monthly event calendar before opening day" },
+      { feature:"Guest + group-friendly access policy", count:3, total:9,
+        who:["Alex","Adam","Juan Pablo"],
+        gaps:["Reset caps same guest once every 6 months — hard no for Alex who brings 5–10 people","Adam wants couple/family pricing + membership freeze for travel","Juan's Colombian friends need to experience the space before they'll consider membership"],
+        next:"Define guest policy: Soho House model — guest per visit, not per lifetime" }
+    ],
+    should:[
+      { feature:"Pod / group seating zones", count:2, total:9,
+        who:["Alex","Adam"],
+        gaps:["Alex hosts groups of 5–10 — needs visual separation without a private room","Not a VIP room — just a 'bubble' that keeps the pod together and signals belonging"],
+        next:null },
+      { feature:"Themed events (DJ sets, speaker talks, curated evenings)", count:2, total:9,
+        who:["Angie","Adam"],
+        gaps:["Angie runs DJ + breathwork combos at Nordica — these fill classes consistently","Adam attends for learning / business angle — needs a clear reason to leave his apartment"],
+        next:null }
+    ],
+    nice:[
+      { feature:"Free intro events for local Colombian market", count:1, total:9,
+        who:["Juan Pablo"],
+        gaps:["Colombian friends see wellness venues as 'dollar prices for gringos' — free events break that perception","Once they experience the space, conversion is high — the barrier is just the first step"],
+        next:"Plan 2–3 free launch events targeting TMRC and local wellness communities" }
+    ]
+  },
+  {
+    id:"coworking", label:"Co-working", emoji:"💻", accent:"#4A6358",
+    must:[
+      { feature:"Reliable wifi + comfortable work seating", count:2, total:9,
+        who:["Sebastian","Alex"],
+        gaps:["Sebastian needs a guaranteed seat — can't risk arriving and having nowhere to work","Alex uses 3 different cafes per week (~600k/mo combined) — would consolidate here if venue had it all"],
+        next:null }
+    ],
+    should:[
+      { feature:"Quiet zones / acoustic separation", count:1, total:9,
+        who:["Sebastian"],
+        gaps:["Sebastian is introverted — crowded, loud co-working is a dealbreaker","Needs to feel like he has his own corner, not open-plan noise"],
+        next:null }
+    ],
+    nice:[
+      { feature:"Day pass / drop-in access", count:1, total:9,
+        who:["Sebastian"],
+        gaps:["Doesn't want to commit to full membership just for co-working — day pass lowers the first step"],
+        next:null }
+    ]
+  }
 ];
 
+function renderProductRoadmap(){
+  const colDefs = [
+    { key:'must',   label:'Must have',    color:'#1E3028', bg:'#EDF4EF' },
+    { key:'should', label:'Should have',  color:'#4A6358', bg:'#F2F5F2' },
+    { key:'nice',   label:'Nice to have', color:'#8A9E95', bg:'#F7F7F4' }
+  ];
+  document.getElementById('product-roadmap').innerHTML = PRODUCT_PRIORITIES.map(v=>`
+    <div class="product-vertical">
+      <div class="product-vertical-header" style="border-left:4px solid ${v.accent}">
+        <span class="product-vertical-emoji">${v.emoji}</span>
+        <div class="product-vertical-title">${v.label}</div>
+      </div>
+      <div class="product-kanban">
+        ${colDefs.map(col=>`
+          <div class="product-col" style="background:${col.bg}">
+            <div class="product-col-label" style="color:${col.color}">${col.label}</div>
+            ${(v[col.key]||[]).map(f=>`
+              <div class="product-feature-card">
+                <div class="product-feature-name">${f.feature}</div>
+                <span class="product-feature-count">${f.count}/${f.total} people</span>
+                <div class="product-feature-who">${f.who.map(n=>`<span class="product-feature-who-chip">${n}</span>`).join('')}</div>
+                ${f.gaps.length?`<div class="product-feature-gaps">${f.gaps.map(g=>`<div class="product-feature-gap">${g}</div>`).join('')}</div>`:''}
+                ${f.next?`<div class="product-feature-next">→ ${f.next}</div>`:''}
+              </div>
+            `).join('')}
+            ${!(v[col.key]||[]).length?`<div style="font-size:11px;color:var(--light);padding:12px 0;text-align:center">None identified yet</div>`:''}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderQuoteWall(){
+  const cards = DATA.participants.flatMap(x=>
+    (x.quotes||[]).slice(0,3).map(q=>({ quote:q, name:x.name, roles:x.roles||[] }))
+  ).filter(c=>c.quote && c.quote.length > 20);
+  document.getElementById('quote-wall').innerHTML = `
+    <div class="quote-wall-grid">
+      ${cards.map(c=>`
+        <div class="quote-wall-card">
+          <div class="quote-wall-text">"${c.quote}"</div>
+          <div>
+            <div class="quote-wall-name">${c.name}</div>
+            <div class="quote-wall-roles">${c.roles.map(r=>roleTag(r)).join('')}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
 
 function renderSignals(){
   const p = DATA.participants, n = p.length;
@@ -1261,19 +1353,16 @@ function renderLocationMap(){
       fillColor: '#F07030',
       fillOpacity: 0.85,
       weight: 1.5
-    }).addTo(map).bindPopup(`
-      <strong style="font-size:13px">${name}</strong><br>
-      <span style="font-size:11px;color:#666">${count} vote${count!==1?'s':''}</span><br>
-      <span style="font-size:11px">${people}</span>
-    `);
-
-    L.marker(latlng, {
-      icon: L.divIcon({
-        className: '',
-        html: `<div style="font-family:Inter,sans-serif;font-size:11px;font-weight:600;color:#1E3028;white-space:nowrap;background:rgba(237,233,216,0.85);padding:2px 5px;border-radius:4px">${name} · ${count}</div>`,
-        iconAnchor: [0, -10]
-      })
-    }).addTo(map);
+    }).addTo(map)
+      .bindPopup(`
+        <strong style="font-size:13px">${name}</strong><br>
+        <span style="font-size:11px;color:#666">${count} vote${count!==1?'s':''}</span><br>
+        <span style="font-size:11px">${people}</span>
+      `)
+      .bindTooltip(`<span style="font-size:11px;font-weight:600">${name} · ${count}</span>`, {
+        permanent: false, direction: 'top', offset: [0, -8],
+        className: 'leaflet-tooltip-clean'
+      });
   });
 }
 
