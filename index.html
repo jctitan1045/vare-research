@@ -204,6 +204,34 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .quote-wall-name { font-size:12px; font-weight:500; color:var(--dark); margin-bottom:4px; }
 .quote-wall-roles { display:flex; flex-wrap:wrap; gap:4px; }
 
+/* ── DESIGN PROMPTS ── */
+.design-card { background:var(--white); border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:16px; }
+.design-card-header { padding:16px 20px 12px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; gap:14px; }
+.design-card-emoji { font-size:22px; flex-shrink:0; margin-top:2px; }
+.design-card-meta { flex:1; }
+.design-card-title { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:500; color:var(--dark); margin-bottom:6px; }
+.design-card-feels { display:flex; flex-wrap:wrap; gap:5px; }
+.design-feel-chip { font-size:10px; font-weight:500; padding:2px 9px; border-radius:10px; background:var(--cream-bright); color:var(--mid); border:1px solid var(--border); letter-spacing:0.03em; }
+.design-card-body { padding:16px 20px 20px; display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.design-brief-col {}
+.design-brief-label { font-size:9px; font-weight:600; color:var(--light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
+.design-brief-text { font-size:12px; color:var(--mid); line-height:1.7; }
+.design-prompt-col { display:flex; flex-direction:column; gap:10px; }
+.design-prompt-block { background:var(--cream-bright); border:1px solid var(--border); border-radius:8px; padding:12px 14px; }
+.design-prompt-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.design-prompt-label { font-size:9px; font-weight:600; color:var(--light); text-transform:uppercase; letter-spacing:0.1em; }
+.design-prompt-copy { font-size:10px; font-weight:500; color:var(--mid); background:var(--white); border:1px solid var(--border); border-radius:5px; padding:3px 9px; cursor:pointer; transition:background 0.15s; white-space:nowrap; }
+.design-prompt-copy:hover { background:var(--dark); color:var(--cream-bright); }
+.design-prompt-copy.copied { background:#30B860; color:#fff; border-color:#30B860; }
+.design-prompt-text { font-size:11px; color:var(--dark); line-height:1.6; font-family:'Courier New',monospace; }
+.design-card-footer { padding:12px 20px; border-top:1px solid var(--border); display:flex; align-items:center; gap:10px; background:var(--cream-bright); }
+.design-open-btn { font-size:11px; font-weight:500; padding:5px 14px; border-radius:6px; text-decoration:none; display:inline-flex; align-items:center; gap:5px; transition:opacity 0.15s; }
+.design-open-btn:hover { opacity:0.8; }
+.design-open-claude { background:var(--dark); color:var(--cream-bright); }
+.design-open-mj { background:#F5F0FF; color:#5820D0; border:1px solid #D8C8F8; }
+.design-footer-note { font-size:11px; color:var(--light); margin-left:auto; }
+@media(max-width:700px){ .design-card-body { grid-template-columns:1fr; } }
+
 /* ── LEAFLET TOOLTIP ── */
 .leaflet-tooltip-clean { background:rgba(237,233,216,0.95); border:1px solid #D5D0BC; border-radius:4px; padding:3px 8px; color:#1E3028; font-family:'Inter',sans-serif; box-shadow:none; }
 .leaflet-tooltip-clean::before { display:none; }
@@ -300,7 +328,13 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 <div id="quote-wall" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
-<!-- ⑦ PEOPLE PIPELINE -->
+<!-- ⑦ DESIGN PROMPTS -->
+<div class="section-label" style="margin-bottom:12px">Design prompts & visual reference</div>
+<p style="font-size:12px;color:var(--light);margin-bottom:20px">Research-derived prompts for each space. Copy → paste into Midjourney, DALL-E, or Claude to generate mood board concepts.</p>
+<div id="design-vision" style="margin-bottom:28px"></div>
+
+<div class="divider"></div>
+<!-- ⑧ PEOPLE PIPELINE -->
 <div class="section-label" style="margin-bottom:10px">People pipeline</div>
 <div class="pipeline-section" id="people-pipeline" style="margin-bottom:28px"></div>
 
@@ -1010,6 +1044,7 @@ function render(){
   renderSignals();
   renderProductRoadmap();
   renderQuoteWall();
+  renderDesignVision();
   renderPipeline();
   renderLocationMap();
   renderInsightsCharts();
@@ -1516,6 +1551,108 @@ function renderInsightsCharts(){
       }
     }
   });
+}
+
+const DESIGN_PROMPTS = [
+  {
+    emoji:"🧖",
+    title:"Sauna + Cold Plunge",
+    accent:"#1E3028",
+    feels:["Non-judgmental sanctuary","Cedar & natural stone","Covered tropical setting","Contrast sequence: heat → cold → rest"],
+    brief:`Adam's "mini country club feel" — has never tried cold plunge because of body image anxiety. The design must communicate welcome, not performance. Laurel: "The moment you walk onto that property, you just feel your nervous system relax." Angie needs a covered outdoor sauna area (Nordica lacks this). Sebastian wants quiet hours and capacity limits. The space must feel earned, not clinical.`,
+    midjourney:`Interior of a boutique wellness spa in Medellín Colombia, cedar wood sauna room with soft amber glow, adjacent natural stone cold plunge pool surrounded by tropical palm fronds and ferns, covered outdoor terrace draped in climbing plants, warm low candlelight, no people, architectural editorial photography, intimate and non-judgmental atmosphere, Zuma Tulum meets Japanese onsen, --ar 16:9 --style raw --q 2`,
+    dalle:`A boutique wellness spa interior in Medellín, Colombia. Cedar wood sauna walls with soft amber lighting visible through a glass panel. An adjacent natural stone cold plunge pool surrounded by lush tropical plants — palms, ferns, climbing vines. A covered outdoor terrace with hanging plants. No people. Warm, private, body-safe atmosphere. Architectural Digest editorial photography style.`
+  },
+  {
+    emoji:"🧘",
+    title:"Yoga Studio",
+    accent:"#4A6358",
+    feels:["Warm oak floors","Airy & morning-lit","20–30 person capacity","Safe, seen, and creatively free"],
+    brief:`Laurel: "What is rare to find in Medellín is a venue that has a big enough space where people can move freely — with wood floors, warm, homey, peaceful." Juliana needs "safe and seen" energy and zero micromanagement of class style or music. Angie needs 20–30 person capacity with mats, blocks, straps stored on-site — she can't transport gear daily. Both a covered outdoor option for morning sun and an indoor option for evening classes.`,
+    midjourney:`Spacious yoga studio interior in a tropical Colombian wellness club, warm oak hardwood floors, large arched open windows filtering soft morning light through tropical foliage, ceiling fans overhead, neatly stored yoga mats and props at the walls, 25-person capacity, no people, warm honey tones, open airy feeling, architectural photography, editorial --ar 16:9 --style raw`,
+    dalle:`A spacious yoga studio in a tropical Colombian wellness club. Warm oak hardwood floors. Large arched open windows with soft morning light filtering through tropical palms and ferns outside. Ceiling fans overhead. Yoga mats, blocks, and straps stored neatly at the walls. 20-30 person capacity. Warm, airy, community-oriented atmosphere. No people. Editorial interior photography style.`
+  },
+  {
+    emoji:"🍽️",
+    title:"Restaurant & Herbal Bar",
+    accent:"#D97706",
+    feels:["Macro-labeled colorful food","Herbal + adaptogen bar","Dwell-friendly all-day","Faster than Rappi"],
+    brief:`Andrew: "Macros calculated so you can just delegate your whole food prep to that menu." Laurel spends 1.2M COP/mo on health food delivery — strict paleo with Hashimoto's, needs dietary icons and substitution options. Andrew loved the 108 Yoga juice bar as the reason to stay after class. No equivalent non-alcoholic herbal bar exists in Medellín — first-mover opportunity. Menu must be fast and friction-free: Adam orders double on Rappi so he doesn't have to order twice.`,
+    midjourney:`Interior of a health-focused restaurant and herbal drinks bar in Medellín Colombia, colorful macro bowls on a backlit counter, adaptogen elixirs and cacao drinks in apothecary bottles on wooden shelves, tropical plants throughout, warm natural light through large windows, clean white and wood tones, no people, editorial food and interior photography, Café Gratitude meets Casa do Bico aesthetic --ar 16:9`,
+    dalle:`A health-focused restaurant and herbal bar interior in Medellín, Colombia. Colorful macro bowls and fresh ingredients displayed on a clean counter. A herbal drinks bar with adaptogen elixirs, ceremonial cacao, and functional drinks in apothecary-style bottles. Natural wood shelving, tropical plants, warm light through large windows. Clean, bright, inviting. No people. Editorial food photography style.`
+  },
+  {
+    emoji:"🎉",
+    title:"Social & Event Space",
+    accent:"#7040D0",
+    feels:["Flexible seating & cushions","15–50 person capacity","Indoor-outdoor flow","Community over Instagram"],
+    brief:`Isabella: "En Medellín no existen lugares que piensen en comunidad. Existen restaurantes, discotecas, clubs, pero nada está pensado en integrar gente alrededor de conversación." Alex needs a pod zone for 5–10 with movable cushions — not a private room, just a bubble. Laurel hosts events weekly and needs reliable booking + on-site staff. Adam's gold standard: Hardin at Envigado Mall — open roof, plants, high ceilings. Angie envisions DJ + breathwork combo events in a space that can shift between formats.`,
+    midjourney:`Multi-use community event space in a Medellín wellness club, warm oak wood floors, flexible seating with floor cushions and movable rattan chairs arranged in intimate circles, exposed natural wood beams overhead, lush tropical plants, open archways leading to an outdoor terrace, soft warm evening light, 25-person gathering, no people, intimate community aesthetic, editorial interior photography --ar 16:9 --style raw`,
+    dalle:`A flexible community event space in a Medellín wellness club. Warm wood floors. Floor cushions and movable rattan chairs arranged in small intimate circles. Exposed wood beam ceiling. Lush tropical plants throughout. Open archways leading to a terrace with natural light. Soft warm evening lighting. No people. Designed for community gathering — circle formats, not rows. Architectural photography style.`
+  },
+  {
+    emoji:"💻",
+    title:"Co-working Zone",
+    accent:"#4A6358",
+    feels:["Third-home familiarity","Quiet & guaranteed seating","Daily coffee anchor","Known by name"],
+    brief:`Sebastian: "I come to Rivertown every single morning for a coffee. Everyone here knows my name. I come to work at least four times a week — it's my third home." He needs a guaranteed seat and quiet — left SmartFit for being too loud, skips run club when social battery is low. Alex spends 600k/mo across 3 cafes weekly. Adam's gold standard: Hardin at Envigado Mall — "open roof, plants, high ceilings." The third-home feeling is built through familiarity and calm, not stimulation.`,
+    midjourney:`Warm boutique co-working café space in Medellín Colombia, individual work tables with warm amber task lighting, lush tropical plants and hanging ferns, high ceilings with natural light through skylights, herbal coffee bar in the background with handwritten chalk menu, quiet intimate third-home feeling, warm honey wood tones, no people, architectural editorial photography, Rivertown meets Hardin Mall aesthetic --ar 16:9 --style raw`,
+    dalle:`A warm boutique co-working café in Medellín, Colombia. Individual work tables with warm amber lighting and comfortable seating. Lush tropical plants and hanging ferns throughout. High ceilings with natural skylight. A herbal coffee and drinks bar visible in the background. Quiet, familiar, third-home atmosphere — calm, not trendy. No people. Editorial interior photography style.`
+  }
+];
+
+function copyPrompt(text, btn){
+  navigator.clipboard.writeText(text).then(()=>{
+    const orig = btn.textContent;
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent=orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function renderDesignVision(){
+  document.getElementById('design-vision').innerHTML = DESIGN_PROMPTS.map((d,i)=>`
+    <div class="design-card">
+      <div class="design-card-header" style="border-left:4px solid ${d.accent}">
+        <span class="design-card-emoji">${d.emoji}</span>
+        <div class="design-card-meta">
+          <div class="design-card-title">${d.title}</div>
+          <div class="design-card-feels">${d.feels.map(f=>`<span class="design-feel-chip">${f}</span>`).join('')}</div>
+        </div>
+      </div>
+      <div class="design-card-body">
+        <div class="design-brief-col">
+          <div class="design-brief-label">Research brief — what participants said</div>
+          <div class="design-brief-text">${d.brief}</div>
+        </div>
+        <div class="design-prompt-col">
+          <div class="design-prompt-block">
+            <div class="design-prompt-label-row">
+              <span class="design-prompt-label">Midjourney / image gen prompt</span>
+              <button class="design-prompt-copy" onclick="copyPrompt(DESIGN_PROMPTS[${i}].midjourney, this)">Copy</button>
+            </div>
+            <div class="design-prompt-text">${d.midjourney}</div>
+          </div>
+          <div class="design-prompt-block">
+            <div class="design-prompt-label-row">
+              <span class="design-prompt-label">DALL-E 3 / Claude prompt</span>
+              <button class="design-prompt-copy" onclick="copyPrompt(DESIGN_PROMPTS[${i}].dalle, this)">Copy</button>
+            </div>
+            <div class="design-prompt-text">${d.dalle}</div>
+          </div>
+        </div>
+      </div>
+      <div class="design-card-footer">
+        <a class="design-open-btn design-open-claude" href="https://claude.ai/new" target="_blank" onclick="navigator.clipboard.writeText(DESIGN_PROMPTS[${i}].dalle)">
+          ✦ Open Claude &amp; paste
+        </a>
+        <a class="design-open-btn design-open-mj" href="https://www.midjourney.com" target="_blank" onclick="navigator.clipboard.writeText(DESIGN_PROMPTS[${i}].midjourney)">
+          ◆ Open Midjourney &amp; paste
+        </a>
+        <span class="design-footer-note">Prompt is copied to clipboard when you click</span>
+      </div>
+    </div>
+  `).join('');
 }
 
 render();
