@@ -56,7 +56,7 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .chart-title { font-size:13px; font-weight:500; color:var(--dark); margin-bottom:2px; }
 .chart-sub { font-size:11px; color:var(--light); margin-bottom:14px; }
 .chart-canvas-sm { position:relative; height:120px; }
-.demo-charts { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12px; margin-bottom:12px; }
+.demo-charts { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px; }
 .demo-charts-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:32px; }
 
 /* ── DIVIDER ── */
@@ -287,15 +287,17 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
   <div class="metric"><div class="metric-label">Communities</div><div class="metric-value" id="m-communities">—</div><div class="metric-sub">represented</div></div>
 </div>
 <div class="demo-charts">
+  <div class="chart-card"><div class="chart-title">Age</div><div class="chart-sub">How old they are</div><div id="ageChart" style="position:relative;height:190px;margin-top:8px"></div></div>
+  <div class="chart-card"><div class="chart-title">Gender</div><div class="chart-sub">Split across participants</div><div class="chart-canvas-sm"><canvas id="genderChart"></canvas></div></div>
   <div class="chart-card"><div class="chart-title">Nationality</div><div class="chart-sub">Where they're from</div><div id="natMap" style="position:relative;height:190px;margin-top:8px"></div></div>
+</div>
+<div class="demo-charts">
   <div class="chart-card"><div class="chart-title">Work type</div><div class="chart-sub">How they earn</div><div id="workTreemap" style="height:190px;margin-top:8px;position:relative"></div></div>
   <div class="chart-card"><div class="chart-title">Time in Medellín</div><div class="chart-sub">How long they've been here</div><div class="chart-canvas-sm"><canvas id="tenureChart"></canvas></div></div>
-  <div class="chart-card"><div class="chart-title">Age</div><div class="chart-sub">How old they are</div><div id="ageChart" style="position:relative;height:190px;margin-top:8px"></div></div>
-</div>
-<div class="demo-charts-2">
   <div class="chart-card"><div class="chart-title">Neighborhood</div><div class="chart-sub">Where they live</div><div id="hoodMap" style="height:220px;border-radius:10px;overflow:hidden;margin-top:8px"></div></div>
+</div>
+<div class="demo-charts">
   <div class="chart-card"><div class="chart-title">Community</div><div class="chart-sub">Which community they came from or represent</div><div class="chart-canvas-sm"><canvas id="commChart"></canvas></div></div>
-  <div class="chart-card"><div class="chart-title">Gender</div><div class="chart-sub">Split across participants</div><div class="chart-canvas-sm"><canvas id="genderChart"></canvas></div></div>
 </div>
 
 <div class="divider"></div>
