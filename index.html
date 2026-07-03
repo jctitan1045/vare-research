@@ -1717,94 +1717,69 @@ const NEIGHBORHOOD_COORDS = {
 function renderAgeDotPlot(participants){
   const container = document.getElementById('ageChart');
   if(!container) return;
-  const ages = participants.map(p => ({ age: p.age, name: p.name })).filter(d => d.age);
+
+  const BUCKETS = [
+    { label: '20s', min: 20, max: 29 },
+    { label: '30s', min: 30, max: 39 },
+    { label: '40s', min: 40, max: 49 },
+    { label: '50s+', min: 50, max: 99 },
+  ];
+  BUCKETS.forEach(b => { b.count = 0; b.names = []; });
+  participants.forEach(p => {
+    if(!p.age) return;
+    const b = BUCKETS.find(b => p.age >= b.min && p.age <= b.max);
+    if(b) { b.count++; b.names.push(p.name.split(' ')[0]); }
+  });
 
   const w = container.offsetWidth || 300, h = 190;
-  const PAD = { top: 20, bottom: 36, left: 16, right: 16 };
-  const minAge = Math.floor(Math.min(...ages.map(d=>d.age)) / 5) * 5;
-  const maxAge = Math.ceil(Math.max(...ages.map(d=>d.age)) / 5) * 5;
-
+  const PAD = { top: 28, bottom: 32, left: 16, right: 16 };
   const svg = d3.select(container).append('svg')
     .attr('width', w).attr('height', h).style('display','block');
 
-  const x = d3.scaleLinear()
-    .domain([minAge, maxAge])
-    .range([PAD.left, w - PAD.right]);
+  const maxCount = Math.max(...BUCKETS.map(b => b.count));
+  const barW = (w - PAD.left - PAD.right) / BUCKETS.length;
+  const chartH = h - PAD.top - PAD.bottom;
 
-  const midY = PAD.top + (h - PAD.top - PAD.bottom) / 2;
+  const y = d3.scaleLinear().domain([0, maxCount]).range([chartH, 0]);
 
-  // Axis line
-  svg.append('line')
-    .attr('x1', PAD.left).attr('x2', w - PAD.right)
-    .attr('y1', midY).attr('y2', midY)
-    .attr('stroke', '#D5D0BC').attr('stroke-width', 1.5);
-
-  // Age ticks every 5 years
-  const ticks = d3.range(minAge, maxAge + 1, 5);
-  ticks.forEach(t => {
+  // Grid lines
+  d3.range(1, maxCount + 1).forEach(v => {
     svg.append('line')
-      .attr('x1', x(t)).attr('x2', x(t))
-      .attr('y1', midY - 4).attr('y2', midY + 4)
-      .attr('stroke', '#C8C3AF').attr('stroke-width', 1);
+      .attr('x1', PAD.left).attr('x2', w - PAD.right)
+      .attr('y1', PAD.top + y(v)).attr('y2', PAD.top + y(v))
+      .attr('stroke', '#E8E3D5').attr('stroke-width', 1);
+  });
+
+  BUCKETS.forEach((b, i) => {
+    const bx = PAD.left + i * barW;
+    const barH = chartH - y(b.count);
+    const barX = bx + barW * 0.15;
+    const barInnerW = barW * 0.7;
+
+    // Bar
+    svg.append('rect')
+      .attr('x', barX).attr('y', PAD.top + y(b.count))
+      .attr('width', barInnerW).attr('height', barH)
+      .attr('fill', '#2D6FA3').attr('rx', 4);
+
+    // Count on top of bar
+    if(b.count > 0) {
+      svg.append('text')
+        .attr('x', barX + barInnerW / 2).attr('y', PAD.top + y(b.count) - 6)
+        .attr('text-anchor', 'middle')
+        .attr('fill', '#1E3028').attr('font-size', '18px').attr('font-weight', '700')
+        .attr('font-family', 'Inter,sans-serif')
+        .text(b.count);
+    }
+
+    // Label below
     svg.append('text')
-      .attr('x', x(t)).attr('y', midY + 18)
+      .attr('x', bx + barW / 2).attr('y', h - 10)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#8A9E95').attr('font-size', '10px')
+      .attr('fill', '#4A6358').attr('font-size', '11px').attr('font-weight', '500')
       .attr('font-family', 'Inter,sans-serif')
-      .text(t);
+      .text(b.label);
   });
-
-  // Jitter dots vertically to avoid overlap at same age
-  const jitterMap = {};
-  ages.forEach(d => {
-    const k = d.age;
-    jitterMap[k] = (jitterMap[k] || 0) + 1;
-    d._slot = jitterMap[k];
-  });
-  const slotH = 14;
-  ages.forEach(d => {
-    const total = jitterMap[d.age];
-    const offset = (d._slot - (total + 1) / 2) * slotH;
-    d._y = midY + offset;
-  });
-
-  // Average line
-  const avg = d3.mean(ages, d => d.age);
-  svg.append('line')
-    .attr('x1', x(avg)).attr('x2', x(avg))
-    .attr('y1', PAD.top).attr('y2', midY - 6)
-    .attr('stroke', '#4A6358').attr('stroke-width', 1)
-    .attr('stroke-dasharray', '3,2');
-  svg.append('text')
-    .attr('x', x(avg)).attr('y', PAD.top - 4)
-    .attr('text-anchor', 'middle')
-    .attr('fill', '#4A6358').attr('font-size', '9px')
-    .attr('font-family', 'Inter,sans-serif')
-    .text(`avg ${Math.round(avg)}`);
-
-  // Dots
-  const dot = svg.selectAll('circle').data(ages).join('circle')
-    .attr('cx', d => x(d.age))
-    .attr('cy', d => d._y)
-    .attr('r', 7)
-    .attr('fill', '#2D6FA3')
-    .attr('stroke', '#F5F2E4')
-    .attr('stroke-width', 1.5)
-    .attr('opacity', 0.85);
-
-  // Age label inside dot
-  svg.selectAll('.dot-label').data(ages).join('text')
-    .attr('class', 'dot-label')
-    .attr('x', d => x(d.age))
-    .attr('y', d => d._y + 0.5)
-    .attr('text-anchor', 'middle')
-    .attr('dominant-baseline', 'middle')
-    .attr('fill', '#fff')
-    .attr('font-size', '7px')
-    .attr('font-weight', '600')
-    .attr('font-family', 'Inter,sans-serif')
-    .attr('pointer-events', 'none')
-    .text(d => d.age);
 }
 
 function renderHoodMap(participants){
