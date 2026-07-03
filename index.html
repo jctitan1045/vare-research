@@ -292,7 +292,7 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
   <div class="chart-card"><div class="chart-title">Time in Medellín</div><div class="chart-sub">How long they've been here</div><div class="chart-canvas-sm"><canvas id="tenureChart"></canvas></div></div>
 </div>
 <div class="demo-charts-2">
-  <div class="chart-card"><div class="chart-title">Neighborhood</div><div class="chart-sub">Where they live</div><div class="chart-canvas-sm"><canvas id="hoodChart"></canvas></div></div>
+  <div class="chart-card"><div class="chart-title">Neighborhood</div><div class="chart-sub">Where they live</div><div id="hoodMap" style="height:220px;border-radius:10px;overflow:hidden;margin-top:8px"></div></div>
   <div class="chart-card"><div class="chart-title">Community</div><div class="chart-sub">Which community they came from or represent</div><div class="chart-canvas-sm"><canvas id="commChart"></canvas></div></div>
   <div class="chart-card"><div class="chart-title">Gender</div><div class="chart-sub">Split across participants</div><div class="chart-canvas-sm"><canvas id="genderChart"></canvas></div></div>
 </div>
@@ -1247,7 +1247,7 @@ function render(){
   renderNationalityMap(p);
   renderWorkTreemap(p);
   barChart('tenureChart',countBy(p,x=>x.tenure));
-  barChart('hoodChart',countBy(p,x=>x.neighborhood));
+  renderHoodMap(p);
   barChart('commChart',countBy(p,x=>x.community));
   barChart('genderChart',countBy(p,x=>x.gender));
 
@@ -1708,6 +1708,44 @@ const NEIGHBORHOOD_COORDS = {
   "Santa Elena": [6.2265, -75.4999],
   "Medellín": [6.2442, -75.5812]
 };
+
+function renderHoodMap(participants){
+  const counts = {}, names = {};
+  participants.forEach(x => {
+    if(!x.neighborhood) return;
+    const key = Object.keys(NEIGHBORHOOD_COORDS).find(k =>
+      x.neighborhood.toLowerCase().includes(k.toLowerCase())
+    );
+    if(!key) return;
+    counts[key] = (counts[key]||0) + 1;
+    names[key] = names[key] || [];
+    if(!names[key].includes(x.name)) names[key].push(x.name);
+  });
+
+  const map = L.map('hoodMap', { zoomControl: false, scrollWheelZoom: false })
+    .setView([6.22, -75.578], 12);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap © CARTO', maxZoom: 18
+  }).addTo(map);
+
+  const maxCount = Math.max(...Object.values(counts), 1);
+  Object.entries(counts).forEach(([name, count]) => {
+    const latlng = NEIGHBORHOOD_COORDS[name];
+    if(!latlng) return;
+    const pct = count / maxCount;
+    L.circleMarker(latlng, {
+      radius: 7 + pct * 9,
+      color: '#1E3028', fillColor: '#2D6FA3',
+      fillOpacity: 0.8, weight: 1.5
+    }).addTo(map)
+      .bindTooltip(
+        `<strong>${name}</strong> · ${count} resident${count!==1?'s':''}` +
+        `<br><span style="font-size:10px;color:#666">${(names[name]||[]).join(', ')}</span>`,
+        { permanent: false, direction: 'top', offset: [0,-10], className: 'leaflet-tooltip-clean' }
+      );
+  });
+}
 
 function renderLocationMap(){
   const p = DATA.participants;
