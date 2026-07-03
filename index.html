@@ -1071,15 +1071,45 @@ function renderAvatars(){
 function renderWorkTreemap(participants){
   const container = document.getElementById('workTreemap');
   if(!container) return;
-  const counts = {};
-  participants.forEach(p => { if(p.workType) counts[p.workType] = (counts[p.workType]||0)+1; });
+
+  const GROUPS = {
+    'Coaches & Healers': {
+      color:'#1E3028',
+      members: ['Entrepreneur / Coach','Coach / Hypnotherapist','Psychotherapist / Yoga Instructor','Yoga Instructor / Musician']
+    },
+    'Entrepreneurs & Founders': {
+      color:'#4A6358',
+      members: ['Entrepreneur / Creator','Product Designer / Agency Owner','Community Founder']
+    },
+    'Business & Sales': {
+      color:'#7AAA96',
+      members: ['Operations Consultant','Medical Sales & Marketing (self-employed)','Commercial Partnerships / Biz Dev']
+    },
+    'Remote Corporate': {
+      color:'#B0CCBF',
+      members: ['Remote Healthcare Analyst']
+    }
+  };
+
+  // Map each participant to a group
+  const groupCounts = {};
+  const groupMembers = {};
+  participants.forEach(p => {
+    if(!p.workType) return;
+    for(const [grp, cfg] of Object.entries(GROUPS)){
+      if(cfg.members.includes(p.workType)){
+        groupCounts[grp] = (groupCounts[grp]||0)+1;
+        (groupMembers[grp] = groupMembers[grp]||[]).push(p.workType);
+        break;
+      }
+    }
+  });
 
   const w = container.offsetWidth || 320, h = 190;
-  const COLORS = ['#1E3028','#2E4A3A','#3D6350','#4A6358','#5A7A6A','#6A9080','#7AAA96','#8A9E95','#9AB8AC','#B0CCBF','#C8D4CE'];
 
-  const root = d3.hierarchy({children: Object.entries(counts).map(([k,v])=>({name:k,value:v}))})
+  const root = d3.hierarchy({children: Object.entries(groupCounts).map(([k,v])=>({name:k,value:v}))})
     .sum(d=>d.value);
-  d3.treemap().size([w,h]).padding(2).round(true)(root);
+  d3.treemap().size([w,h]).padding(3).round(true)(root);
 
   const svg = d3.select(container).append('svg').attr('width',w).attr('height',h);
   const cell = svg.selectAll('g').data(root.leaves()).join('g')
@@ -1088,19 +1118,26 @@ function renderWorkTreemap(participants){
   cell.append('rect')
     .attr('width', d=>d.x1-d.x0)
     .attr('height', d=>d.y1-d.y0)
-    .attr('fill', (_,i)=>COLORS[i % COLORS.length])
-    .attr('rx', 3);
+    .attr('fill', d=>GROUPS[d.data.name].color)
+    .attr('rx', 4);
 
+  // Category label
   cell.append('foreignObject')
-    .attr('x', 4).attr('y', 4)
-    .attr('width', d=>Math.max(0, d.x1-d.x0-8))
-    .attr('height', d=>Math.max(0, d.y1-d.y0-8))
+    .attr('x', 8).attr('y', 8)
+    .attr('width', d=>Math.max(0, d.x1-d.x0-16))
+    .attr('height', d=>Math.max(0, d.y1-d.y0-16))
     .append('xhtml:div')
-    .style('width','100%').style('height','100%')
-    .style('overflow','hidden').style('font-family','Inter,sans-serif')
-    .style('font-size','10px').style('line-height','1.3')
-    .style('color','#F0ECD8').style('word-break','break-word')
-    .text(d=>d.data.name);
+    .style('font-family','Inter,sans-serif')
+    .style('overflow','hidden').style('height','100%')
+    .html(d=>{
+      const tileH = d.y1-d.y0;
+      const members = groupMembers[d.data.name]||[];
+      const labelColor = d.data.name==='Remote Corporate'?'#1E3028':'#F0ECD8';
+      const subColor = d.data.name==='Remote Corporate'?'rgba(30,48,40,0.6)':'rgba(240,236,216,0.6)';
+      return `<div style="font-size:11px;font-weight:500;color:${labelColor};line-height:1.3;margin-bottom:4px">${d.data.name}</div>`+
+        (tileH > 50 ? `<div style="font-size:9px;color:${subColor};line-height:1.5">${members.map(m=>`· ${m}`).join('<br>')}</div>` : '')+
+        `<div style="position:absolute;bottom:8px;left:8px;font-size:18px;font-weight:600;color:${labelColor};opacity:0.25">${d.data.value}</div>`;
+    });
 }
 
 function countBy(arr,fn){return arr.reduce((a,x)=>{const k=fn(x)||"Not recorded";a[k]=(a[k]||0)+1;return a;},{});}
