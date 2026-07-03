@@ -1146,23 +1146,20 @@ async function renderNationalityMap(participants){
   const container = document.getElementById('natMap');
   if(!container) return;
 
-  // Aggregate by geographic country
-  const groups = {
-    'Canada':   {lat:57, lon:-106, label:'Canada',   count:0, nats:[]},
-    'USA':      {lat:40, lon:-72,  label:'USA',       count:0, nats:[]},
-    'Colombia': {lat:4,  lon:-73,  label:'Colombia',  count:0, nats:[]}
+  // ISO numeric IDs in Natural Earth 110m
+  const COUNTRY_DATA = {
+    124: { label:'Canada',   count:0 },
+    840: { label:'USA',      count:0 },
+    170: { label:'Colombia', count:0 },
   };
   participants.forEach(p => {
     const n = p.nationality || '';
-    if(n === 'Canadian')           { groups['Canada'].count++;   groups['Canada'].nats.push(n); }
-    else if(n === 'Colombian')     { groups['Colombia'].count++; groups['Colombia'].nats.push(n); }
-    else if(n === 'Colombian-American') { groups['Colombia'].count++; groups['Colombia'].nats.push(n); }
-    else                           { groups['USA'].count++;      groups['USA'].nats.push(n); }
+    if(n === 'Canadian')                             { COUNTRY_DATA[124].count++; }
+    else if(n === 'Colombian' || n === 'Colombian-American') { COUNTRY_DATA[170].count++; }
+    else                                             { COUNTRY_DATA[840].count++; }
   });
 
-  const w = container.offsetWidth || 320;
-  const h = 160;
-
+  const w = container.offsetWidth || 320, h = 190;
   const projection = d3.geoNaturalEarth1()
     .rotate([80, 0])
     .scale(w / 3.8)
@@ -1170,52 +1167,39 @@ async function renderNationalityMap(participants){
   const path = d3.geoPath().projection(projection);
 
   const svg = d3.select(container).append('svg')
-    .attr('width', w).attr('height', h)
-    .style('display','block');
+    .attr('width', w).attr('height', h).style('display','block');
 
-  // Load and draw world
   try {
     const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r=>r.json());
     const countries = topojson.feature(world, world.objects.countries);
+
     svg.append('g').selectAll('path')
       .data(countries.features)
       .join('path')
       .attr('d', path)
-      .attr('fill', '#D5D0BC')
+      .attr('fill', d => COUNTRY_DATA[+d.id] ? '#1E3028' : '#D5D0BC')
       .attr('stroke', '#F5F2E4')
       .attr('stroke-width', 0.4);
-  } catch(e) { /* map outline unavailable */ }
 
-  // Bubble scale
-  const maxCount = Math.max(...Object.values(groups).map(g=>g.count));
-  const r = d3.scaleSqrt().domain([0, maxCount]).range([0, 22]);
-
-  // Draw bubbles + labels
-  Object.values(groups).forEach(g => {
-    if(g.count === 0) return;
-    const [x, y] = projection([g.lon, g.lat]);
-    const grp = svg.append('g').attr('transform', `translate(${x},${y})`);
-    grp.append('circle')
-      .attr('r', r(g.count))
-      .attr('fill', '#1E3028')
-      .attr('fill-opacity', 0.82)
-      .attr('stroke', '#F0ECD8')
-      .attr('stroke-width', 1.2);
-    grp.append('text')
-      .attr('text-anchor','middle').attr('dy','0.35em')
-      .attr('fill','#F0ECD8')
-      .attr('font-size', r(g.count) > 14 ? '11px' : '9px')
-      .attr('font-weight','500')
-      .text(g.count);
-    const labelAbove = g.label === 'USA';
-    grp.append('text')
-      .attr('text-anchor','middle')
-      .attr('dy', labelAbove ? -(r(g.count) + 7) : r(g.count) + 12)
-      .attr('fill','#4A6358')
-      .attr('font-size','9px')
-      .attr('font-family','Inter,sans-serif')
-      .text(g.label);
-  });
+    countries.features.filter(d => COUNTRY_DATA[+d.id]).forEach(d => {
+      const data = COUNTRY_DATA[+d.id];
+      const [cx, cy] = path.centroid(d);
+      if(isNaN(cx)) return;
+      const nudge = +d.id === 170 ? -3 : 0;
+      svg.append('text')
+        .attr('x', cx).attr('y', cy + nudge - 6)
+        .attr('text-anchor','middle').attr('dominant-baseline','central')
+        .attr('fill','#F0ECD8').attr('font-size','13px').attr('font-weight','700')
+        .attr('font-family','Inter,sans-serif').attr('pointer-events','none')
+        .text(data.count);
+      svg.append('text')
+        .attr('x', cx).attr('y', cy + nudge + 9)
+        .attr('text-anchor','middle').attr('dominant-baseline','central')
+        .attr('fill','rgba(240,236,216,0.75)').attr('font-size','8px')
+        .attr('font-family','Inter,sans-serif').attr('pointer-events','none')
+        .text(data.label);
+    });
+  } catch(e) { /* unavailable */ }
 }
 
 function barChart(id,data){
