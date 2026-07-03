@@ -1159,15 +1159,11 @@ async function renderNationalityMap(participants){
     else                                             { COUNTRY_DATA[840].count++; }
   });
 
-  const w = container.offsetWidth || 320, h = 200;
+  const ORDER = [124, 840, 170]; // Canada, USA, Colombia — top to bottom
+  const ROW_H = 64, SHAPE_W = 110, PAD = 6;
+  const w = container.offsetWidth || 320;
+  const h = ORDER.length * ROW_H;
   container.style.height = h + 'px';
-  // Shift map left to leave room for right-side labels
-  const mapW = w * 0.62;
-  const projection = d3.geoNaturalEarth1()
-    .rotate([80, 0])
-    .scale(mapW / 3.2)
-    .translate([mapW * 0.62, h * 0.52]);
-  const path = d3.geoPath().projection(projection);
 
   const svg = d3.select(container).append('svg')
     .attr('width', w).attr('height', h).style('display','block');
@@ -1178,50 +1174,46 @@ async function renderNationalityMap(participants){
     const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r=>r.json());
     const countries = topojson.feature(world, world.objects.countries);
 
-    svg.append('g').selectAll('path')
-      .data(countries.features)
-      .join('path')
-      .attr('d', path)
-      .attr('fill', d => COUNTRY_DATA[+d.id] ? BLUE : '#C8C3AF')
-      .attr('stroke', '#F5F2E4')
-      .attr('stroke-width', 0.4);
+    ORDER.forEach((id, i) => {
+      const data = COUNTRY_DATA[id];
+      const feature = countries.features.find(d => +d.id === id);
+      if(!feature) return;
 
-    // Fixed vertical slots for the three labels on the right side
-    const labelSlots = { 124: h * 0.15, 840: h * 0.48, 170: h * 0.82 };
-    const labelX = mapW + 14;
+      const y = i * ROW_H;
 
-    countries.features.filter(d => COUNTRY_DATA[+d.id]).forEach(d => {
-      const data = COUNTRY_DATA[+d.id];
-      const id = +d.id;
-      const [cx, cy] = path.centroid(d);
-      if(isNaN(cx)) return;
-      const ly = labelSlots[id];
+      // Row divider
+      if(i > 0) svg.append('line')
+        .attr('x1', 0).attr('x2', w).attr('y1', y).attr('y2', y)
+        .attr('stroke', '#D5D0BC').attr('stroke-width', 1);
 
-      // Dot at centroid
-      svg.append('circle').attr('cx', cx).attr('cy', cy).attr('r', 3.5)
-        .attr('fill', '#fff').attr('opacity', 0.85);
+      // Fit this country's shape into [PAD..SHAPE_W-PAD] x [PAD..ROW_H-PAD]
+      const proj = d3.geoMercator().fitExtent(
+        [[PAD, y + PAD], [SHAPE_W - PAD, y + ROW_H - PAD]],
+        feature
+      );
+      const pathFn = d3.geoPath().projection(proj);
 
-      // Curved leader line from centroid to label
-      const ex = labelX - 4;
-      const midX = (cx + ex) / 2;
       svg.append('path')
-        .attr('d', `M${cx},${cy} C${midX},${cy} ${midX},${ly} ${ex},${ly}`)
-        .attr('fill', 'none').attr('stroke', '#fff')
-        .attr('stroke-width', 0.9).attr('opacity', 0.55);
+        .attr('d', pathFn(feature))
+        .attr('fill', BLUE)
+        .attr('stroke', '#F5F2E4')
+        .attr('stroke-width', 0.8);
 
-      // Count — big
+      // Count — big number
+      const midY = y + ROW_H / 2;
       svg.append('text')
-        .attr('x', labelX).attr('y', ly - 2)
+        .attr('x', SHAPE_W + 16).attr('y', midY - 4)
         .attr('dominant-baseline', 'auto')
-        .attr('fill', '#1E3028').attr('font-size', '22px').attr('font-weight', '700')
+        .attr('fill', '#1E3028').attr('font-size', '24px').attr('font-weight', '700')
         .attr('font-family', 'Inter,sans-serif')
         .text(data.count);
-      // Country name — small below
+
+      // Country name
       svg.append('text')
-        .attr('x', labelX).attr('y', ly + 12)
+        .attr('x', SHAPE_W + 16).attr('y', midY + 14)
         .attr('dominant-baseline', 'auto')
-        .attr('fill', '#4A6358').attr('font-size', '9px').attr('font-weight', '500')
-        .attr('font-family', 'Inter,sans-serif').attr('letter-spacing', '0.06em')
+        .attr('fill', '#4A6358').attr('font-size', '10px').attr('font-weight', '500')
+        .attr('font-family', 'Inter,sans-serif').attr('letter-spacing', '0.05em')
         .text(data.label.toUpperCase());
     });
   } catch(e) { /* unavailable */ }
