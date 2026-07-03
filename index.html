@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson@3"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
@@ -285,7 +287,7 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
   <div class="metric"><div class="metric-label">Communities</div><div class="metric-value" id="m-communities">—</div><div class="metric-sub">represented</div></div>
 </div>
 <div class="demo-charts">
-  <div class="chart-card"><div class="chart-title">Nationality</div><div class="chart-sub">Where they're from</div><div class="chart-canvas-sm"><canvas id="natChart"></canvas></div></div>
+  <div class="chart-card"><div class="chart-title">Nationality</div><div class="chart-sub">Where they're from</div><div id="natMap" style="position:relative;height:190px;margin-top:8px"></div></div>
   <div class="chart-card"><div class="chart-title">Work type</div><div class="chart-sub">How they earn</div><div class="chart-canvas-sm"><canvas id="workChart"></canvas></div></div>
   <div class="chart-card"><div class="chart-title">Time in Medellín</div><div class="chart-sub">How long they've been here</div><div class="chart-canvas-sm"><canvas id="tenureChart"></canvas></div></div>
 </div>
@@ -1068,6 +1070,82 @@ function renderAvatars(){
 
 function countBy(arr,fn){return arr.reduce((a,x)=>{const k=fn(x)||"Not recorded";a[k]=(a[k]||0)+1;return a;},{});}
 
+async function renderNationalityMap(participants){
+  const container = document.getElementById('natMap');
+  if(!container) return;
+
+  // Aggregate by geographic country
+  const groups = {
+    'Canada':   {lat:57, lon:-106, label:'Canada',   count:0, nats:[]},
+    'USA':      {lat:40, lon:-72,  label:'USA',       count:0, nats:[]},
+    'Colombia': {lat:4,  lon:-73,  label:'Colombia',  count:0, nats:[]}
+  };
+  participants.forEach(p => {
+    const n = p.nationality || '';
+    if(n === 'Canadian')           { groups['Canada'].count++;   groups['Canada'].nats.push(n); }
+    else if(n === 'Colombian')     { groups['Colombia'].count++; groups['Colombia'].nats.push(n); }
+    else if(n === 'Colombian-American') { groups['Colombia'].count++; groups['Colombia'].nats.push(n); }
+    else                           { groups['USA'].count++;      groups['USA'].nats.push(n); }
+  });
+
+  const w = container.offsetWidth || 320;
+  const h = 160;
+
+  const projection = d3.geoNaturalEarth1()
+    .rotate([80, 0])
+    .scale(w / 3.8)
+    .translate([w * 0.65, h * 0.52]);
+  const path = d3.geoPath().projection(projection);
+
+  const svg = d3.select(container).append('svg')
+    .attr('width', w).attr('height', h)
+    .style('display','block');
+
+  // Load and draw world
+  try {
+    const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r=>r.json());
+    const countries = topojson.feature(world, world.objects.countries);
+    svg.append('g').selectAll('path')
+      .data(countries.features)
+      .join('path')
+      .attr('d', path)
+      .attr('fill', '#D5D0BC')
+      .attr('stroke', '#F5F2E4')
+      .attr('stroke-width', 0.4);
+  } catch(e) { /* map outline unavailable */ }
+
+  // Bubble scale
+  const maxCount = Math.max(...Object.values(groups).map(g=>g.count));
+  const r = d3.scaleSqrt().domain([0, maxCount]).range([0, 22]);
+
+  // Draw bubbles + labels
+  Object.values(groups).forEach(g => {
+    if(g.count === 0) return;
+    const [x, y] = projection([g.lon, g.lat]);
+    const grp = svg.append('g').attr('transform', `translate(${x},${y})`);
+    grp.append('circle')
+      .attr('r', r(g.count))
+      .attr('fill', '#1E3028')
+      .attr('fill-opacity', 0.82)
+      .attr('stroke', '#F0ECD8')
+      .attr('stroke-width', 1.2);
+    grp.append('text')
+      .attr('text-anchor','middle').attr('dy','0.35em')
+      .attr('fill','#F0ECD8')
+      .attr('font-size', r(g.count) > 14 ? '11px' : '9px')
+      .attr('font-weight','500')
+      .text(g.count);
+    const labelAbove = g.label === 'USA';
+    grp.append('text')
+      .attr('text-anchor','middle')
+      .attr('dy', labelAbove ? -(r(g.count) + 7) : r(g.count) + 12)
+      .attr('fill','#4A6358')
+      .attr('font-size','9px')
+      .attr('font-family','Inter,sans-serif')
+      .text(g.label);
+  });
+}
+
 function barChart(id,data){
   const labels=Object.keys(data), values=Object.values(data);
   new Chart(document.getElementById(id),{
@@ -1093,7 +1171,7 @@ function render(){
   document.getElementById('m-worktypes').textContent=new Set(p.map(x=>x.workType).filter(Boolean)).size;
   document.getElementById('m-communities').textContent=new Set(p.map(x=>x.community).filter(Boolean)).size;
 
-  barChart('natChart',countBy(p,x=>x.nationality));
+  renderNationalityMap(p);
   barChart('workChart',countBy(p,x=>x.workType));
   barChart('tenureChart',countBy(p,x=>x.tenure));
   barChart('hoodChart',countBy(p,x=>x.neighborhood));
