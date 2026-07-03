@@ -217,6 +217,8 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .product-feature-who { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px; }
 .product-feature-who-chip { font-size:10px; color:var(--mid); background:var(--cream-bright); border:1px solid var(--border); border-radius:10px; padding:1px 7px; }
 .product-feature-gaps { display:flex; flex-direction:column; gap:5px; }
+.product-feature-theme-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--mid); margin-top:10px; margin-bottom:2px; }
+.product-feature-theme-label:first-child { margin-top:0; }
 .product-feature-gap { font-size:11px; color:var(--light); line-height:1.5; padding-left:12px; position:relative; }
 .product-feature-gap::before { content:'–'; position:absolute; left:0; color:var(--faint); }
 .product-feature-next { display:inline-flex; font-size:10px; font-weight:600; color:#1A5C38; background:#E4F5EC; border:1px solid #B8D9C4; border-radius:6px; padding:3px 8px; margin-top:10px; line-height:1.4; }
@@ -1341,31 +1343,31 @@ const PRODUCT_PRIORITIES = [
       { feature:"Sauna + cold plunge", count:7, total:9,
         who:["Andrew","Sebastian","Isabella","Laurel","Alex","Adam","Juan Pablo"],
         gaps:[
-          "Andrew used sauna 4–5 days/week at his old building and would ‘come to the space just for this’ — wants guided contrast sessions, not solo drop-ins",
-          "Sebastian: ‘Absolutely love contrast therapy — only barrier is crowds.’ Would go far more often with quiet hours. ‘If Nordica said 4–5pm Wednesdays silent sauna, I’d be there’",
-          "Alex pays for Reset membership but barely uses it: ‘Reset routes you dry sauna → wet sauna → jacuzzi with no cold break. That’s not contrast therapy.’ Booking via WhatsApp bot takes days — slots are already gone",
-          "Adam has NEVER used a cold plunge or sauna due to body image: ‘I don’t want to be walking around in a bathing suit — I want to be in better shape.’ A non-judgmental, comfortable environment is the unlock — not price or location",
-          "Juan Pablo goes to cheap local Dorado sauna (25k/session) 3x/month but Nordica only 1x/month — distance and cost are the friction, not lack of desire. ‘I feel that I really reset. I really take a time to relax.’",
-          "Laurel sees sauna as a venue for facilitating hypnotherapy sessions — a supply-side use case beyond personal recovery that Varé could uniquely support"
+          {theme:"Daily anchor habit", text:"Andrew used sauna 4–5 days/week at his old building and would ‘come to the space just for this’ — wants guided contrast sessions, not solo drop-ins"},
+          {theme:"Daily anchor habit", text:"Juan Pablo goes to cheap local Dorado sauna (25k/session) 3x/month but Nordica only 1x/month — distance and cost are the friction, not lack of desire. ‘I feel that I really reset. I really take a time to relax.’"},
+          {theme:"Environment over equipment", text:"Sebastian: ‘Absolutely love contrast therapy — only barrier is crowds.’ Would go far more often with quiet hours. ‘If Nordica said 4–5pm Wednesdays silent sauna, I’d be there’"},
+          {theme:"Environment over equipment", text:"Adam has NEVER used a cold plunge or sauna due to body image: ‘I don’t want to be walking around in a bathing suit — I want to be in better shape.’ A non-judgmental, comfortable environment is the unlock — not price or location"},
+          {theme:"Competitor gap", text:"Alex pays for Reset membership but barely uses it: ‘Reset routes you dry sauna → wet sauna → jacuzzi with no cold break. That’s not contrast therapy.’ Booking via WhatsApp bot takes days — slots are already gone"},
+          {theme:"Supply-side use case", text:"Laurel sees sauna as a venue for facilitating hypnotherapy sessions — a supply-side use case beyond personal recovery that Varé could uniquely support"}
         ],
         next:"Lock sauna + cold plunge in Phase 1 spec — this is the anchor" },
       { feature:"Functional gym / movement space", count:5, total:9,
         who:["Andrew","Sebastian","Alex","Adam","Juan Pablo"],
         gaps:[
-          "Andrew: ‘I’d have a boutique gym, high-end with functional training’ — explicitly not SmartFit volume. Was paying 100k/mo SmartFit + 350k/mo yoga separately. One membership that replaces both is the pitch",
-          "Sebastian stopped SmartFit because it was ‘too hot and packed.’ His old SmartFit at Te Soto was a happy place — it’s the environment, not the price. Wants clean, non-crowded, walkable",
-          "Adam dropped SmartFit and built a home kettlebell setup: ‘Having kettlebells at the venue would pull him in immediately’ — functional movement over machines",
-          "Juan Pablo is at SmartFit 3–4x/week (100k/mo): ‘For me, movement is life.’ Would switch if bundled with recovery + food in one membership",
-          "Alex at Action Black 3–4x/week (130k/mo) — would seriously consider switching if movement + contrast therapy + cowork were bundled into one place"
+          {theme:"Membership consolidation", text:"Andrew: ‘I’d have a boutique gym, high-end with functional training’ — explicitly not SmartFit volume. Was paying 100k/mo SmartFit + 350k/mo yoga separately. One membership that replaces both is the pitch"},
+          {theme:"Membership consolidation", text:"Juan Pablo is at SmartFit 3–4x/week (100k/mo): ‘For me, movement is life.’ Would switch if bundled with recovery + food in one membership"},
+          {theme:"Membership consolidation", text:"Alex at Action Black 3–4x/week (130k/mo) — would seriously consider switching if movement + contrast therapy + cowork were bundled into one place"},
+          {theme:"Environment quality", text:"Sebastian stopped SmartFit because it was ‘too hot and packed.’ His old SmartFit at Te Soto was a happy place — it’s the environment, not the price. Wants clean, non-crowded, walkable"},
+          {theme:"Equipment specificity", text:"Adam dropped SmartFit and built a home kettlebell setup: ‘Having kettlebells at the venue would pull him in immediately’ — functional movement over machines"}
         ],
         next:"Equipment list: kettlebells non-negotiable; boutique quality not big-box volume" },
       { feature:"Yoga space (20–30 person capacity, mats + props on-site)", count:4, total:9,
         who:["Juliana","Laurel","Angie","Alex"],
         gaps:[
-          "Angie teaches at both Nordica and SaunaSpace — neither has an ideal yoga room. Needs 20–30 person capacity, proper mats, blocks, straps, good sound system, and both covered outdoor and indoor options",
-          "Juliana teaches vinyasa, yin, Bikram, and power — wants creative freedom: ‘No micromanagement of class style or music.’ Smash Yoga was her benchmark (‘my happy place’) until it closed",
-          "Laurel: ‘What is rare to find in Medellín is a venue that has a big enough space where people can move freely — with wood floors, warm, homey, peaceful.’ Currently works out at home because no venue meets this bar",
-          "Juliana proposed instructor cross-training as a staff perk: instructors teach workshops to each other — builds community and distributes knowledge at near-zero cost to the venue"
+          {theme:"Instructor space requirements", text:"Angie teaches at both Nordica and SaunaSpace — neither has an ideal yoga room. Needs 20–30 person capacity, proper mats, blocks, straps, good sound system, and both covered outdoor and indoor options"},
+          {theme:"Instructor space requirements", text:"Juliana teaches vinyasa, yin, Bikram, and power — wants creative freedom: ‘No micromanagement of class style or music.’ Smash Yoga was her benchmark (‘my happy place’) until it closed"},
+          {theme:"Space quality gap in Medellín", text:"Laurel: ‘What is rare to find in Medellín is a venue that has a big enough space where people can move freely — with wood floors, warm, homey, peaceful.’ Currently works out at home because no venue meets this bar"},
+          {theme:"Community programming opportunity", text:"Juliana proposed instructor cross-training as a staff perk: instructors teach workshops to each other — builds community and distributes knowledge at near-zero cost to the venue"}
         ],
         next:"Spec yoga room at 20–30 person capacity with mats, blocks, straps on-site storage" }
     ],
@@ -1373,18 +1375,18 @@ const PRODUCT_PRIORITIES = [
       { feature:"Contrast therapy sequence (heat → cold → rest, repeatable)", count:3, total:9,
         who:["Alex","Angie","Juan Pablo"],
         gaps:[
-          "Alex: ‘Reset routes you dry sauna → wet sauna → jacuzzi with no cold break. That’s not contrast therapy.’ Walk-in access + a real cold break between rooms would immediately make him a regular",
-          "Angie loves Nordica but it lacks a covered space for outdoor recovery. Wants the full stack: sauna, Turkish bath (Turco), jacuzzi, and ice immersion — all protected from weather",
-          "The sequence is the product: heat → cold → rest → repeat. Most Medellín venues treat each room as a separate amenity. The designed flow is what no one else offers"
+          {theme:"Competitor gap", text:"Alex: ‘Reset routes you dry sauna → wet sauna → jacuzzi with no cold break. That’s not contrast therapy.’ Walk-in access + a real cold break between rooms would immediately make him a regular"},
+          {theme:"Competitor gap", text:"Angie loves Nordica but it lacks a covered space for outdoor recovery. Wants the full stack: sauna, Turkish bath (Turco), jacuzzi, and ice immersion — all protected from weather"},
+          {theme:"Design principle", text:"The sequence is the product: heat → cold → rest → repeat. Most Medellín venues treat each room as a separate amenity. The designed flow is what no one else offers"}
         ],
         next:null },
       { feature:"Massage / bodywork services (on-site practitioners)", count:3, total:9,
         who:["Andrew","Isabella","Laurel"],
         gaps:[
-          "Andrew currently pays ~160k/mo separately for massage and wants ‘practitioners on site, not just chairs’ — also mentioned osteopath and chiropractor as recovery support",
-          "Laurel: ‘No Medellín space has a bookable private therapy room.’ A quiet room with couch + desk would close her on founding membership alone — she needs it for hypnotherapy client sessions",
-          "Laurel has been burned by double-bookings, forgotten reservations, and agreements not honored under new management — reliability and written agreements are baseline requirements, not perks",
-          "Isabella was at Healing Forest for Pilates until it got too expensive — quality and accessibility of bodywork matter, not just having a gym"
+          {theme:"Active spend to consolidate", text:"Andrew currently pays ~160k/mo separately for massage and wants ‘practitioners on site, not just chairs’ — also mentioned osteopath and chiropractor as recovery support"},
+          {theme:"Therapy room requirement", text:"Laurel: ‘No Medellín space has a bookable private therapy room.’ A quiet room with couch + desk would close her on founding membership alone — she needs it for hypnotherapy client sessions"},
+          {theme:"Reliability as baseline", text:"Laurel has been burned by double-bookings, forgotten reservations, and agreements not honored under new management — reliability and written agreements are baseline requirements, not perks"},
+          {theme:"Quality over access", text:"Isabella was at Healing Forest for Pilates until it got too expensive — quality and accessibility of bodywork matter, not just having a gym"}
         ],
         next:null }
     ],
@@ -1392,15 +1394,15 @@ const PRODUCT_PRIORITIES = [
       { feature:"Jacuzzi + Turkish bath (Turco)", count:2, total:9,
         who:["Angie","Juan Pablo"],
         gaps:[
-          "Angie specifically names Turco (Turkish bath) as part of the ideal contrast stack alongside jacuzzi and cold plunge — this is a local comfort amenity as much as a recovery tool",
-          "Juan Pablo attends the local Dorado sauna regularly — Turco is familiar Colombian wellness culture, which lowers the barrier vs. ‘foreign’ biohacking framing for the local market"
+          {theme:"Instructor preference", text:"Angie specifically names Turco (Turkish bath) as part of the ideal contrast stack alongside jacuzzi and cold plunge — this is a local comfort amenity as much as a recovery tool"},
+          {theme:"Local cultural alignment", text:"Juan Pablo attends the local Dorado sauna regularly — Turco is familiar Colombian wellness culture, which lowers the barrier vs. ‘foreign’ biohacking framing for the local market"}
         ],
         next:null },
       { feature:"Guided breathwork with expert facilitator", count:2, total:9,
         who:["Juan Pablo","Isabella"],
         gaps:[
-          "Juan attended Jordan’s breathwork session and wants to go deeper: ‘Looking for a guide who knows what they’re doing — would attend regularly if accessible.’ Wants a trusted regular guide, not a drop-in class",
-          "Isabella is planning an ‘Inmersión en Hielo for Founders’ with Open Sauna — breathwork before cold plunge is her high-ticket small-group format. The demand here is entrepreneurial, not just personal wellness"
+          {theme:"Personal demand", text:"Juan attended Jordan’s breathwork session and wants to go deeper: ‘Looking for a guide who knows what they’re doing — would attend regularly if accessible.’ Wants a trusted regular guide, not a drop-in class"},
+          {theme:"High-ticket format opportunity", text:"Isabella is planning an ‘Inmersión en Hielo for Founders’ with Open Sauna — breathwork before cold plunge is her high-ticket small-group format. The demand here is entrepreneurial, not just personal wellness"}
         ],
         next:null }
     ]
@@ -1411,22 +1413,22 @@ const PRODUCT_PRIORITIES = [
       { feature:"Healthy food with macros on menu", count:7, total:9,
         who:["Andrew","Sebastian","Juliana","Alex","Adam","Angie","Juan Pablo"],
         gaps:[
-          "Andrew: ‘Clean food with macros calculated so if a guy’s there he could just delegate his whole food prep to that menu.’ This is the reason he’d show up every day, not just a nice-to-have",
-          "Sebastian: ‘Would eat at the space if macros are listed. Doesn’t eat out for healthy now because he can’t verify what’s in it.’ Macros on menu = he eats there. No macros = he eats at home",
-          "Juliana: ‘Food sovereignty is core identity’ — wants colorful, macro-balanced, fresh juice, good protein, plant-based options. Smash was her benchmark for everything",
-          "Alex: ‘Eggs, bacon, salads, soups — baseline clean. Not bread or pastries. Healthy caffeinated shake preferred over a croissant.’ Default clean, not strict",
-          "Adam orders double on Rappi for convenience (Mediterranean + Colombian soups) so he doesn’t have to order twice. Venue food has to match Rappi’s frictionlessness — convenience is the driver, not just health",
-          "Juan Pablo eats at Smash and Vina Greta 2–3x/week: ‘A good restaurant on-site is a major draw — saves a trip and makes the whole visit feel worth it’",
-          "Local price sensitivity: Juan’s Colombian friends call Nordica ‘a dollar price.’ Menu pricing needs a local-accessible tier, not a flat expat-level rate across the board"
+          {theme:"Macros as table stakes", text:"Andrew: ‘Clean food with macros calculated so if a guy’s there he could just delegate his whole food prep to that menu.’ This is the reason he’d show up every day, not just a nice-to-have"},
+          {theme:"Macros as table stakes", text:"Sebastian: ‘Would eat at the space if macros are listed. Doesn’t eat out for healthy now because he can’t verify what’s in it.’ Macros on menu = he eats there. No macros = he eats at home"},
+          {theme:"Dietary identity & values", text:"Juliana: ‘Food sovereignty is core identity’ — wants colorful, macro-balanced, fresh juice, good protein, plant-based options. Smash was her benchmark for everything"},
+          {theme:"Convenience standard", text:"Alex: ‘Eggs, bacon, salads, soups — baseline clean. Not bread or pastries. Healthy caffeinated shake preferred over a croissant.’ Default clean, not strict"},
+          {theme:"Convenience standard", text:"Adam orders double on Rappi for convenience (Mediterranean + Colombian soups) so he doesn’t have to order twice. Venue food has to match Rappi’s frictionlessness — convenience is the driver, not just health"},
+          {theme:"Dwell-time driver", text:"Juan Pablo eats at Smash and Vina Greta 2–3x/week: ‘A good restaurant on-site is a major draw — saves a trip and makes the whole visit feel worth it’"},
+          {theme:"Local pricing sensitivity", text:"Juan’s Colombian friends call Nordica ‘a dollar price.’ Menu pricing needs a local-accessible tier, not a flat expat-level rate across the board"}
         ],
         next:"Macros on menu in product spec — non-negotiable. Table stakes for both personas." },
       { feature:"Non-alcoholic herbal + functional drinks bar", count:3, total:9,
         who:["Laurel","Andrew","Juliana"],
         gaps:[
-          "No equivalent exists anywhere in Medellín — strong first-mover differentiation opportunity in the sober-curious and conscious wellness market",
-          "Laurel spends ~1.2M COP/month on health food delivery (Avocalia, Smadge via Rappi) and eats strict paleo for Hashimoto’s. She needs dietary icons, substitution options, and lots of vegetables — the menu has to work for her or she stays home",
-          "Andrew loved the bar at 108 Yoga: ‘Coffee, green juice, protein shakes — a reason to stay after class.’ The bar is what extends dwell time and makes the visit feel complete",
-          "Juliana is a medicine keeper (cacao, mushrooms) and would align ceremonial cacao offerings with the herbal bar if the venue’s energy is right — programming + supply-side synergy"
+          {theme:"Market gap & differentiation", text:"No equivalent exists anywhere in Medellín — strong first-mover differentiation opportunity in the sober-curious and conscious wellness market"},
+          {theme:"Strict dietary needs", text:"Laurel spends ~1.2M COP/month on health food delivery (Avocalia, Smadge via Rappi) and eats strict paleo for Hashimoto’s. She needs dietary icons, substitution options, and lots of vegetables — the menu has to work for her or she stays home"},
+          {theme:"Dwell-time driver", text:"Andrew loved the bar at 108 Yoga: ‘Coffee, green juice, protein shakes — a reason to stay after class.’ The bar is what extends dwell time and makes the visit feel complete"},
+          {theme:"Ceremonial programming synergy", text:"Juliana is a medicine keeper (cacao, mushrooms) and would align ceremonial cacao offerings with the herbal bar if the venue’s energy is right — programming + supply-side synergy"}
         ],
         next:"Define drink menu with herbalist — Valentina is the contact. Anchor: cacao, adaptogens, functional elixirs." }
     ],
@@ -1434,18 +1436,18 @@ const PRODUCT_PRIORITIES = [
       { feature:"Fast, frictionless ordering (no WhatsApp, no long waits)", count:3, total:9,
         who:["Adam","Alex","Juan Pablo"],
         gaps:[
-          "Adam on Reset: ‘I have to text them every single time on WhatsApp. 95% of the time that I request a service, it’s not available.’ This is how he feels about WhatsApp-driven anything — a hard no",
-          "Adam orders double Rappi deliveries so he doesn’t have to order again. The bar is high: venue food must beat Rappi in speed and zero-effort, not just match on quality",
-          "Alex: menu should have a short list of reliable standbys — not 30-item complexity that adds a decision to a post-workout visit",
-          "Bureaucratic menus, long waits, and table service for a post-workout meal reduce return visits. People come to recover, not to navigate a dining experience"
+          {theme:"WhatsApp ordering is a hard no", text:"Adam on Reset: ‘I have to text them every single time on WhatsApp. 95% of the time that I request a service, it’s not available.’ This is how he feels about WhatsApp-driven anything — a hard no"},
+          {theme:"Has to beat Rappi", text:"Adam orders double Rappi deliveries so he doesn’t have to order again. The bar is high: venue food must beat Rappi in speed and zero-effort, not just match on quality"},
+          {theme:"Menu simplicity", text:"Alex: menu should have a short list of reliable standbys — not 30-item complexity that adds a decision to a post-workout visit"},
+          {theme:"Experience design principle", text:"Bureaucratic menus, long waits, and table service for a post-workout meal reduce return visits. People come to recover, not to navigate a dining experience"}
         ],
         next:null },
       { feature:"Day-long menu (morning coffee through evening dinner)", count:2, total:9,
         who:["Sebastian","Alex"],
         gaps:[
-          "Sebastian: ‘If I could go there, eat dinner, and then sauna — if there’s a reason to stay before and after, then I’ll do it.’ He comes to Rivertown every morning for coffee — that daily anchor is what makes it his third home",
-          "Alex’s ideal visit: arrive, eat, sauna, cowork, eat again, leave. The membership only makes sense if he can spend 5+ hours there — a single-use venue doesn’t justify the cost",
-          "Sebastian’s Rivertown routine is 4x/week afternoons. If Varé replaces Rivertown, it needs morning coffee + afternoon work + evening sauna — a full-day arc, not a drop-in"
+          {theme:"Daily anchor ritual", text:"Sebastian: ‘If I could go there, eat dinner, and then sauna — if there’s a reason to stay before and after, then I’ll do it.’ He comes to Rivertown every morning for coffee — that daily anchor is what makes it his third home"},
+          {theme:"Daily anchor ritual", text:"Sebastian’s Rivertown routine is 4x/week afternoons. If Varé replaces Rivertown, it needs morning coffee + afternoon work + evening sauna — a full-day arc, not a drop-in"},
+          {theme:"All-day visit model", text:"Alex’s ideal visit: arrive, eat, sauna, cowork, eat again, leave. The membership only makes sense if he can spend 5+ hours there — a single-use venue doesn’t justify the cost"}
         ],
         next:null }
     ],
@@ -1453,8 +1455,8 @@ const PRODUCT_PRIORITIES = [
       { feature:"Post-workout shakes / protein smoothies", count:2, total:9,
         who:["Alex","Juan Pablo"],
         gaps:[
-          "Alex: ‘Healthy caffeinated shake preferred over a croissant’ — something with protein + caffeine post-workout, not a pastry or a juice",
-          "Juan Pablo’s gym routine (SmartFit 3–4x/week) creates a natural post-workout hunger window — a simple high-protein shake captures this without a full kitchen order"
+          {theme:"Post-workout capture window", text:"Alex: ‘Healthy caffeinated shake preferred over a croissant’ — something with protein + caffeine post-workout, not a pastry or a juice"},
+          {theme:"Post-workout capture window", text:"Juan Pablo’s gym routine (SmartFit 3–4x/week) creates a natural post-workout hunger window — a simple high-protein shake captures this without a full kitchen order"}
         ],
         next:null }
     ]
@@ -1465,21 +1467,21 @@ const PRODUCT_PRIORITIES = [
       { feature:"Regular community programming (weekly cadence)", count:6, total:9,
         who:["Andrew","Alex","Laurel","Angie","Juan Pablo","Adam"],
         gaps:[
-          "Andrew wants weekly workshops aligned with the health/wellness avatar. Community + accountability is as important as the physical amenities — he specifically mentions a men’s group hybrid space",
-          "Alex hosts reading club, men’s group, and circle of words: ‘The ability to book five or six people or even ten into an activity — some way that I can keep my pod together.’ Programming enables this",
-          "Laurel hosts breathwork, hypnosis, cacao ceremonies, and ecstatic dance almost every week. Wants ‘wood floors, 15–25 capacity, staff on-site for setup and door, no surprise cleaning fees’ — free booking slots in membership would close her immediately",
-          "Angie always closes yoga class with 10–15 min sound healing. Wants to host themed events (DJ nights, breathwork, collabs with content creators) — Nordica allows this flexibly, SaunaSpace less so",
-          "Adam: ‘Goes to entrepreneur meetups and real estate events but admits he gets lazy. A compelling topic — learning + business angle — would override low energy and get him out of his apartment’",
-          "Juan: ‘People in Colombia really enjoy when any event is free and it is easy to access — it’s very massive that they attend.’ Free events are the proven local market entry point, not discounted memberships",
-          "Isabella: ‘En Medellín no existen lugares que piensen en comunidad. Existen restaurantes, discotecas, clubs, pero nada está pensado en integrar gente alrededor de conversación.’ Varé is the category answer"
+          {theme:"Accountability & community", text:"Andrew wants weekly workshops aligned with the health/wellness avatar. Community + accountability is as important as the physical amenities — he specifically mentions a men’s group hybrid space"},
+          {theme:"Accountability & community", text:"Alex hosts reading club, men’s group, and circle of words: ‘The ability to book five or six people or even ten into an activity — some way that I can keep my pod together.’ Programming enables this"},
+          {theme:"Instructor programming supply", text:"Laurel hosts breathwork, hypnosis, cacao ceremonies, and ecstatic dance almost every week. Wants ‘wood floors, 15–25 capacity, staff on-site for setup and door, no surprise cleaning fees’ — free booking slots in membership would close her immediately"},
+          {theme:"Instructor programming supply", text:"Angie always closes yoga class with 10–15 min sound healing. Wants to host themed events (DJ nights, breathwork, collabs with content creators) — Nordica allows this flexibly, SaunaSpace less so"},
+          {theme:"Low-activation draw", text:"Adam: ‘Goes to entrepreneur meetups and real estate events but admits he gets lazy. A compelling topic — learning + business angle — would override low energy and get him out of his apartment’"},
+          {theme:"Local market entry", text:"Juan: ‘People in Colombia really enjoy when any event is free and it is easy to access — it’s very massive that they attend.’ Free events are the proven local market entry point, not discounted memberships"},
+          {theme:"Category gap in Medellín", text:"Isabella: ‘En Medellín no existen lugares que piensen en comunidad. Existen restaurantes, discotecas, clubs, pero nada está pensado en integrar gente alrededor de conversación.’ Varé is the category answer"}
         ],
         next:"Build monthly event calendar before opening day. Weekly cadence from day one." },
       { feature:"Guest + group-friendly access policy", count:3, total:9,
         who:["Alex","Adam","Juan Pablo"],
         gaps:[
-          "Alex: ‘Reset caps the same guest once every 6 months.’ Hard no for someone who brings 5–10 people. Soho House model is the ask: one guest per visit, no guest-per-lifetime cap",
-          "Adam: needs membership freeze for travel periods (goes back to the U.S. for months) and couple/family pricing — a rigid individual-only policy would lose him",
-          "Juan’s Colombian friends self-exclude before they even visit, calling Nordica ‘a dollar price.’ They need a free or guest first experience inside the space before they’ll consider paying — the guest policy must enable this bridge"
+          {theme:"Guest cap frustration", text:"Alex: ‘Reset caps the same guest once every 6 months.’ Hard no for someone who brings 5–10 people. Soho House model is the ask: one guest per visit, no guest-per-lifetime cap"},
+          {theme:"Travel flexibility needs", text:"Adam: needs membership freeze for travel periods (goes back to the U.S. for months) and couple/family pricing — a rigid individual-only policy would lose him"},
+          {theme:"Local market bridge", text:"Juan’s Colombian friends self-exclude before they even visit, calling Nordica ‘a dollar price.’ They need a free or guest first experience inside the space before they’ll consider paying — the guest policy must enable this bridge"}
         ],
         next:"Define guest policy now. Soho House model: one guest per visit, no cap. Freeze option for travel." }
     ],
@@ -1487,17 +1489,17 @@ const PRODUCT_PRIORITIES = [
       { feature:"Pod / group seating zones (visual separation, not a private room)", count:2, total:9,
         who:["Alex","Adam"],
         gaps:[
-          "Alex: ‘Groups of 5–10 get scattered in most venues. Needs a zone where his pod stays together — not a private room, just enough visual and acoustic separation to feel in a bubble’",
-          "Adam explicitly called out outdoor terrace and natural light as major motivators: ‘Open roof, plants, high ceilings.’ Cited Hardin at Envigado Mall as the gold standard feel. The terrace doubles as a natural pod zone",
-          "Pod zones need movable cushions and flexible seating — reading club, men’s group, and circle of words all require circle or small-group arrangements, not fixed cafe tables"
+          {theme:"Small group cohesion", text:"Alex: ‘Groups of 5–10 get scattered in most venues. Needs a zone where his pod stays together — not a private room, just enough visual and acoustic separation to feel in a bubble’"},
+          {theme:"Outdoor & natural light", text:"Adam explicitly called out outdoor terrace and natural light as major motivators: ‘Open roof, plants, high ceilings.’ Cited Hardin at Envigado Mall as the gold standard feel. The terrace doubles as a natural pod zone"},
+          {theme:"Flexible furniture configuration", text:"Pod zones need movable cushions and flexible seating — reading club, men’s group, and circle of words all require circle or small-group arrangements, not fixed cafe tables"}
         ],
         next:null },
       { feature:"Themed signature events (DJ + breathwork, speaker series, curated evenings)", count:2, total:9,
         who:["Angie","Adam"],
         gaps:[
-          "Angie runs DJ + breathwork combo events at Nordica: ‘these fill classes consistently.’ This is a proven format she owns and would bring to Varé if the space supports it",
-          "Adam attends for ‘learning and business angle’ — a monthly speaker series on health, entrepreneurship, or real estate would override his low activation energy consistently",
-          "Juliana ran sound healing workshops at Smash and would bring her full repertoire (yoga + sound healing + cacao) if the venue supports instructor creative freedom — programming and instructor lineup are the same product"
+          {theme:"Proven instructor formats", text:"Angie runs DJ + breathwork combo events at Nordica: ‘these fill classes consistently.’ This is a proven format she owns and would bring to Varé if the space supports it"},
+          {theme:"Proven instructor formats", text:"Juliana ran sound healing workshops at Smash and would bring her full repertoire (yoga + sound healing + cacao) if the venue supports instructor creative freedom — programming and instructor lineup are the same product"},
+          {theme:"Business & learning angle", text:"Adam attends for ‘learning and business angle’ — a monthly speaker series on health, entrepreneurship, or real estate would override his low activation energy consistently"}
         ],
         next:null }
     ],
@@ -1505,9 +1507,9 @@ const PRODUCT_PRIORITIES = [
       { feature:"Free intro events for local Colombian market", count:1, total:9,
         who:["Juan Pablo"],
         gaps:[
-          "Juan: ‘People in Colombia really enjoy when any event is free and it is easy to access — it’s very massive that they attend.’ This is observed social behavior across his entire local network, not just an opinion",
-          "The perception barrier is real: his friends call Nordica ‘a dollar price’ and opt out before visiting. A free breathwork session or free trial sauna morning reframes the whole perception",
-          "Once they experience the space, conversion is high: the barrier is the first step, not the price point. Free events are a customer acquisition strategy, not a giveaway"
+          {theme:"Colombian market behavior", text:"Juan: ‘People in Colombia really enjoy when any event is free and it is easy to access — it’s very massive that they attend.’ This is observed social behavior across his entire local network, not just an opinion"},
+          {theme:"Price perception barrier", text:"The perception barrier is real: his friends call Nordica ‘a dollar price’ and opt out before visiting. A free breathwork session or free trial sauna morning reframes the whole perception"},
+          {theme:"Acquisition strategy", text:"Once they experience the space, conversion is high: the barrier is the first step, not the price point. Free events are a customer acquisition strategy, not a giveaway"}
         ],
         next:"Plan 2–3 free launch events — target TMRC run club and Medellín wellness communities" }
     ]
@@ -1518,9 +1520,9 @@ const PRODUCT_PRIORITIES = [
       { feature:"Reliable wifi + guaranteed work seating", count:2, total:9,
         who:["Sebastian","Alex"],
         gaps:[
-          "Sebastian: ‘I come to Rivertown every single morning for a coffee. Everyone here knows my name. I come to work at least four times a week — it’s my third home.’ Varé has to replicate this daily-anchor feeling, not just offer a table",
-          "Sebastian needs a guaranteed seat, not ‘probably available.’ If he risks arriving and having nowhere to sit, he won’t make it his primary work spot — the guarantee is the pitch",
-          "Alex spends ~600k/mo across 3 different cafes weekly (Kenwa, Pergamino, etc.): ‘If all or most of this was in one place, I would go there two or three times a week and be willing to pay for it.’ He would fully consolidate"
+          {theme:"Third-home ritual to replicate", text:"Sebastian: ‘I come to Rivertown every single morning for a coffee. Everyone here knows my name. I come to work at least four times a week — it’s my third home.’ Varé has to replicate this daily-anchor feeling, not just offer a table"},
+          {theme:"Third-home ritual to replicate", text:"Sebastian needs a guaranteed seat, not ‘probably available.’ If he risks arriving and having nowhere to sit, he won’t make it his primary work spot — the guarantee is the pitch"},
+          {theme:"Cafe spend consolidation", text:"Alex spends ~600k/mo across 3 different cafes weekly (Kenwa, Pergamino, etc.): ‘If all or most of this was in one place, I would go there two or three times a week and be willing to pay for it.’ He would fully consolidate"}
         ],
         next:null }
     ],
@@ -1528,9 +1530,9 @@ const PRODUCT_PRIORITIES = [
       { feature:"Quiet zones / acoustic separation from social areas", count:1, total:9,
         who:["Sebastian"],
         gaps:[
-          "Sebastian is introverted and specifically avoids crowded, loud environments — he left SmartFit (‘too hot and packed’) and skips run club when his social battery is low",
-          "Silent sauna was his strongest reaction in the whole call: ‘If Nordica said hey, for 4 to 5 on Wednesdays we’re doing silent sauna, I’d be like yes.’ Quiet hours as a product feature applies to coworking too — not just recovery",
-          "The third-home feeling he gets from Rivertown is about familiarity and calm — not stimulation. Open-plan noise destroys the thing he’s paying for"
+          {theme:"Introvert environment needs", text:"Sebastian is introverted and specifically avoids crowded, loud environments — he left SmartFit (‘too hot and packed’) and skips run club when his social battery is low"},
+          {theme:"Quiet as a product feature", text:"Silent sauna was his strongest reaction in the whole call: ‘If Nordica said hey, for 4 to 5 on Wednesdays we’re doing silent sauna, I’d be like yes.’ Quiet hours as a product feature applies to coworking too — not just recovery"},
+          {theme:"Calm is the value proposition", text:"The third-home feeling he gets from Rivertown is about familiarity and calm — not stimulation. Open-plan noise destroys the thing he’s paying for"}
         ],
         next:null }
     ],
@@ -1538,8 +1540,8 @@ const PRODUCT_PRIORITIES = [
       { feature:"Day pass / drop-in access (no full membership required)", count:1, total:9,
         who:["Sebastian"],
         gaps:[
-          "Sebastian doesn’t want to commit to a full founding membership just for coworking — he’d use a day pass as a bridge: cowork daily first, then upgrade when the recovery stack earns his full membership",
-          "The day pass is also the trial mechanism for people outside his Laureles bubble — it lowers the risk of the first visit before a membership commitment makes sense"
+          {theme:"Membership entry ramp", text:"Sebastian doesn’t want to commit to a full founding membership just for coworking — he’d use a day pass as a bridge: cowork daily first, then upgrade when the recovery stack earns his full membership"},
+          {theme:"Membership entry ramp", text:"The day pass is also the trial mechanism for people outside his Laureles bubble — it lowers the risk of the first visit before a membership commitment makes sense"}
         ],
         next:null }
     ]
@@ -1550,17 +1552,17 @@ const PRODUCT_PRIORITIES = [
       { feature:"Non-judgmental, comfortable atmosphere", count:3, total:11,
         who:["Adam Anschel","Juliana Trujillo","Sebastian Krestin"],
         gaps:[
-          "Adam has NEVER used a cold plunge or sauna because of body image: 'I don't want to be walking around in a bathing suit — I want to be in better shape first.' The environment unlocks the behavior, not the price",
-          "Juliana: 'If I could recreate that — even for a stranger — if somebody could feel safe and seen. That's what I would want. Because I don't think we get a lot of those places anymore.'",
-          "Sebastian left SmartFit because it was 'too hot and packed.' The environment IS the product for him — cleanliness, calm, and no crowds are non-negotiable"
+          {theme:"Body image as barrier", text:"Adam has NEVER used a cold plunge or sauna because of body image: ‘I don’t want to be walking around in a bathing suit — I want to be in better shape first.’ The environment unlocks the behavior, not the price"},
+          {theme:"Emotional safety need", text:"Juliana: ‘If I could recreate that — even for a stranger — if somebody could feel safe and seen. That’s what I would want. Because I don’t think we get a lot of those places anymore.’"},
+          {theme:"Environment triggers behavior", text:"Sebastian left SmartFit because it was ‘too hot and packed.’ The environment IS the product for him — cleanliness, calm, and no crowds are non-negotiable"}
         ],
-        next:"Brand promise must lead with this — it's the unlock for multiple high-value segments" },
-      { feature:"The 'third-home' feeling — known, familiar, anchoring", count:3, total:11,
+        next:"Brand promise must lead with this — it’s the unlock for multiple high-value segments" },
+      { feature:"The ‘third-home’ feeling — known, familiar, anchoring", count:3, total:11,
         who:["Sebastian Krestin","Laurel Van Woerkom","Andrew Topping"],
         gaps:[
-          "Sebastian stays at Rivertown because 'everyone knows my name' — recognition and repetition build the third-home feeling, not just amenities. Varé must earn this through staff behavior from day one",
-          "Laurel: 'The moment you walk onto that property, you just feel your nervous system relax.' A well-designed space communicates belonging before anyone speaks",
-          "Andrew wants to replace 3 separate memberships with one — the anchor only works if the space becomes a daily ritual, not just a drop-in option"
+          {theme:"Staff recognition as ritual", text:"Sebastian stays at Rivertown because ‘everyone knows my name’ — recognition and repetition build the third-home feeling, not just amenities. Varé must earn this through staff behavior from day one"},
+          {theme:"Space communicates belonging", text:"Laurel: ‘The moment you walk onto that property, you just feel your nervous system relax.’ A well-designed space communicates belonging before anyone speaks"},
+          {theme:"Single anchor to replace 3 memberships", text:"Andrew wants to replace 3 separate memberships with one — the anchor only works if the space becomes a daily ritual, not just a drop-in option"}
         ],
         next:"Staff training and onboarding ritual are as important as the physical space" }
     ],
@@ -1568,17 +1570,17 @@ const PRODUCT_PRIORITIES = [
       { feature:"Intentional sensory design — scent, sound, light", count:4, total:11,
         who:["Laurel Van Woerkom","Brett Edwards","Adam Anschel","Juliana Trujillo"],
         gaps:[
-          "Laurel explicitly needs 'curated scent + light' — her draws section names this as a secondary requirement alongside therapy room rental",
-          "Brett is hypersensitive to noise and actively petitioned Kin to stop piping music into the gym. Music-free zones are a hard requirement, not a nice-to-have",
-          "Adam cited Hardin at Envigado Mall as the gold standard feel: open roof, plants, high ceilings, natural light — these are design requirements that drove his decision calculus",
-          "Brett: 'I don't want the same energy or light if I'm gonna train vs. if I'm gonna do a cold plunge — the place has to have different contexts.' Zone-specific sensory design"
+          {theme:"Practitioner requirements", text:"Laurel explicitly needs ‘curated scent + light’ — her draws section names this as a secondary requirement alongside therapy room rental"},
+          {theme:"Noise sensitivity", text:"Brett is hypersensitive to noise and actively petitioned Kin to stop piping music into the gym. Music-free zones are a hard requirement, not a nice-to-have"},
+          {theme:"Visual & natural design standards", text:"Adam cited Hardin at Envigado Mall as the gold standard feel: open roof, plants, high ceilings, natural light — these are design requirements that drove his decision calculus"},
+          {theme:"Zone-specific sensory context", text:"Brett: ‘I don’t want the same energy or light if I’m gonna train vs. if I’m gonna do a cold plunge — the place has to have different contexts.’ Zone-specific sensory design"}
         ],
         next:"Sensory design brief needed before interior fit-out decisions are finalized" },
       { feature:"Context switching — different zones feel genuinely different", count:2, total:11,
         who:["Brett Edwards","Alex Salinsky"],
         gaps:[
-          "Brett: 'I don't want the same energy or light if I'm gonna train vs. if I'm gonna do a cold plunge — the place has to have different contexts.' Zoning is experiential, not just spatial",
-          "Alex wants a space he can stay in all day — cowork, eat, train, recover — but only if each context feels intentionally different. A single-mood space breaks the all-day use case"
+          {theme:"Activity-specific atmosphere", text:"Brett: ‘I don’t want the same energy or light if I’m gonna train vs. if I’m gonna do a cold plunge — the place has to have different contexts.’ Zoning is experiential, not just spatial"},
+          {theme:"All-day use case", text:"Alex wants a space he can stay in all day — cowork, eat, train, recover — but only if each context feels intentionally different. A single-mood space breaks the all-day use case"}
         ],
         next:"Architectural brief must specify mood per zone, not just function per zone" }
     ],
@@ -1586,8 +1588,8 @@ const PRODUCT_PRIORITIES = [
       { feature:"Outdoor space, natural light, plants", count:2, total:11,
         who:["Adam Anschel","Andrew Topping"],
         gaps:[
-          "Adam explicitly called out outdoor terrace and natural light as major motivators. Hardin at Envigado Mall was his reference point — open roof, plants, high ceilings",
-          "Andrew's ideal space description included plants and natural materials — the wellness aesthetic has to extend beyond the equipment to the environment itself"
+          {theme:"Design reference", text:"Adam explicitly called out outdoor terrace and natural light as major motivators. Hardin at Envigado Mall was his reference point — open roof, plants, high ceilings"},
+          {theme:"Natural materials aesthetic", text:"Andrew’s ideal space description included plants and natural materials — the wellness aesthetic has to extend beyond the equipment to the environment itself"}
         ],
         next:"Site selection criteria should include natural light and outdoor access as filters" }
     ]
@@ -1598,19 +1600,19 @@ const PRODUCT_PRIORITIES = [
       { feature:"Hosted breathwork, cacao ceremonies & ecstatic dance", count:4, total:11,
         who:["Laurel Van Woerkom","Andrew Topping","Juliana Trujillo","Isabella Wuman"],
         gaps:[
-          "Laurel hosts breathwork, hypnosis, cacao ceremonies, and ecstatic dance almost every week and would bring her full calendar to Varé if the space supports her: 'wood floors, 15–25 capacity, staff on-site for setup and door, no surprise cleaning fees.' Free booking slots in membership would close her immediately",
-          "Andrew specifically wants guided contrast sessions — not solo drop-ins. He's looking for a communal, supported format: 'the contrast-therapy experience should feel led, not left to figure out yourself.' Community programming converts the equipment into an experience",
-          "Juliana ran sound healing workshops at Smash and wants to bring yoga + sound healing + cacao to a venue that gives instructors creative freedom. She's also looking for 50–250 capacity community event space with projector and mic — the event dimension is her #1 requirement",
-          "Isabella is a community builder who explicitly cited Medellín's gap: 'No existen lugares que piensen en comunidad — existen restaurantes, discotecas, clubs, pero nada está pensado en integrar gente alrededor de conversación.' Varé is the category answer"
+          {theme:"Instructor supply side", text:"Laurel hosts breathwork, hypnosis, cacao ceremonies, and ecstatic dance almost every week and would bring her full calendar to Varé if the space supports her: 'wood floors, 15–25 capacity, staff on-site for setup and door, no surprise cleaning fees.' Free booking slots in membership would close her immediately"},
+          {theme:"Guided format over solo drop-in", text:"Andrew specifically wants guided contrast sessions — not solo drop-ins. He's looking for a communal, supported format: 'the contrast-therapy experience should feel led, not left to figure out yourself.' Community programming converts the equipment into an experience"},
+          {theme:"Community event demand", text:"Juliana ran sound healing workshops at Smash and wants to bring yoga + sound healing + cacao to a venue that gives instructors creative freedom. She's also looking for 50–250 capacity community event space with projector and mic — the event dimension is her #1 requirement"},
+          {theme:"Community event demand", text:"Isabella is a community builder who explicitly cited Medellín's gap: 'No existen lugares que piensen en comunidad — existen restaurantes, discotecas, clubs, pero nada está pensado en integrar gente alrededor de conversación.' Varé is the category answer"}
         ],
         next:"Lock in weekly programming slots from day one — breathwork, contrast sessions, cacao. Partner with Laurel and Juliana as anchor instructors." },
       { feature:"Weekly cadence — not ad hoc, not monthly", count:5, total:11,
         who:["Andrew Topping","Alex Salinsky","Laurel Van Woerkom","Angie La Mas Linda","Juan Pablo Madrid"],
         gaps:[
-          "Andrew wants weekly workshops aligned with the health/wellness avatar. Community + accountability is as important as the physical amenities to him — he mentions a men's group hybrid space as a format he'd show up for weekly",
-          "Alex hosts reading club, men's group, and circle of words and wants 'the ability to book 5–6 people or even 10 into an activity — some way I can keep my pod together.' Weekly programming enables and anchors his use of the space",
-          "Angie always closes yoga class with 10–15 min sound healing and wants to host themed events (DJ nights, breathwork, collabs with content creators) — Nordica allows this flexibly, SaunaSpace less so. She'd bring her audience if the event frequency is consistent",
-          "Juan: 'People in Colombia really enjoy when any event is free and it is easy to access — it's very massive that they attend.' A consistent weekly cadence, especially if anchored by a free entry event, is the proven local market entry point"
+          {theme:"Health & accountability overlap", text:"Andrew wants weekly workshops aligned with the health/wellness avatar. Community + accountability is as important as the physical amenities to him — he mentions a men's group hybrid space as a format he'd show up for weekly"},
+          {theme:"Health & accountability overlap", text:"Alex hosts reading club, men's group, and circle of words and wants 'the ability to book 5–6 people or even 10 into an activity — some way I can keep my pod together.' Weekly programming enables and anchors his use of the space"},
+          {theme:"Instructor audience to bring", text:"Angie always closes yoga class with 10–15 min sound healing and wants to host themed events (DJ nights, breathwork, collabs with content creators) — Nordica allows this flexibly, SaunaSpace less so. She'd bring her audience if the event frequency is consistent"},
+          {theme:"Local market access", text:"Juan: 'People in Colombia really enjoy when any event is free and it is easy to access — it's very massive that they attend.' A consistent weekly cadence, especially if anchored by a free entry event, is the proven local market entry point"}
         ],
         next:"Build monthly event calendar before opening day. Commit to a weekly cadence and publish it publicly — not just for members." }
     ],
@@ -1618,16 +1620,16 @@ const PRODUCT_PRIORITIES = [
       { feature:"Group sauna & contrast-therapy sessions (led format)", count:3, total:11,
         who:["Andrew Topping","Brett Edwards","Adam Anschel"],
         gaps:[
-          "Andrew wants contrast therapy to feel guided, not solo. A weekly group session — led breathing rounds, timed protocols, facilitator holding the room — turns the sauna + cold plunge from equipment into a ritual",
-          "Brett wants zone-specific experiences: 'I don't want the same energy or light if I'm gonna train vs. if I'm gonna do a cold plunge.' A facilitated group session creates the contextual shift he's looking for",
-          "Adam has never used a cold plunge or sauna due to body image ('I don't want to be walking around in a bathing suit'). A structured group format with clear protocol lowers the self-consciousness barrier significantly versus open drop-in"
+          {theme:"Guided format preference", text:"Andrew wants contrast therapy to feel guided, not solo. A weekly group session — led breathing rounds, timed protocols, facilitator holding the room — turns the sauna + cold plunge from equipment into a ritual"},
+          {theme:"Zone-specific context", text:"Brett wants zone-specific experiences: 'I don't want the same energy or light if I'm gonna train vs. if I'm gonna do a cold plunge.' A facilitated group session creates the contextual shift he's looking for"},
+          {theme:"Body image barrier reduction", text:"Adam has never used a cold plunge or sauna due to body image ('I don't want to be walking around in a bathing suit'). A structured group format with clear protocol lowers the self-consciousness barrier significantly versus open drop-in"}
         ],
         next:"Design a guided group contrast session as a flagship weekly event — 45 min, max 12 participants, facilitator led." },
       { feature:"Themed signature events (DJ + breathwork, speaker series)", count:2, total:11,
         who:["Angie La Mas Linda","Adam Anschel"],
         gaps:[
-          "Angie runs DJ + breathwork combo events at Nordica: 'these fill classes consistently.' This is a proven format she owns and would bring to Varé if the space and event infrastructure support it",
-          "Adam attends for 'learning and business angle' — a monthly speaker series on health, entrepreneurship, or real estate would override his low activation energy and get him to events he wouldn't otherwise attend"
+          {theme:"Proven formats to bring", text:"Angie runs DJ + breathwork combo events at Nordica: 'these fill classes consistently.' This is a proven format she owns and would bring to Varé if the space and event infrastructure support it"},
+          {theme:"Learning & business angle", text:"Adam attends for 'learning and business angle' — a monthly speaker series on health, entrepreneurship, or real estate would override his low activation energy and get him to events he wouldn't otherwise attend"}
         ],
         next:null }
     ],
@@ -1635,8 +1637,8 @@ const PRODUCT_PRIORITIES = [
       { feature:"Free intro events for Colombian market entry", count:1, total:11,
         who:["Juan Pablo Madrid"],
         gaps:[
-          "Juan: 'People in Colombia really enjoy when any event is free and it is easy to access.' His friends opt out before visiting because they call Nordica 'a dollar price' — the free first experience breaks the perception barrier",
-          "Once inside the space, conversion is high. Free events are a customer acquisition strategy, not a giveaway. Plan 2–3 free launch events targeting TMRC run club and Medellín wellness communities"
+          {theme:"Market behavior observation", text:"Juan: 'People in Colombia really enjoy when any event is free and it is easy to access.' His friends opt out before visiting because they call Nordica 'a dollar price' — the free first experience breaks the perception barrier"},
+          {theme:"Conversion strategy", text:"Once inside the space, conversion is high. Free events are a customer acquisition strategy, not a giveaway. Plan 2–3 free launch events targeting TMRC run club and Medellín wellness communities"}
         ],
         next:"Plan 2–3 free launch events. Target TMRC run club, Medellín breathwork community, and Juliana's and Angie's existing audiences." }
     ]
@@ -1647,17 +1649,17 @@ const PRODUCT_PRIORITIES = [
       { feature:"On-site massage therapist (bookable through membership)", count:4, total:11,
         who:["Andrew Topping","Adam Anschel","Laurel Van Woerkom","Brett Edwards"],
         gaps:[
-          "Andrew currently pays ~160,000 COP/month for a private masseuse separately from all his other memberships. He explicitly wants this under one roof — an on-site massage therapist bundled into or discounted via membership is a direct consolidation play for him",
-          "Adam wants practitioners on-site for recovery support — he names massage as a priority alongside cold plunge and sauna access. Bundling or easy booking makes the difference between 'I'll do it later' and 'I'll book it now'",
-          "Laurel IS a practitioner (hypnotherapist) and wants to rent space — she sees the practitioner model from both sides. Her presence would anchor the practitioner roster and signal legitimacy to others",
-          "Brett is highly body-aware and recovery-oriented. Access to a skilled massage therapist post-training aligns with his existing behavior and would deepen his weekly use of the space"
+          {theme:"Active spend to consolidate", text:"Andrew currently pays ~160,000 COP/month for a private masseuse separately from all his other memberships. He explicitly wants this under one roof — an on-site massage therapist bundled into or discounted via membership is a direct consolidation play for him"},
+          {theme:"Recovery stack integration", text:"Adam wants practitioners on-site for recovery support — he names massage as a priority alongside cold plunge and sauna access. Bundling or easy booking makes the difference between 'I'll do it later' and 'I'll book it now'"},
+          {theme:"Recovery stack integration", text:"Brett is highly body-aware and recovery-oriented. Access to a skilled massage therapist post-training aligns with his existing behavior and would deepen his weekly use of the space"},
+          {theme:"Supply-side anchor", text:"Laurel IS a practitioner (hypnotherapist) and wants to rent space — she sees the practitioner model from both sides. Her presence would anchor the practitioner roster and signal legitimacy to others"}
         ],
         next:"Identify 2–3 anchor practitioners (massage, osteopath, hypnotherapy) and negotiate space-rental terms before opening. Laurel Van Woerkom is the first call." },
       { feature:"Practitioner space rental (therapy rooms, predictable scheduling)", count:2, total:11,
         who:["Laurel Van Woerkom","Juliana Trujillo"],
         gaps:[
-          "Laurel needs 'a therapy room with no surprise cleaning fees and predictable slot availability.' She's comparing Varé against Nordica and SaunaSpace on exactly these terms — clear pricing and reliable booking are the decision criteria",
-          "Juliana brings yoga, sound healing, and cacao ceremonies and needs instructor creative freedom alongside a proper room setup. The practitioner rental model (room + equipment + slot) matches her operating model exactly"
+          {theme:"Booking & space requirements", text:"Laurel needs 'a therapy room with no surprise cleaning fees and predictable slot availability.' She's comparing Varé against Nordica and SaunaSpace on exactly these terms — clear pricing and reliable booking are the decision criteria"},
+          {theme:"Instructor operating model", text:"Juliana brings yoga, sound healing, and cacao ceremonies and needs instructor creative freedom alongside a proper room setup. The practitioner rental model (room + equipment + slot) matches her operating model exactly"}
         ],
         next:"Build a simple practitioner rate card: half-day, full-day, recurring weekly. Publish before opening." }
     ],
@@ -1665,15 +1667,15 @@ const PRODUCT_PRIORITIES = [
       { feature:"Osteopath and chiropractor on-site", count:2, total:11,
         who:["Andrew Topping","Adam Anschel"],
         gaps:[
-          "Andrew explicitly lists osteopath and chiropractor as services he wants at his ideal venue — he's currently accessing these separately and would consolidate if they were under one roof",
-          "Adam cites recovery practitioners generally as part of his ideal stack alongside the physical recovery equipment. On-site access lowers friction and increases follow-through"
+          {theme:"Recovery stack consolidation", text:"Andrew explicitly lists osteopath and chiropractor as services he wants at his ideal venue — he's currently accessing these separately and would consolidate if they were under one roof"},
+          {theme:"Recovery stack consolidation", text:"Adam cites recovery practitioners generally as part of his ideal stack alongside the physical recovery equipment. On-site access lowers friction and increases follow-through"}
         ],
         next:"Phase 2 practitioner expansion: recruit osteopath and chiropractor to the roster after massage and hypnotherapy anchor the model." },
       { feature:"Hypnotherapy & mindset sessions", count:2, total:11,
         who:["Laurel Van Woerkom","Adam Anschel"],
         gaps:[
-          "Laurel is a hypnotherapist by practice — she wants to rent space and would use the venue as her primary practice location if the booking and room terms work. This is a zero-recruitment win",
-          "Adam is interested in mental reset modalities alongside physical recovery. A short hypnotherapy or mindset session appended to a contrast therapy session fits his 'full hour of reset' use case"
+          {theme:"Supply side — zero recruitment needed", text:"Laurel is a hypnotherapist by practice — she wants to rent space and would use the venue as her primary practice location if the booking and room terms work. This is a zero-recruitment win"},
+          {theme:"Member use case", text:"Adam is interested in mental reset modalities alongside physical recovery. A short hypnotherapy or mindset session appended to a contrast therapy session fits his 'full hour of reset' use case"}
         ],
         next:"Confirm Laurel's interest in a recurring weekly slot as anchor hypnotherapist. Build her schedule into the practitioner calendar from launch." }
     ],
@@ -1681,13 +1683,27 @@ const PRODUCT_PRIORITIES = [
       { feature:"Nutritionist or supplement consultation on-site", count:1, total:11,
         who:["Brett Edwards"],
         gaps:[
-          "Brett is deep into nutrition and supplementation protocol. On-site access to a nutritionist for a monthly or quarterly consult fits his optimization mindset and would be a differentiating service versus any competitor offering",
-          "This is a nice-to-have — the recovery and bodywork practitioner stack is the priority. Nutritionist is a phase 2 or 3 addition once the core practitioner model is established"
+          {theme:"Optimization-mindset demand", text:"Brett is deep into nutrition and supplementation protocol. On-site access to a nutritionist for a monthly or quarterly consult fits his optimization mindset and would be a differentiating service versus any competitor offering"},
+          {theme:"Phase 2 positioning", text:"This is a nice-to-have — the recovery and bodywork practitioner stack is the priority. Nutritionist is a phase 2 or 3 addition once the core practitioner model is established"}
         ],
         next:"Note for phase 2 planning. Not required for launch." }
     ]
   }
 ];
+
+function renderFeatureGaps(gaps){
+  if(!gaps.length) return '';
+  if(typeof gaps[0]==='string'){
+    return `<div class="product-feature-gaps">${gaps.map(g=>`<div class="product-feature-gap">${g}</div>`).join('')}</div>`;
+  }
+  const groups=[];
+  gaps.forEach(g=>{
+    const last=groups[groups.length-1];
+    if(last && last.theme===g.theme) last.texts.push(g.text);
+    else groups.push({theme:g.theme, texts:[g.text]});
+  });
+  return `<div class="product-feature-gaps">${groups.map(gr=>`<div class="product-feature-theme-label">${gr.theme}</div>${gr.texts.map(t=>`<div class="product-feature-gap">${t}</div>`).join('')}`).join('')}</div>`;
+}
 
 function renderProductRoadmap(){
   const colDefs = [
@@ -1715,7 +1731,7 @@ function renderProductRoadmap(){
                 <div class="product-feature-detail">
                   <span class="product-feature-count">${f.count} of ${f.total} people mentioned this</span>
                   <div class="product-feature-who">${f.who.map(n=>`<span class="product-feature-who-chip">${n}</span>`).join('')}</div>
-                  ${f.gaps.length?`<div class="product-feature-gaps">${f.gaps.map(g=>`<div class="product-feature-gap">${g}</div>`).join('')}</div>`:''}
+                  ${f.gaps.length?renderFeatureGaps(f.gaps):''}
                   ${f.next?`<div class="product-feature-next">→ ${f.next}</div>`:''}
                 </div>
               </div>
