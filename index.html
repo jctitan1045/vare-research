@@ -1970,7 +1970,7 @@ function renderInsightsCharts(){
   (function() {
     const rankCount = {};
     p.forEach(x => x.rankingTop3.forEach(r => { rankCount[r]=(rankCount[r]||0)+1; }));
-    const data = Object.entries(rankCount).sort((a,b)=>b[1]-a[1]);
+    const data = Object.entries(rankCount).sort((a,b)=>b[1]-a[1]).filter(([,v])=>v>=3);
     const max = data[0][1];
     const wrap = document.getElementById('rankingChart');
     wrap.style.display = 'flex';
