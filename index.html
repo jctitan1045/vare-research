@@ -224,6 +224,8 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .product-feature-next { display:inline-flex; font-size:10px; font-weight:600; color:#1A5C38; background:#E4F5EC; border:1px solid #B8D9C4; border-radius:6px; padding:3px 8px; margin-top:10px; line-height:1.4; }
 
 /* ── QUOTE WALL ── */
+.quote-theme-section { margin-bottom:32px; }
+.quote-theme-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.14em; color:var(--cream-bright); opacity:0.65; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid rgba(200,212,206,0.2); }
 .quote-wall-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
 .quote-wall-card { background:var(--white); border:1px solid var(--border); border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:10px; }
 .quote-wall-text { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; color:var(--dark); line-height:1.65; flex:1; }
@@ -553,9 +555,9 @@ const DATA = { participants: [
       {name:"IV vitamin therapy", note:"Periodic offering — someone who comes in weekly. Optional, not core."}
     ],
     quotes:[
-      "I want to go because I'm just going to see people I know. I can train, shower, do a sauna and ice bath, work after, get good food. I could spend the whole day there without going out of my way.",
-      "She'd say 'Hola Andrew, hola Chica' — and just really kind. She was one of the things I missed the most about being here. Going to yoga and seeing her with just a big smile every day.",
-      "I'd have a boutique gym, high-end with functional training. A really awesome yoga studio. Definitely sauna, ice bath. Clean food with macros calculated so if a guy's there he could just delegate his whole food prep to that menu."
+      {theme:"Community & belonging", text:"I want to go because I'm just going to see people I know. I can train, shower, do a sauna and ice bath, work after, get good food. I could spend the whole day there without going out of my way."},
+      {theme:"Community & belonging", text:"She'd say 'Hola Andrew, hola Chica' — and just really kind. She was one of the things I missed the most about being here. Going to yoga and seeing her with just a big smile every day."},
+      {theme:"All-in-one vision", text:"I'd have a boutique gym, high-end with functional training. A really awesome yoga studio. Definitely sauna, ice bath. Clean food with macros calculated so if a guy's there he could just delegate his whole food prep to that menu."}
     ],
     gaps:[
       {tag:"Quality",text:"Boutique gym + yoga (not SmartFit volume) — left BodyTech for being overpriced for the same thing."},
@@ -597,9 +599,9 @@ const DATA = { participants: [
       {name:"Massage", note:"Mentioned as a perk that would justify pushing from 300k to 350–375k/mo tier."}
     ],
     quotes:[
-      "I come to Rivertown every single morning for a coffee. Everyone here knows my name. And I come to work at least four times a week — it's my third home.",
-      "If I could go there, eat dinner, and then sauna — if there's a reason to stay before and after, then I'll do it.",
-      "Silent sauna — if Nordica said hey, for 4 to 5 on Wednesdays we're doing silent sauna, I'd be like [yes]."
+      {theme:"Community & belonging", text:"I come to Rivertown every single morning for a coffee. Everyone here knows my name. And I come to work at least four times a week — it's my third home."},
+      {theme:"All-in-one vision", text:"If I could go there, eat dinner, and then sauna — if there's a reason to stay before and after, then I'll do it."},
+      {theme:"Recovery & reset", text:"Silent sauna — if Nordica said hey, for 4 to 5 on Wednesdays we're doing silent sauna, I'd be like [yes]."}
     ],
     gaps:[
       {tag:"Walkability", text:"Won't deal with traffic to get there. Kin (Poblado) fell off his radar the moment he moved to Laureles. The place has to be in his neighborhood."},
@@ -641,9 +643,9 @@ const DATA = { participants: [
       {name:"Community events", note:"Drawn to authentic, heart-centered gatherings. Referenced Jordan's house event as the energy archetype. Not interested in bars or superficial networking."}
     ],
     quotes:[
-      "If I could recreate that — even for a stranger — if somebody could feel safe and seen. That's what I would want. Because I don't think we get a lot of those places anymore.",
-      "Smash was my happy place. It was my home. It was my second home. Like, I could take three classes in one day and I would not be tired.",
-      "I just really believe in kindness and respect. Everything can't be like, how am I going to make money off this person? That's my philosophy in life."
+      {theme:"Space feel & atmosphere", text:"If I could recreate that — even for a stranger — if somebody could feel safe and seen. That's what I would want. Because I don't think we get a lot of those places anymore."},
+      {theme:"Movement & wellness identity", text:"Smash was my happy place. It was my home. It was my second home. Like, I could take three classes in one day and I would not be tired."},
+      {theme:"Movement & wellness identity", text:"I just really believe in kindness and respect. Everything can't be like, how am I going to make money off this person? That's my philosophy in life."}
     ],
     gaps:[
       {tag:"Instructor pay", text:"Nobody in Colombia pays instructors enough. Base rate + bonuses + transport stipend + free classes + food on teaching days would be a category-defining offer."},
@@ -684,9 +686,9 @@ const DATA = { participants: [
       {name:"Sauna", note:"Exploring Open Sauna partnership. Capacity constraint (25 max) is a business problem for her events, but personal interest is there."}
     ],
     quotes:[
-      "En Medellín no existen lugares que piensen en comunidad. Existen restaurantes, discotecas, clubs, pero nada está pensado en integrar gente alrededor de conversación.",
-      "Conseguir espacios pensados en comunidad es imposible. Si tuvieras esa varita mágica — un espacio que se pueda convertir entre un café para coworking y un salón de eventos.",
-      "Ellos siguen apostando por la marca que la gente vaya, tome la foto, la suba en Instagram — una experiencia instagrameable, pero no una experiencia más allá de eso."
+      {theme:"The gap in Medellín", text:"En Medellín no existen lugares que piensen en comunidad. Existen restaurantes, discotecas, clubs, pero nada está pensado en integrar gente alrededor de conversación."},
+      {theme:"The gap in Medellín", text:"Conseguir espacios pensados en comunidad es imposible. Si tuvieras esa varita mágica — un espacio que se pueda convertir entre un café para coworking y un salón de eventos."},
+      {theme:"The gap in Medellín", text:"Ellos siguen apostando por la marca que la gente vaya, tome la foto, la suba en Instagram — una experiencia instagrameable, pero no una experiencia más allá de eso."}
     ],
     gaps:[
       {tag:"Venue gap", text:"No Medellín space combines aesthetics + 50–250 capacity + projector/mic + fast internet + food. Always one or the other. This is her primary business bottleneck."},
@@ -723,9 +725,9 @@ const DATA = { participants: [
       {name:"Sauna + cold plunge", note:"Loves contrast therapy. Specifically excited about facilitating hypnotherapy sessions inside a sauna — sees it as a unique offering she could bring to the space."}
     ],
     quotes:[
-      "The moment you walk onto that property, you just feel your nervous system relax.",
-      "What is rare to find in Medellín is a venue that has a big enough space where people can move freely — with wood floors, warm, homey, peaceful.",
-      "If it was convenient and it offered all of this, I can see myself going maybe four or five times a week."
+      {theme:"Space feel & atmosphere", text:"The moment you walk onto that property, you just feel your nervous system relax."},
+      {theme:"The gap in Medellín", text:"What is rare to find in Medellín is a venue that has a big enough space where people can move freely — with wood floors, warm, homey, peaceful."},
+      {theme:"All-in-one vision", text:"If it was convenient and it offered all of this, I can see myself going maybe four or five times a week."}
     ],
     gaps:[
       {tag:"Therapy room", text:"No Medellín space has a bookable private therapy room. A quiet room with couch + desk would be a membership-closing offer for her — it's her #1 unmet need as a practitioner."},
@@ -762,9 +764,9 @@ const DATA = { participants: [
       {name:"Healthy food / cafe", note:"Eggs, bacon, salads, soups — baseline clean. Not bread or pastries. Healthy caffeinated shake preferred over a croissant. Not picky but won't order junk."}
     ],
     quotes:[
-      "If I was there like three times a week, hanging out for the whole day — participating in events, connecting with people, contrast therapy — I would probably do 300.",
-      "If all or most of this was in one place, I would go there two or three times a week and be willing to pay for it.",
-      "The ability to book five or six people or even ten into an activity — some way that I can keep my pod together."
+      {theme:"All-in-one vision", text:"If I was there like three times a week, hanging out for the whole day — participating in events, connecting with people, contrast therapy — I would probably do 300."},
+      {theme:"All-in-one vision", text:"If all or most of this was in one place, I would go there two or three times a week and be willing to pay for it."},
+      {theme:"Community & belonging", text:"The ability to book five or six people or even ten into an activity — some way that I can keep my pod together."}
     ],
     gaps:[
       {tag:"Walk-in access", text:"Reset membership goes to waste because booking via WhatsApp bot takes days and slots are already gone. Body Tech was daily because the spa was just there, no booking needed. Frictionless = actual use."},
@@ -801,9 +803,9 @@ const DATA = { participants: [
       {name:"Outdoor space with views", note:"Explicitly called out outdoor terrace and natural light as major motivators. Open roof, plants, high ceilings — cited Hardin at Envigado Mall as the gold standard feel."}
     ],
     quotes:[
-      "If it had like a comfortable kind of mini country club feel, that would be appealing.",
-      "I have to text them every single time on WhatsApp. 95% of the time that I request a service, it's not available. Someone else has booked it.",
-      "I think, to be brutally honest, I don't want to be walking around in a bathing suit — I want to be in better shape. But that's definitely part of it."
+      {theme:"Space feel & atmosphere", text:"If it had like a comfortable kind of mini country club feel, that would be appealing."},
+      {theme:"Barriers & friction", text:"I have to text them every single time on WhatsApp. 95% of the time that I request a service, it's not available. Someone else has booked it."},
+      {theme:"Barriers & friction", text:"I think, to be brutally honest, I don't want to be walking around in a bathing suit — I want to be in better shape. But that's definitely part of it."}
     ],
     gaps:[
       {tag:"Body image barrier", text:"Has never used a cold plunge or sauna because he doesn't want to be shirtless while not at his target fitness. A non-judgmental, comfortable environment is the unlock — not price or location."},
@@ -841,9 +843,9 @@ const DATA = { participants: [
       {name:"Community events & sound healing", note:"Always closes yoga class with 10–15 min sound healing / meditation. Wants space to host themed events (DJ nights, breathwork, collaborations with content creators) — Nordica allows this flexibly."}
     ],
     quotes:[
-      "Toda la comunidad cae sobre mí — yo soy la que tengo que moverlo y llenarlo.",
-      "Me siento como en familia. Cuando voy a Nórdica, los chicos que trabajan allá son súper buenas gentes conmigo.",
-      "Para que me tengo que hacer las cosas fáciles para hacerlo — si yo quiero un gimnasio, voy a buscar el más cerca a mi casa."
+      {theme:"Barriers & friction", text:"Toda la comunidad cae sobre mí — yo soy la que tengo que moverlo y llenarlo."},
+      {theme:"Community & belonging", text:"Me siento como en familia. Cuando voy a Nórdica, los chicos que trabajan allá son súper buenas gentes conmigo."},
+      {theme:"Barriers & friction", text:"Para que me tengo que hacer las cosas fáciles para hacerlo — si yo quiero un gimnasio, voy a buscar el más cerca a mi casa."}
     ],
     gaps:[
       {tag:"Marketing burden", text:"At Nordica 100% of class-filling falls on Angie. She has to do her own Instagram, Luma events, WhatsApp blasts. She finds it difficult, hates it, and it limits her growth. A venue with a marketing team is a direct unlock."},
@@ -882,9 +884,9 @@ const DATA = { participants: [
       {name:"Free intro events for locals", note:"His Colombian friends see places like Nordica as 'dollar prices.' Free events are the proven entry point for the local market — Colombians show up en masse for free, and convert if the experience is good."}
     ],
     quotes:[
-      "For me, movement is life.",
-      "People in Colombia really enjoy when any event is free and it is easy to access — it's very massive that they attend.",
-      "I feel that I really reset. I really take a time to relax. That would be, like, the key."
+      {theme:"Movement & wellness identity", text:"For me, movement is life."},
+      {theme:"Movement & wellness identity", text:"People in Colombia really enjoy when any event is free and it is easy to access — it's very massive that they attend."},
+      {theme:"Recovery & reset", text:"I feel that I really reset. I really take a time to relax. That would be, like, the key."}
     ],
     gaps:[
       {tag:"Location", text:"Nordica is far from the south. Goes only ~1x/month vs. 3x/month at the cheap local sauna that's walking distance. The closer to Envigado/Poblado, the more often he goes — proximity directly drives frequency."},
@@ -923,9 +925,9 @@ const DATA = { participants: [
       {name:"Co-working space", note:"Goes to Moira at Kinn and Pergamino regularly. Would consolidate if venue offered gym + recovery + cowork in one place."}
     ],
     quotes:[
-      "I don't want the same energy or light if I'm gonna train vs. if I'm gonna do a cold plunge or meditation — the place has to have different contexts.",
-      "If I can say this place is like gold in Medellín — you can really reset your mind here, and you can do everything, basically day by day.",
-      "That was the first place where I said, oh my God, you actually can have fun and being just chill, and enjoy your time in a healthy way here."
+      {theme:"Recovery & reset", text:"I don't want the same energy or light if I'm gonna train vs. if I'm gonna do a cold plunge or meditation — the place has to have different contexts."},
+      {theme:"Space feel & atmosphere", text:"If I can say this place is like gold in Medellín — you can really reset your mind here, and you can do everything, basically day by day."},
+      {theme:"Movement & wellness identity", text:"That was the first place where I said, oh my God, you actually can have fun and being just chill, and enjoy your time in a healthy way here."}
     ],
     gaps:[
       {tag:"Double membership",text:"SmartFit (140k) + any separate recovery venue = not sustainable. One membership that combines gym + recovery + food solves the math and eliminates every reason to go elsewhere."},
@@ -965,11 +967,11 @@ const DATA = { participants: [
       {name:"Community events", note:"Wants structured networking among coworkers — not random interruptions but organized opportunities to meet people working on cool things. Also interested in group yoga classes with local teachers."}
     ],
     quotes:[
-      "The one for me is the sensory deprivation thing. Or cryotherapy — I looked into it and couldn't find one.",
-      "It feels like WD-40 in my body when I do it. I would rather have that for an hour than have a massage.",
-      "I'm actually going to start a petition to ask them to not play the spa music — they're literally playing spa music in the gym.",
-      "There's definitely an area where it's just people who want to be silent. Like, there's no talking here.",
-      "You just feel like you're surrounded by a lot of healthy, cool people that want to elevate themselves."
+      {theme:"The gap in Medellín", text:"The one for me is the sensory deprivation thing. Or cryotherapy — I looked into it and couldn't find one."},
+      {theme:"Recovery & reset", text:"It feels like WD-40 in my body when I do it. I would rather have that for an hour than have a massage."},
+      {theme:"Recovery & reset", text:"I'm actually going to start a petition to ask them to not play the spa music — they're literally playing spa music in the gym."},
+      {theme:"Recovery & reset", text:"There's definitely an area where it's just people who want to be silent. Like, there's no talking here."},
+      {theme:"Community & belonging", text:"You just feel like you're surrounded by a lot of healthy, cool people that want to elevate themselves."}
     ],
     gaps:[
       {tag:"Sensory deprivation",text:"Strong demand, zero good options in Medellín. The one above 101 Boxing was too budget and cash-only. A high-quality float tank in a spa-like environment is a first-mover opportunity — and a price driver for him specifically."},
@@ -1745,22 +1747,42 @@ function renderProductRoadmap(){
 }
 
 function renderQuoteWall(){
-  const cards = DATA.participants.flatMap(x=>
-    (x.quotes||[]).slice(0,3).map(q=>({ quote:q, name:x.name, roles:x.roles||[] }))
-  ).filter(c=>c.quote && c.quote.length > 20);
-  document.getElementById('quote-wall').innerHTML = `
-    <div class="quote-wall-grid">
-      ${cards.map(c=>`
-        <div class="quote-wall-card">
-          <div class="quote-wall-text">"${c.quote}"</div>
-          <div>
-            <div class="quote-wall-name">${c.name}</div>
-            <div class="quote-wall-roles">${c.roles.map(r=>roleTag(r)).join('')}</div>
-          </div>
+  const THEME_ORDER = [
+    "Space feel & atmosphere",
+    "The gap in Medellín",
+    "Community & belonging",
+    "Recovery & reset",
+    "All-in-one vision",
+    "Barriers & friction",
+    "Movement & wellness identity"
+  ];
+  const all = DATA.participants.flatMap(x=>
+    (x.quotes||[]).map(q=>({
+      theme: typeof q === 'object' ? q.theme : 'Other',
+      text:  typeof q === 'object' ? q.text  : q,
+      name: x.name, roles: x.roles||[]
+    }))
+  ).filter(c=>c.text && c.text.length > 20);
+  const byTheme = {};
+  all.forEach(c=>{ (byTheme[c.theme]||(byTheme[c.theme]=[])).push(c); });
+  document.getElementById('quote-wall').innerHTML = THEME_ORDER
+    .filter(t=>byTheme[t]?.length)
+    .map(t=>`
+      <div class="quote-theme-section">
+        <div class="quote-theme-label">${t}</div>
+        <div class="quote-wall-grid">
+          ${byTheme[t].map(c=>`
+            <div class="quote-wall-card">
+              <div class="quote-wall-text">"${c.text}"</div>
+              <div>
+                <div class="quote-wall-name">${c.name}</div>
+                <div class="quote-wall-roles">${c.roles.map(r=>roleTag(r)).join('')}</div>
+              </div>
+            </div>
+          `).join('')}
         </div>
-      `).join('')}
-    </div>
-  `;
+      </div>
+    `).join('');
 }
 
 function renderSignals(){
