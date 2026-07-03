@@ -248,6 +248,11 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .design-brief-col {}
 .design-brief-label { font-size:9px; font-weight:600; color:var(--light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
 .design-brief-text { font-size:12px; color:var(--mid); line-height:1.7; }
+.design-moodboard-collage { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:20px; }
+.design-collage-item { position:relative; border-radius:8px; overflow:hidden; aspect-ratio:4/3; }
+.design-collage-item img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.3s ease; }
+.design-collage-item:hover img { transform:scale(1.04); }
+.design-collage-caption { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent, rgba(20,35,28,0.88)); padding:20px 10px 9px; font-size:9.5px; color:rgba(240,236,216,0.9); line-height:1.4; font-style:italic; }
 .design-prompt-col { display:flex; flex-direction:column; gap:10px; }
 .design-prompt-block { background:var(--cream-bright); border:1px solid var(--border); border-radius:8px; padding:12px 14px; }
 .design-prompt-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
@@ -2255,7 +2260,11 @@ const DESIGN_PROMPTS = [
     brief:`Adam's "mini country club feel" — has never tried cold plunge because of body image anxiety. The design must communicate welcome, not performance. Laurel: "The moment you walk onto that property, you just feel your nervous system relax." Angie needs a covered outdoor sauna area (Nordica lacks this). Sebastian wants quiet hours and capacity limits. The space must feel earned, not clinical.`,
     midjourney:`Interior of a boutique wellness spa in Medellín Colombia, cedar wood sauna room with soft amber glow, adjacent natural stone cold plunge pool surrounded by tropical palm fronds and ferns, covered outdoor terrace draped in climbing plants, warm low candlelight, no people, architectural editorial photography, intimate and non-judgmental atmosphere, Zuma Tulum meets Japanese onsen, --ar 16:9 --style raw --q 2`,
     dalle:`A boutique wellness spa interior in Medellín, Colombia. Cedar wood sauna walls with soft amber lighting visible through a glass panel. An adjacent natural stone cold plunge pool surrounded by lush tropical plants — palms, ferns, climbing vines. A covered outdoor terrace with hanging plants. No people. Warm, private, body-safe atmosphere. Architectural Digest editorial photography style.`,
-    photo:`design-sauna.jpg`
+    photos:[
+      {src:"design-sauna-1.jpg", caption:`"The moment you walk onto that property, you just feel your nervous system relax." — Laurel`},
+      {src:"design-sauna-2.jpg", caption:`"Never tried cold plunge because of body image anxiety — the space must feel welcoming, not performative." — Adam`},
+      {src:"design-sauna-3.jpg", caption:`"Quiet hours and capacity limits — I want to actually be able to reset, not be social." — Sebastian`}
+    ]
   },
   {
     id:"yoga",
@@ -2266,7 +2275,11 @@ const DESIGN_PROMPTS = [
     brief:`Laurel: "What is rare to find in Medellín is a venue that has a big enough space where people can move freely — with wood floors, warm, homey, peaceful." Juliana needs "safe and seen" energy and zero micromanagement of class style or music. Angie needs 20–30 person capacity with mats, blocks, straps stored on-site — she can't transport gear daily. Both a covered outdoor option for morning sun and an indoor option for evening classes.`,
     midjourney:`Spacious yoga studio interior in a tropical Colombian wellness club, warm oak hardwood floors, large arched open windows filtering soft morning light through tropical foliage, ceiling fans overhead, neatly stored yoga mats and props at the walls, 25-person capacity, no people, warm honey tones, open airy feeling, architectural photography, editorial --ar 16:9 --style raw`,
     dalle:`A spacious yoga studio in a tropical Colombian wellness club. Warm oak hardwood floors. Large arched open windows with soft morning light filtering through tropical palms and ferns outside. Ceiling fans overhead. Yoga mats, blocks, and straps stored neatly at the walls. 20-30 person capacity. Warm, airy, community-oriented atmosphere. No people. Editorial interior photography style.`,
-    photo:`design-yoga.jpg`
+    photos:[
+      {src:"design-yoga-1.jpg", caption:`"A rooftop morning class — sun, city view, open air. That's the dream." — Angie`},
+      {src:"design-yoga-2.jpg", caption:`"Wood floors, warm, homey, peaceful — that's what's rare to find in Medellín." — Laurel`},
+      {src:"design-yoga-3.jpg", caption:`"I add 10–15 min of sound healing at the end of every class. It needs to be part of the space." — Angie`}
+    ]
   },
   {
     id:"restaurant",
@@ -2277,7 +2290,11 @@ const DESIGN_PROMPTS = [
     brief:`Andrew: "Macros calculated so you can just delegate your whole food prep to that menu." Laurel spends 1.2M COP/mo on health food delivery — strict paleo with Hashimoto's, needs dietary icons and substitution options. Andrew loved the 108 Yoga juice bar as the reason to stay after class. No equivalent non-alcoholic herbal bar exists in Medellín — first-mover opportunity. Menu must be fast and friction-free: Adam orders double on Rappi so he doesn't have to order twice.`,
     midjourney:`Interior of a health-focused restaurant and herbal drinks bar in Medellín Colombia, colorful macro bowls on a backlit counter, adaptogen elixirs and cacao drinks in apothecary bottles on wooden shelves, tropical plants throughout, warm natural light through large windows, clean white and wood tones, no people, editorial food and interior photography, Café Gratitude meets Casa do Bico aesthetic --ar 16:9`,
     dalle:`A health-focused restaurant and herbal bar interior in Medellín, Colombia. Colorful macro bowls and fresh ingredients displayed on a clean counter. A herbal drinks bar with adaptogen elixirs, ceremonial cacao, and functional drinks in apothecary-style bottles. Natural wood shelving, tropical plants, warm light through large windows. Clean, bright, inviting. No people. Editorial food photography style.`,
-    photo:`design-restaurant.jpg`
+    photos:[
+      {src:"design-restaurant-1.jpg", caption:`"Macros calculated — I want to delegate my whole food prep to a place I trust." — Andrew`},
+      {src:"design-restaurant-2.jpg", caption:`"There's no non-alcoholic herbal bar in Medellín. That's a first-mover opportunity." — Research insight`},
+      {src:"design-restaurant-3.jpg", caption:`"I spend 1.2M COP a month on health food delivery. I just need it to be fast and clean." — Laurel`}
+    ]
   },
   {
     id:"social",
@@ -2288,7 +2305,11 @@ const DESIGN_PROMPTS = [
     brief:`Isabella: "En Medellín no existen lugares que piensen en comunidad. Existen restaurantes, discotecas, clubs, pero nada está pensado en integrar gente alrededor de conversación." Alex needs a pod zone for 5–10 with movable cushions — not a private room, just a bubble. Laurel hosts events weekly and needs reliable booking + on-site staff. Adam's gold standard: Hardin at Envigado Mall — open roof, plants, high ceilings. Angie envisions DJ + breathwork combo events in a space that can shift between formats.`,
     midjourney:`Multi-use community event space in a Medellín wellness club, warm oak wood floors, flexible seating with floor cushions and movable rattan chairs arranged in intimate circles, exposed natural wood beams overhead, lush tropical plants, open archways leading to an outdoor terrace, soft warm evening light, 25-person gathering, no people, intimate community aesthetic, editorial interior photography --ar 16:9 --style raw`,
     dalle:`A flexible community event space in a Medellín wellness club. Warm wood floors. Floor cushions and movable rattan chairs arranged in small intimate circles. Exposed wood beam ceiling. Lush tropical plants throughout. Open archways leading to a terrace with natural light. Soft warm evening lighting. No people. Designed for community gathering — circle formats, not rows. Architectural photography style.`,
-    photo:`design-social.jpg`
+    photos:[
+      {src:"design-social-1.jpg", caption:`"En Medellín no existen lugares pensados en integrar gente alrededor de conversación." — Isabella`},
+      {src:"design-social-2.jpg", caption:`"DJ + breathwork combo — a space that can shift between formats the same evening." — Angie`},
+      {src:"design-social-3.jpg", caption:`"I need a pod zone for 5–10 with movable cushions — not a private room, just a bubble." — Alex`}
+    ]
   },
   {
     id:"coworking",
@@ -2299,7 +2320,11 @@ const DESIGN_PROMPTS = [
     brief:`Sebastian: "I come to Rivertown every single morning for a coffee. Everyone here knows my name. I come to work at least four times a week — it's my third home." He needs a guaranteed seat and quiet — left SmartFit for being too loud, skips run club when social battery is low. Alex spends 600k/mo across 3 cafes weekly. Adam's gold standard: Hardin at Envigado Mall — "open roof, plants, high ceilings." The third-home feeling is built through familiarity and calm, not stimulation.`,
     midjourney:`Warm boutique co-working café space in Medellín Colombia, individual work tables with warm amber task lighting, lush tropical plants and hanging ferns, high ceilings with natural light through skylights, herbal coffee bar in the background with handwritten chalk menu, quiet intimate third-home feeling, warm honey wood tones, no people, architectural editorial photography, Rivertown meets Hardin Mall aesthetic --ar 16:9 --style raw`,
     dalle:`A warm boutique co-working café in Medellín, Colombia. Individual work tables with warm amber lighting and comfortable seating. Lush tropical plants and hanging ferns throughout. High ceilings with natural skylight. A herbal coffee and drinks bar visible in the background. Quiet, familiar, third-home atmosphere — calm, not trendy. No people. Editorial interior photography style.`,
-    photo:`design-coworking.jpg`
+    photos:[
+      {src:"design-cowork-1.jpg", caption:`"Everyone here knows my name. I come to work at least four times a week — it's my third home." — Sebastian`},
+      {src:"design-cowork-2.jpg", caption:`"Open roof, plants, high ceilings — that's my gold standard." — Adam (on Hardin at Envigado)`},
+      {src:"design-cowork-3.jpg", caption:`"I spend 600k a month across three different cafes. I'm looking for one place to anchor." — Alex`}
+    ]
   }
 ];
 
@@ -2322,16 +2347,14 @@ function renderDesignVision(){
           <div class="design-card-feels">${d.feels.map(f=>`<span class="design-feel-chip">${f}</span>`).join('')}</div>
         </div>
       </div>
-      <div class="design-moodboard-wrap">
-        <img class="design-moodboard"
-          src="${d.photo}"
-          alt="${d.title} mood board"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-        >
-        <div class="design-moodboard-placeholder" style="display:none">
-          <span class="design-moodboard-placeholder-icon">${d.emoji}</span>
-          <span>Image unavailable</span>
-        </div>
+      <div class="design-moodboard-collage">
+        ${d.photos.map(p=>`
+          <div class="design-collage-item">
+            <img src="${p.src}" alt="${d.title}" loading="lazy"
+              onerror="this.parentElement.style.background='#2A3F34';this.style.display='none'">
+            <div class="design-collage-caption">${p.caption}</div>
+          </div>
+        `).join('')}
       </div>
       <div class="design-card-body">
         <div class="design-brief-col">
