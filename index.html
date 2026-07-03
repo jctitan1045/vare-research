@@ -105,11 +105,16 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 
 /* ── AVATARS ── */
 .avatar-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:28px; }
-.avatar-card { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:12px; }
-.avatar-head { display:flex; align-items:center; gap:14px; }
-.avatar-icon { width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; border:1.5px solid var(--border); }
+.avatar-card { background:var(--white); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.avatar-head { display:flex; align-items:center; gap:14px; padding:18px 20px; cursor:pointer; user-select:none; }
+.avatar-head:hover { background:var(--cream-bright); }
+.avatar-icon { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; border:1.5px solid var(--border); }
 .avatar-name { font-family:'Cormorant Garamond', serif; font-size:16px; font-weight:500; line-height:1.3; color:var(--dark); }
 .avatar-handle { font-size:10px; color:var(--light); margin-top:2px; letter-spacing:0.04em; }
+.avatar-chevron { margin-left:auto; color:var(--light); font-size:12px; transition:transform 0.2s; flex-shrink:0; }
+.avatar-card.open .avatar-chevron { transform:rotate(180deg); }
+.avatar-body { display:none; flex-direction:column; gap:10px; padding:0 20px 18px; border-top:1px solid var(--border); padding-top:14px; }
+.avatar-card.open .avatar-body { display:flex; }
 .avatar-desc { font-size:12px; color:var(--mid); line-height:1.6; }
 .avatar-traits { display:flex; flex-wrap:wrap; gap:5px; }
 .avatar-trait { font-size:10px; padding:2px 9px; border-radius:20px; background:var(--cream-bright); color:var(--mid); border:1px solid var(--border); }
@@ -1035,18 +1040,21 @@ function renderPipeline(){
 function renderAvatars(){
   const filled = AVATARS.map(a=>`
     <div class="avatar-card">
-      <div class="avatar-head">
+      <div class="avatar-head" onclick="this.closest('.avatar-card').classList.toggle('open')">
         <div class="avatar-icon" style="background:${a.color}">${a.emoji}</div>
-        <div>
+        <div style="flex:1;min-width:0">
           <div class="avatar-name">${a.name}</div>
           <div class="avatar-handle">${a.handle}</div>
         </div>
+        <svg class="avatar-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4.5L7 9.5L12 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
-      <div class="avatar-desc">${a.desc}</div>
-      <div class="avatar-traits">${a.traits.map(t=>`<span class="avatar-trait">${t}</span>`).join('')}</div>
-      <div class="avatar-draws">${a.draws}</div>
-      <div class="avatar-quote">"${a.quote}"</div>
-      <div style="font-size:11px;color:#AAA">Participants: ${a.participants.join(', ')}</div>
+      <div class="avatar-body">
+        <div class="avatar-desc">${a.desc}</div>
+        <div class="avatar-traits">${a.traits.map(t=>`<span class="avatar-trait">${t}</span>`).join('')}</div>
+        <div class="avatar-draws">${a.draws}</div>
+        <div class="avatar-quote">"${a.quote}"</div>
+        <div style="font-size:11px;color:#AAA">Participants: ${a.participants.join(', ')}</div>
+      </div>
     </div>
   `);
   const placeholders = AVATAR_PLACEHOLDERS.map(p=>`
