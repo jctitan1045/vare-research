@@ -2177,12 +2177,45 @@ render();
 function showProfile(name) {
   const x = DATA.participants.find(p => p.name === name);
   if (!x) return;
-  const html = document.getElementById('call-profiles').querySelector(`[data-name="${name}"]`);
-  if (html) {
-    document.getElementById('profileModalContent').innerHTML = html.innerHTML;
-  } else {
-    document.getElementById('profileModalContent').innerHTML = `<p style="color:var(--mid)">Profile not found for ${name}.</p>`;
-  }
+  document.getElementById('profileModalContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+      <div class="call-avatar" style="width:48px;height:48px;font-size:15px">${x.name.split(' ').map(w=>w[0]).join('')}</div>
+      <div>
+        <div class="call-name" style="font-size:22px">${x.name}</div>
+        <div class="call-meta">${x.date} · ${x.nationality||''} · ${x.workType||''}</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px">${(x.roles||[]).map(r=>roleTag(r)).join('')}</div>
+      </div>
+      <a class="fathom-link" style="margin-left:auto;font-size:12px" href="${x.fathomUrl}" target="_blank">Fathom ↗</a>
+    </div>
+    <div class="tags-row" style="margin-bottom:16px">
+      ${x.nationality?`<span class="tag tag-blue">${x.nationality}</span>`:''}
+      ${x.gender?`<span class="tag">${x.gender}</span>`:''}
+      ${x.age?`<span class="tag">${x.age} yrs</span>`:''}
+      ${x.workType?`<span class="tag tag-purple">${x.workType}</span>`:''}
+      ${x.tenure?`<span class="tag">${x.tenure} in Medellín</span>`:''}
+      ${x.neighborhood?`<span class="tag">${x.neighborhood}</span>`:''}
+      ${x.community?`<span class="tag tag-amber">${x.community}</span>`:''}
+    </div>
+    <div class="three-col" style="margin-bottom:10px">
+      <div class="inner"><div class="inner-label">Ranking (top 3)</div>${x.rankingTop3.map((r,i)=>`<div class="inner-row">${i===0?'<strong>':''}${i+1}. ${r}${i===0?'</strong>':''}</div>`).join('')}</div>
+      <div class="inner"><div class="inner-label">Monthly spend (COP)</div>${Object.entries(x.monthlySpend).map(([k,v])=>`<div class="inner-row">${k} — ${v}k</div>`).join('')}</div>
+      <div class="inner"><div class="inner-label">Price calibration</div><div class="inner-row">Good deal: <strong>${x.priceGoodDeal}k/mo</strong></div><div class="inner-row">Ceiling: <strong>${x.priceCeiling}k/mo</strong></div>${x.dayPassRange?`<div class="inner-row">Day pass: <strong>${x.dayPassRange[0]}–${x.dayPassRange[1]}k</strong></div>`:''}</div>
+    </div>
+    <div class="two-col" style="margin-bottom:10px">
+      <div class="inner"><div class="inner-label">Competitors</div>${x.competitorsStayed.map(c=>`<div class="inner-row success">✓ ${c}</div>`).join('')}${x.competitorsLeft.map(c=>`<div class="inner-row danger">✗ ${c}</div>`).join('')}</div>
+      <div class="inner"><div class="inner-label">Other signals</div><div class="inner-row">Location pull: ${x.locationPull}</div><div class="inner-row">Social mode: ${x.socialMode}</div><div class="inner-row">Call 2: ${x.call2?'Yes':'No'}</div>${x.referrals.length?`<div class="inner-row">Referrals: ${x.referrals.join(', ')}</div>`:''}</div>
+    </div>
+    <div class="inner" style="margin-bottom:14px">
+      <div class="inner-label" style="margin-bottom:8px">Services they want</div>
+      ${x.services.map(s=>`<div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:0.5px solid var(--border)"><span class="tag tag-green" style="white-space:nowrap;margin-top:1px">${s.name}</span><span style="font-size:12px;color:var(--mid);line-height:1.5">${s.note}</span></div>`).join('')}
+    </div>
+    ${x.desc?`<div class="inner" style="margin-bottom:14px"><div class="inner-label">Overview</div><div style="font-size:13px;color:var(--mid);line-height:1.7;margin-top:4px">${x.desc}</div></div>`:''}
+    ${x.gap?`<div class="inner" style="margin-bottom:14px"><div class="inner-label">Key gap</div><div style="font-size:13px;color:var(--mid);line-height:1.7;margin-top:4px">${x.gap}</div></div>`:''}
+    ${x.gaps&&x.gaps.length?`<div class="inner" style="margin-bottom:14px"><div class="inner-label">Gaps &amp; signals</div>${x.gaps.map(g=>`<div class="gap-item"><span class="gap-tag">${g.tag}</span><span class="gap-text">${g.text}</span></div>`).join('')}</div>`:''}
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${x.quotes.map((q,i)=>`<div class="quote-block"><div class="quote-label">Quote ${i+1}</div><div class="quote-text">"${q}"</div></div>`).join('')}
+    </div>
+  `;
   document.getElementById('profileModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
