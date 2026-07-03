@@ -307,7 +307,19 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 </div>
 
 <div class="divider"></div>
-<!-- ② CUSTOMER AVATARS -->
+<!-- ② IDEAL CLIENT PROFILES -->
+<div class="section-label">Ideal client profiles</div>
+<div class="section-title" style="margin-bottom:4px">Who Varé is built for</div>
+<p class="subtitle" style="margin-bottom:20px">Synthesized from 11 research calls — ranked by revenue potential and conversion likelihood</p>
+
+<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--on-bg-muted);margin-bottom:10px">Primary — highest value members</div>
+<div class="demo-charts" style="margin-bottom:20px" id="icp-primary"></div>
+
+<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--on-bg-muted);margin-bottom:10px">Secondary — growth &amp; pipeline</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px" id="icp-secondary"></div>
+
+<div class="divider" style="margin-top:20px"></div>
+<!-- ③ CUSTOMER AVATARS -->
 <div class="section-label" style="margin-bottom:14px">Customer avatars</div>
 <div class="avatar-grid" id="avatar-grid"></div>
 
@@ -1237,6 +1249,7 @@ function barChart(id,data){
 }
 
 function render(){
+  renderICPs();
   renderAvatars();
   const p=DATA.participants, n=p.length;
   document.getElementById('badge-text').textContent=`${n} call${n!==1?'s':''} · Research in progress`;
@@ -2172,6 +2185,97 @@ requestAnimationFrame(() => {
   renderGenderPie(p);
   renderHoodMap(p);
 });
+const ICPS = {
+  primary: [
+    {
+      name: "The Expat Optimizer",
+      tagline: "One membership to replace everything",
+      emoji: "⚡",
+      color: "#1E3028",
+      demo: "American / Canadian · Ages 30–42 · Remote worker or entrepreneur",
+      wtp: "500k – 1M COP/mo",
+      psychographic: "Already spending on wellness piecemeal — SmartFit, Reset, yoga separately. Knows what contrast therapy is and wants it done right. Values a clean, uncrowded environment over price. Will consolidate immediately if the quality is there.",
+      draws: ["Sauna + cold plunge done properly", "Functional gym (not SmartFit volume)", "Quiet hours and booking that works", "Community of similar people"],
+      based: ["Andrew Topping", "Sebastian", "Alex", "Connor"]
+    },
+    {
+      name: "The Wellness Professional",
+      tagline: "Their practice lives here",
+      emoji: "🌿",
+      color: "#4A6358",
+      demo: "Mixed nationality · Ages 30–45 · Coach, therapist, or instructor",
+      wtp: "300k – 600k COP/mo personal",
+      psychographic: "Wants the space for their own wellness AND as a professional tool — hosting sessions, bringing clients, running groups. Disproportionate word-of-mouth value. Becomes an ambassador, not just a member. The sauna is a therapy room for them.",
+      draws: ["Studio space to host sessions", "Sauna for client facilitation", "Professional wellness community", "Founding member visibility"],
+      based: ["Laurel", "Isabella", "Andrew Topping"]
+    },
+    {
+      name: "The Senior Executive Recoverer",
+      tagline: "Premium experience, no compromises",
+      emoji: "🏆",
+      color: "#2D5040",
+      demo: "American · Ages 50–65 · High-income professional or executive",
+      wtp: "1M+ COP/mo",
+      psychographic: "Physical recovery is the primary driver — not social, not community. Has the highest absolute price ceiling of any segment. The barrier is environment, not cost: needs to feel comfortable, non-judgmental, and genuinely premium. One member like this anchors a membership tier.",
+      draws: ["Recovery-first programming", "Non-judgmental, comfortable atmosphere", "Frictionless booking and access", "Premium feel that justifies the price"],
+      based: ["Adam"]
+    }
+  ],
+  secondary: [
+    {
+      name: "The Community Connector",
+      tagline: "They bring the room",
+      emoji: "🤝",
+      color: "#5A7A6A",
+      demo: "Mixed · Ages 28–45 · Community organizer, event host, or networker",
+      wtp: "300k – 500k COP/mo",
+      psychographic: "Runs or leads communities — wellness circles, entrepreneurs, expat groups. Not just a member but a potential event host and pipeline generator. Mid-range personal WTP but their network value is disproportionate. Bring 5–10 people when they show up.",
+      draws: ["Event hosting capability", "Group sauna / contrast sessions", "Community-first culture", "Founder or partner-level recognition"],
+      based: ["Yenny", "Laurel", "Isabella"]
+    },
+    {
+      name: "The Upwardly Mobile Local",
+      tagline: "The long-term local market",
+      emoji: "🌱",
+      color: "#3A5A4A",
+      demo: "Colombian · Ages 22–35 · Young professional or entrepreneur",
+      wtp: "200k – 400k COP/mo",
+      psychographic: "Wellness-curious but price-sensitive. Sees international venues as 'dollar prices' and self-excludes before even visiting. Needs a free or guest-pass first experience to convert. Not the primary revenue driver today, but critical for local legitimacy and long-term market positioning.",
+      draws: ["Free intro event or guest pass", "Local pricing tier", "Colombian community feel", "Accessible location"],
+      based: ["Juan Pablo", "Valentina", "Daniela"]
+    }
+  ]
+};
+
+function renderICPs() {
+  function card(icp, size) {
+    return `
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:42px;height:42px;border-radius:50%;background:${icp.color};display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${icp.emoji}</div>
+            <div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--dark);line-height:1.2">${icp.name}</div>
+              <div style="font-size:11px;color:var(--light);margin-top:2px;font-style:italic">${icp.tagline}</div>
+            </div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-size:9px;color:var(--light);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px">WTP</div>
+            <div style="font-size:12px;font-weight:600;color:var(--dark)">${icp.wtp}</div>
+          </div>
+        </div>
+        <div style="font-size:11px;font-weight:500;color:var(--mid);background:var(--cream-bright);border-radius:6px;padding:7px 10px">${icp.demo}</div>
+        <div style="font-size:12px;color:var(--mid);line-height:1.7">${icp.psychographic}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          ${icp.draws.map(d=>`<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:var(--cream-bright);color:var(--mid);border:1px solid var(--border)">${d}</span>`).join('')}
+        </div>
+        <div style="font-size:10px;color:var(--light);padding-top:10px;border-top:1px solid var(--border)">Based on: ${icp.based.join(', ')}</div>
+      </div>`;
+  }
+  document.getElementById('icp-primary').innerHTML = ICPS.primary.map(icp => card(icp)).join('');
+  document.getElementById('icp-secondary').innerHTML = ICPS.secondary.map(icp => card(icp)).join('');
+}
+
 render();
 
 function showProfile(name) {
