@@ -288,7 +288,7 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 </div>
 <div class="demo-charts">
   <div class="chart-card"><div class="chart-title">Age</div><div class="chart-sub">How old they are</div><div id="ageChart" style="position:relative;height:190px;margin-top:8px"></div></div>
-  <div class="chart-card"><div class="chart-title">Gender</div><div class="chart-sub">Split across participants</div><div class="chart-canvas-sm"><canvas id="genderChart"></canvas></div></div>
+  <div class="chart-card"><div class="chart-title">Gender</div><div class="chart-sub">Split across participants</div><div id="genderPie" style="position:relative;height:190px;margin-top:8px"></div></div>
   <div class="chart-card"><div class="chart-title">Nationality</div><div class="chart-sub">Where they're from</div><div id="natMap" style="position:relative;height:190px;margin-top:8px"></div></div>
 </div>
 <div class="demo-charts">
@@ -1247,13 +1247,8 @@ function render(){
   document.getElementById('m-worktypes').textContent=new Set(p.map(x=>x.workType).filter(Boolean)).size;
   document.getElementById('m-communities').textContent=new Set(p.map(x=>x.community).filter(Boolean)).size;
 
-  renderNationalityMap(p);
-  renderWorkTreemap(p);
   barChart('tenureChart',countBy(p,x=>x.tenure));
-  renderAgeDotPlot(p);
-  renderHoodMap(p);
   barChart('commChart',countBy(p,x=>x.community));
-  barChart('genderChart',countBy(p,x=>x.gender));
 
   document.getElementById('call-profiles').innerHTML = p.map(x=>`
   <div class="call-card collapsed" onclick="toggleProfile(this)" style="cursor:pointer">
@@ -1714,6 +1709,58 @@ const NEIGHBORHOOD_COORDS = {
   "Medellín": [6.2442, -75.5812]
 };
 
+function renderGenderPie(participants){
+  const container = document.getElementById('genderPie');
+  if(!container) return;
+  const counts = {};
+  participants.forEach(p => { if(p.gender) counts[p.gender] = (counts[p.gender]||0) + 1; });
+  const data = Object.entries(counts).map(([label, value]) => ({ label, value }));
+  const total = d3.sum(data, d => d.value);
+
+  const w = container.offsetWidth || 300, h = 190;
+  const radius = Math.min(w, h) / 2 - 10;
+  const cx = w * 0.42, cy = h / 2;
+
+  const COLORS = { Male: '#2D6FA3', Female: '#4A9E7F' };
+
+  const svg = d3.select(container).append('svg')
+    .attr('width', w).attr('height', h).style('display','block');
+
+  const pie = d3.pie().value(d => d.value).sort(null);
+  const arc = d3.arc().innerRadius(radius * 0.52).outerRadius(radius);
+
+  const g = svg.append('g').attr('transform', `translate(${cx},${cy})`);
+
+  g.selectAll('path').data(pie(data)).join('path')
+    .attr('d', arc)
+    .attr('fill', d => COLORS[d.data.label] || '#8A9E95')
+    .attr('stroke', '#F5F2E4').attr('stroke-width', 2);
+
+  // Center total
+  g.append('text').attr('text-anchor','middle').attr('y',-8)
+    .attr('fill','#1E3028').attr('font-size','28px').attr('font-weight','700')
+    .attr('font-family','Inter,sans-serif').text(total);
+  g.append('text').attr('text-anchor','middle').attr('y',10)
+    .attr('fill','#4A6358').attr('font-size','9px').attr('font-weight','500')
+    .attr('font-family','Inter,sans-serif').attr('letter-spacing','0.06em').text('TOTAL');
+
+  // Legend on the right
+  const legendX = cx + radius + 18;
+  data.forEach((d, i) => {
+    const ly = cy - (data.length - 1) * 18 / 2 + i * 28;
+    svg.append('rect').attr('x', legendX).attr('y', ly - 6)
+      .attr('width', 10).attr('height', 10).attr('rx', 2)
+      .attr('fill', COLORS[d.label] || '#8A9E95');
+    svg.append('text').attr('x', legendX + 14).attr('y', ly + 2)
+      .attr('fill','#1E3028').attr('font-size','13px').attr('font-weight','600')
+      .attr('font-family','Inter,sans-serif').text(d.value);
+    svg.append('text').attr('x', legendX + 14).attr('y', ly + 14)
+      .attr('fill','#4A6358').attr('font-size','9px').attr('font-weight','500')
+      .attr('font-family','Inter,sans-serif').attr('letter-spacing','0.05em')
+      .text(d.label.toUpperCase());
+  });
+}
+
 function renderAgeDotPlot(participants){
   const container = document.getElementById('ageChart');
   if(!container) return;
@@ -2056,6 +2103,15 @@ function renderDesignVision(){
   `).join('');
 }
 
+// Defer SVG chart renders until layout is settled so offsetWidth is correct
+requestAnimationFrame(() => {
+  const p = DATA.participants;
+  renderNationalityMap(p);
+  renderWorkTreemap(p);
+  renderAgeDotPlot(p);
+  renderGenderPie(p);
+  renderHoodMap(p);
+});
 render();
 </script>
 </body>
