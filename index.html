@@ -290,7 +290,7 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
   <div class="chart-card">
     <div class="chart-title">Which categories keep ranking top 3</div>
     <div class="chart-sub">Frequency across all calls</div>
-    <div class="chart-canvas-sm"><canvas id="rankingChart"></canvas></div>
+    <div id="rankingChart" style="position:relative;height:190px;margin-top:8px"></div>
   </div>
   <div class="chart-card">
     <div class="chart-title">Willingness to pay — range per person</div>
@@ -1966,25 +1966,48 @@ function toggleProfile(card){
 
 function renderInsightsCharts(){
   const p = DATA.participants;
-  // Ranking frequency
-  const rankCount = {};
-  p.forEach(x => x.rankingTop3.forEach(r => { rankCount[r]=(rankCount[r]||0)+1; }));
-  const rankSorted = Object.entries(rankCount).sort((a,b)=>b[1]-a[1]);
-  new Chart(document.getElementById('rankingChart'),{
-    type:'bar',
-    data:{
-      labels:rankSorted.map(x=>x[0]),
-      datasets:[{data:rankSorted.map(x=>x[1]),backgroundColor:'#1E3028',borderWidth:0,borderRadius:4}]
-    },
-    options:{
-      indexAxis:'y',responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} of ${p.length}`}}},
-      scales:{
-        x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{size:11},stepSize:1},max:p.length+0.5},
-        y:{grid:{display:false},ticks:{font:{size:10}}}
+  // Ranking frequency — bubble pack
+  (function() {
+    const rankCount = {};
+    p.forEach(x => x.rankingTop3.forEach(r => { rankCount[r]=(rankCount[r]||0)+1; }));
+    const data = Object.entries(rankCount).sort((a,b)=>b[1]-a[1]).map(([name,value])=>({name,value}));
+    const wrap = document.getElementById('rankingChart');
+    const W = wrap.offsetWidth || 300, H = 190;
+    const pack = d3.pack().size([W, H]).padding(6);
+    const root = d3.hierarchy({children: data}).sum(d => d.value);
+    pack(root);
+    const svg = d3.select(wrap).append('svg').attr('width', W).attr('height', H);
+    const maxV = d3.max(data, d => d.value);
+    const colorScale = d3.scaleLinear().domain([1, maxV]).range(['#4A6358','#1E3028']);
+    const node = svg.selectAll('g').data(root.leaves()).enter().append('g')
+      .attr('transform', d => `translate(${d.x},${d.y})`);
+    node.append('circle')
+      .attr('r', d => d.r)
+      .attr('fill', d => colorScale(d.data.value))
+      .attr('stroke', 'rgba(240,236,216,0.15)')
+      .attr('stroke-width', 1);
+    node.each(function(d) {
+      const g = d3.select(this);
+      const words = d.data.name.split(' ');
+      const lineH = Math.min(d.r * 0.38, 13);
+      const nameSize = Math.min(d.r * 0.28, 11);
+      const countSize = Math.min(d.r * 0.38, 14);
+      if (d.r > 18) {
+        g.append('text').attr('text-anchor','middle').attr('fill','#F0EDDA')
+          .attr('font-size', countSize).attr('font-family','Cormorant Garamond, serif').attr('font-weight','600')
+          .attr('y', words.length > 1 ? -lineH * (words.length * 0.4) : 4)
+          .text(d.data.value);
+        if (d.r > 28) {
+          words.forEach((w, i) => {
+            g.append('text').attr('text-anchor','middle').attr('fill','rgba(240,237,218,0.75)')
+              .attr('font-size', nameSize).attr('font-family','Inter, sans-serif')
+              .attr('y', (words.length > 1 ? -lineH*(words.length*0.4) : 4) + countSize*0.8 + lineH*(i+0.9))
+              .text(w);
+          });
+        }
       }
-    }
-  });
+    });
+  })();
   // WTP ceiling — vertical bar chart by bucket
   const PRICE_BUCKETS = [
     { label: 'Under 300k', min: 0,    max: 299   },
