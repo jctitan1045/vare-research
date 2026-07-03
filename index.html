@@ -1159,15 +1159,20 @@ async function renderNationalityMap(participants){
     else                                             { COUNTRY_DATA[840].count++; }
   });
 
-  const w = container.offsetWidth || 320, h = 190;
+  const w = container.offsetWidth || 320, h = 200;
+  container.style.height = h + 'px';
+  // Shift map left to leave room for right-side labels
+  const mapW = w * 0.62;
   const projection = d3.geoNaturalEarth1()
     .rotate([80, 0])
-    .scale(w / 3.8)
-    .translate([w * 0.65, h * 0.52]);
+    .scale(mapW / 3.2)
+    .translate([mapW * 0.62, h * 0.52]);
   const path = d3.geoPath().projection(projection);
 
   const svg = d3.select(container).append('svg')
     .attr('width', w).attr('height', h).style('display','block');
+
+  const BLUE = '#2D6FA3';
 
   try {
     const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r=>r.json());
@@ -1177,27 +1182,47 @@ async function renderNationalityMap(participants){
       .data(countries.features)
       .join('path')
       .attr('d', path)
-      .attr('fill', d => COUNTRY_DATA[+d.id] ? '#1E3028' : '#D5D0BC')
+      .attr('fill', d => COUNTRY_DATA[+d.id] ? BLUE : '#C8C3AF')
       .attr('stroke', '#F5F2E4')
       .attr('stroke-width', 0.4);
 
+    // Fixed vertical slots for the three labels on the right side
+    const labelSlots = { 124: h * 0.15, 840: h * 0.48, 170: h * 0.82 };
+    const labelX = mapW + 14;
+
     countries.features.filter(d => COUNTRY_DATA[+d.id]).forEach(d => {
       const data = COUNTRY_DATA[+d.id];
+      const id = +d.id;
       const [cx, cy] = path.centroid(d);
       if(isNaN(cx)) return;
-      const nudge = +d.id === 170 ? -3 : 0;
+      const ly = labelSlots[id];
+
+      // Dot at centroid
+      svg.append('circle').attr('cx', cx).attr('cy', cy).attr('r', 3.5)
+        .attr('fill', '#fff').attr('opacity', 0.85);
+
+      // Curved leader line from centroid to label
+      const ex = labelX - 4;
+      const midX = (cx + ex) / 2;
+      svg.append('path')
+        .attr('d', `M${cx},${cy} C${midX},${cy} ${midX},${ly} ${ex},${ly}`)
+        .attr('fill', 'none').attr('stroke', '#fff')
+        .attr('stroke-width', 0.9).attr('opacity', 0.55);
+
+      // Count — big
       svg.append('text')
-        .attr('x', cx).attr('y', cy + nudge - 6)
-        .attr('text-anchor','middle').attr('dominant-baseline','central')
-        .attr('fill','#F0ECD8').attr('font-size','13px').attr('font-weight','700')
-        .attr('font-family','Inter,sans-serif').attr('pointer-events','none')
+        .attr('x', labelX).attr('y', ly - 2)
+        .attr('dominant-baseline', 'auto')
+        .attr('fill', '#1E3028').attr('font-size', '22px').attr('font-weight', '700')
+        .attr('font-family', 'Inter,sans-serif')
         .text(data.count);
+      // Country name — small below
       svg.append('text')
-        .attr('x', cx).attr('y', cy + nudge + 9)
-        .attr('text-anchor','middle').attr('dominant-baseline','central')
-        .attr('fill','rgba(240,236,216,0.75)').attr('font-size','8px')
-        .attr('font-family','Inter,sans-serif').attr('pointer-events','none')
-        .text(data.label);
+        .attr('x', labelX).attr('y', ly + 12)
+        .attr('dominant-baseline', 'auto')
+        .attr('fill', '#4A6358').attr('font-size', '9px').attr('font-weight', '500')
+        .attr('font-family', 'Inter,sans-serif').attr('letter-spacing', '0.06em')
+        .text(data.label.toUpperCase());
     });
   } catch(e) { /* unavailable */ }
 }
