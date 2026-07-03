@@ -203,16 +203,23 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .product-col { padding:14px; border-right:1px solid var(--border); }
 .product-col:last-child { border-right:none; }
 .product-col-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.09em; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border); }
-.product-feature-card { background:var(--white); border:1px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:8px; }
+.product-feature-card { background:var(--white); border:1px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:8px; cursor:pointer; }
 .product-feature-card:last-child { margin-bottom:0; }
-.product-feature-name { font-size:13px; font-weight:500; color:var(--dark); margin-bottom:6px; line-height:1.4; }
-.product-feature-count { display:inline-flex; align-items:center; font-size:10px; color:var(--light); background:var(--cream-bright); border:1px solid var(--border); border-radius:10px; padding:2px 8px; margin-bottom:5px; }
-.product-feature-who { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:6px; }
+.product-feature-card:hover { border-color:var(--mid); }
+.product-feature-header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.product-feature-name { font-size:13px; font-weight:500; color:var(--dark); line-height:1.4; }
+.product-feature-chevron { font-size:11px; color:var(--light); flex-shrink:0; transition:transform 0.2s; }
+.product-feature-card.open .product-feature-chevron { transform:rotate(90deg); }
+.product-feature-summary { font-size:11px; color:var(--light); line-height:1.5; margin-top:5px; }
+.product-feature-detail { display:none; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+.product-feature-card.open .product-feature-detail { display:block; }
+.product-feature-count { display:inline-flex; align-items:center; font-size:10px; color:var(--light); background:var(--cream-bright); border:1px solid var(--border); border-radius:10px; padding:2px 8px; margin-bottom:8px; }
+.product-feature-who { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px; }
 .product-feature-who-chip { font-size:10px; color:var(--mid); background:var(--cream-bright); border:1px solid var(--border); border-radius:10px; padding:1px 7px; }
-.product-feature-gaps { margin-top:6px; padding-top:6px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:3px; }
+.product-feature-gaps { display:flex; flex-direction:column; gap:5px; }
 .product-feature-gap { font-size:11px; color:var(--light); line-height:1.5; padding-left:12px; position:relative; }
 .product-feature-gap::before { content:'–'; position:absolute; left:0; color:var(--faint); }
-.product-feature-next { display:inline-flex; font-size:10px; font-weight:600; color:#1A5C38; background:#E4F5EC; border:1px solid #B8D9C4; border-radius:6px; padding:3px 8px; margin-top:7px; line-height:1.4; }
+.product-feature-next { display:inline-flex; font-size:10px; font-weight:600; color:#1A5C38; background:#E4F5EC; border:1px solid #B8D9C4; border-radius:6px; padding:3px 8px; margin-top:10px; line-height:1.4; }
 
 /* ── QUOTE WALL ── */
 .quote-wall-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
@@ -1556,12 +1563,18 @@ function renderProductRoadmap(){
           <div class="product-col" style="background:${col.bg}">
             <div class="product-col-label" style="color:${col.color}">${col.label}</div>
             ${(v[col.key]||[]).map(f=>`
-              <div class="product-feature-card">
-                <div class="product-feature-name">${f.feature}</div>
-                <span class="product-feature-count">${f.count}/${f.total} people</span>
-                <div class="product-feature-who">${f.who.map(n=>`<span class="product-feature-who-chip">${n}</span>`).join('')}</div>
-                ${f.gaps.length?`<div class="product-feature-gaps">${f.gaps.map(g=>`<div class="product-feature-gap">${g}</div>`).join('')}</div>`:''}
-                ${f.next?`<div class="product-feature-next">→ ${f.next}</div>`:''}
+              <div class="product-feature-card" onclick="this.classList.toggle('open')">
+                <div class="product-feature-header">
+                  <div class="product-feature-name">${f.feature}</div>
+                  <span class="product-feature-chevron">▶</span>
+                </div>
+                <div class="product-feature-summary">${f.count}/${f.total} people${f.next ? ' · ' + f.next : ''}</div>
+                <div class="product-feature-detail">
+                  <span class="product-feature-count">${f.count} of ${f.total} people mentioned this</span>
+                  <div class="product-feature-who">${f.who.map(n=>`<span class="product-feature-who-chip">${n}</span>`).join('')}</div>
+                  ${f.gaps.length?`<div class="product-feature-gaps">${f.gaps.map(g=>`<div class="product-feature-gap">${g}</div>`).join('')}</div>`:''}
+                  ${f.next?`<div class="product-feature-next">→ ${f.next}</div>`:''}
+                </div>
               </div>
             `).join('')}
             ${!(v[col.key]||[]).length?`<div style="font-size:11px;color:var(--light);padding:12px 0;text-align:center">None identified yet</div>`:''}
