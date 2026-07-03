@@ -288,7 +288,7 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 </div>
 <div class="demo-charts">
   <div class="chart-card"><div class="chart-title">Nationality</div><div class="chart-sub">Where they're from</div><div id="natMap" style="position:relative;height:190px;margin-top:8px"></div></div>
-  <div class="chart-card"><div class="chart-title">Work type</div><div class="chart-sub">How they earn</div><div class="chart-canvas-sm"><canvas id="workChart"></canvas></div></div>
+  <div class="chart-card"><div class="chart-title">Work type</div><div class="chart-sub">How they earn</div><div id="workTreemap" style="height:190px;margin-top:8px;position:relative"></div></div>
   <div class="chart-card"><div class="chart-title">Time in Medellín</div><div class="chart-sub">How long they've been here</div><div class="chart-canvas-sm"><canvas id="tenureChart"></canvas></div></div>
 </div>
 <div class="demo-charts-2">
@@ -1068,6 +1068,41 @@ function renderAvatars(){
   document.getElementById('avatar-grid').innerHTML = [...filled, ...placeholders].join('');
 }
 
+function renderWorkTreemap(participants){
+  const container = document.getElementById('workTreemap');
+  if(!container) return;
+  const counts = {};
+  participants.forEach(p => { if(p.workType) counts[p.workType] = (counts[p.workType]||0)+1; });
+
+  const w = container.offsetWidth || 320, h = 190;
+  const COLORS = ['#1E3028','#2E4A3A','#3D6350','#4A6358','#5A7A6A','#6A9080','#7AAA96','#8A9E95','#9AB8AC','#B0CCBF','#C8D4CE'];
+
+  const root = d3.hierarchy({children: Object.entries(counts).map(([k,v])=>({name:k,value:v}))})
+    .sum(d=>d.value);
+  d3.treemap().size([w,h]).padding(2).round(true)(root);
+
+  const svg = d3.select(container).append('svg').attr('width',w).attr('height',h);
+  const cell = svg.selectAll('g').data(root.leaves()).join('g')
+    .attr('transform', d=>`translate(${d.x0},${d.y0})`);
+
+  cell.append('rect')
+    .attr('width', d=>d.x1-d.x0)
+    .attr('height', d=>d.y1-d.y0)
+    .attr('fill', (_,i)=>COLORS[i % COLORS.length])
+    .attr('rx', 3);
+
+  cell.append('foreignObject')
+    .attr('x', 4).attr('y', 4)
+    .attr('width', d=>Math.max(0, d.x1-d.x0-8))
+    .attr('height', d=>Math.max(0, d.y1-d.y0-8))
+    .append('xhtml:div')
+    .style('width','100%').style('height','100%')
+    .style('overflow','hidden').style('font-family','Inter,sans-serif')
+    .style('font-size','10px').style('line-height','1.3')
+    .style('color','#F0ECD8').style('word-break','break-word')
+    .text(d=>d.data.name);
+}
+
 function countBy(arr,fn){return arr.reduce((a,x)=>{const k=fn(x)||"Not recorded";a[k]=(a[k]||0)+1;return a;},{});}
 
 async function renderNationalityMap(participants){
@@ -1172,7 +1207,7 @@ function render(){
   document.getElementById('m-communities').textContent=new Set(p.map(x=>x.community).filter(Boolean)).size;
 
   renderNationalityMap(p);
-  barChart('workChart',countBy(p,x=>x.workType));
+  renderWorkTreemap(p);
   barChart('tenureChart',countBy(p,x=>x.tenure));
   barChart('hoodChart',countBy(p,x=>x.neighborhood));
   barChart('commChart',countBy(p,x=>x.community));
