@@ -56,7 +56,7 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .chart-title { font-size:13px; font-weight:500; color:var(--dark); margin-bottom:2px; }
 .chart-sub { font-size:11px; color:var(--light); margin-bottom:14px; }
 .chart-canvas-sm { position:relative; height:120px; }
-.demo-charts { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px; }
+.demo-charts { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12px; margin-bottom:12px; }
 .demo-charts-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:32px; }
 
 /* ── DIVIDER ── */
@@ -290,6 +290,7 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
   <div class="chart-card"><div class="chart-title">Nationality</div><div class="chart-sub">Where they're from</div><div id="natMap" style="position:relative;height:190px;margin-top:8px"></div></div>
   <div class="chart-card"><div class="chart-title">Work type</div><div class="chart-sub">How they earn</div><div id="workTreemap" style="height:190px;margin-top:8px;position:relative"></div></div>
   <div class="chart-card"><div class="chart-title">Time in Medellín</div><div class="chart-sub">How long they've been here</div><div class="chart-canvas-sm"><canvas id="tenureChart"></canvas></div></div>
+  <div class="chart-card"><div class="chart-title">Age</div><div class="chart-sub">How old they are</div><div id="ageChart" style="position:relative;height:190px;margin-top:8px"></div></div>
 </div>
 <div class="demo-charts-2">
   <div class="chart-card"><div class="chart-title">Neighborhood</div><div class="chart-sub">Where they live</div><div id="hoodMap" style="height:220px;border-radius:10px;overflow:hidden;margin-top:8px"></div></div>
@@ -1247,6 +1248,7 @@ function render(){
   renderNationalityMap(p);
   renderWorkTreemap(p);
   barChart('tenureChart',countBy(p,x=>x.tenure));
+  renderAgeDotPlot(p);
   renderHoodMap(p);
   barChart('commChart',countBy(p,x=>x.community));
   barChart('genderChart',countBy(p,x=>x.gender));
@@ -1709,6 +1711,99 @@ const NEIGHBORHOOD_COORDS = {
   "Tesoro": [6.1977, -75.5592],
   "Medellín": [6.2442, -75.5812]
 };
+
+function renderAgeDotPlot(participants){
+  const container = document.getElementById('ageChart');
+  if(!container) return;
+  const ages = participants.map(p => ({ age: p.age, name: p.name })).filter(d => d.age);
+
+  const w = container.offsetWidth || 300, h = 190;
+  const PAD = { top: 20, bottom: 36, left: 16, right: 16 };
+  const minAge = Math.floor(Math.min(...ages.map(d=>d.age)) / 5) * 5;
+  const maxAge = Math.ceil(Math.max(...ages.map(d=>d.age)) / 5) * 5;
+
+  const svg = d3.select(container).append('svg')
+    .attr('width', w).attr('height', h).style('display','block');
+
+  const x = d3.scaleLinear()
+    .domain([minAge, maxAge])
+    .range([PAD.left, w - PAD.right]);
+
+  const midY = PAD.top + (h - PAD.top - PAD.bottom) / 2;
+
+  // Axis line
+  svg.append('line')
+    .attr('x1', PAD.left).attr('x2', w - PAD.right)
+    .attr('y1', midY).attr('y2', midY)
+    .attr('stroke', '#D5D0BC').attr('stroke-width', 1.5);
+
+  // Age ticks every 5 years
+  const ticks = d3.range(minAge, maxAge + 1, 5);
+  ticks.forEach(t => {
+    svg.append('line')
+      .attr('x1', x(t)).attr('x2', x(t))
+      .attr('y1', midY - 4).attr('y2', midY + 4)
+      .attr('stroke', '#C8C3AF').attr('stroke-width', 1);
+    svg.append('text')
+      .attr('x', x(t)).attr('y', midY + 18)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#8A9E95').attr('font-size', '10px')
+      .attr('font-family', 'Inter,sans-serif')
+      .text(t);
+  });
+
+  // Jitter dots vertically to avoid overlap at same age
+  const jitterMap = {};
+  ages.forEach(d => {
+    const k = d.age;
+    jitterMap[k] = (jitterMap[k] || 0) + 1;
+    d._slot = jitterMap[k];
+  });
+  const slotH = 14;
+  ages.forEach(d => {
+    const total = jitterMap[d.age];
+    const offset = (d._slot - (total + 1) / 2) * slotH;
+    d._y = midY + offset;
+  });
+
+  // Average line
+  const avg = d3.mean(ages, d => d.age);
+  svg.append('line')
+    .attr('x1', x(avg)).attr('x2', x(avg))
+    .attr('y1', PAD.top).attr('y2', midY - 6)
+    .attr('stroke', '#4A6358').attr('stroke-width', 1)
+    .attr('stroke-dasharray', '3,2');
+  svg.append('text')
+    .attr('x', x(avg)).attr('y', PAD.top - 4)
+    .attr('text-anchor', 'middle')
+    .attr('fill', '#4A6358').attr('font-size', '9px')
+    .attr('font-family', 'Inter,sans-serif')
+    .text(`avg ${Math.round(avg)}`);
+
+  // Dots
+  const dot = svg.selectAll('circle').data(ages).join('circle')
+    .attr('cx', d => x(d.age))
+    .attr('cy', d => d._y)
+    .attr('r', 7)
+    .attr('fill', '#2D6FA3')
+    .attr('stroke', '#F5F2E4')
+    .attr('stroke-width', 1.5)
+    .attr('opacity', 0.85);
+
+  // Age label inside dot
+  svg.selectAll('.dot-label').data(ages).join('text')
+    .attr('class', 'dot-label')
+    .attr('x', d => x(d.age))
+    .attr('y', d => d._y + 0.5)
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'middle')
+    .attr('fill', '#fff')
+    .attr('font-size', '7px')
+    .attr('font-weight', '600')
+    .attr('font-family', 'Inter,sans-serif')
+    .attr('pointer-events', 'none')
+    .text(d => d.age);
+}
 
 function renderHoodMap(participants){
   const counts = {}, names = {};
