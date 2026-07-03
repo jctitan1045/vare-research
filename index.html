@@ -13,7 +13,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root {
-  --bg: #EDE9D8;
+  --bg: #1E3028;
   --dark: #1E3028;
   --mid: #4A6358;
   --light: #8A9E95;
@@ -22,34 +22,38 @@
   --white: #FDFAF0;
   --border: #D5D0BC;
   --cream-bright: #F0ECD8;
+  --on-bg: #E8E2CC;
+  --on-bg-muted: #6A8A7E;
+  --card-dark: #253830;
+  --card-dark-border: #2F4A3C;
   --grad: linear-gradient(135deg, #F07030 0%, #D04090 40%, #7040D0 70%, #30B860 100%);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; color:var(--dark); padding:0 0 60px; }
+body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; color:var(--on-bg); padding:0 0 60px; }
 
 /* ── HEADER ── */
-.brand-header { background:var(--card); padding:22px 40px 20px; margin-bottom:0; border-bottom:1px solid var(--border); }
+.brand-header { background:var(--dark); padding:22px 40px 20px; margin-bottom:0; border-bottom:1px solid var(--card-dark-border); }
 .brand-inner { max-width:980px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
 .brand-logo { display:flex; flex-direction:column; gap:4px; }
-.brand-name { font-family:'Cormorant Garamond', serif; font-size:46px; font-weight:600; color:var(--dark); letter-spacing:-0.025em; line-height:1; display:flex; align-items:center; gap:10px; }
+.brand-name { font-family:'Cormorant Garamond', serif; font-size:46px; font-weight:600; color:var(--on-bg); letter-spacing:-0.025em; line-height:1; display:flex; align-items:center; gap:10px; }
 .brand-mark { width:42px; height:42px; flex-shrink:0; }
-.brand-tagline { font-size:9px; font-weight:500; color:var(--mid); letter-spacing:0.18em; text-transform:uppercase; padding-left:2px; }
-.brand-badge { font-size:11px; padding:5px 14px; border-radius:20px; background:var(--dark); color:var(--faint); letter-spacing:0.04em; }
+.brand-tagline { font-size:9px; font-weight:500; color:var(--on-bg-muted); letter-spacing:0.18em; text-transform:uppercase; padding-left:2px; }
+.brand-badge { font-size:11px; padding:5px 14px; border-radius:20px; background:rgba(240,236,216,0.1); color:var(--on-bg); border:1px solid rgba(240,236,216,0.2); letter-spacing:0.04em; }
 
 /* ── GRADIENT BAR ── */
 .grad-bar { height:3px; background:var(--grad); margin-bottom:40px; }
 
 .page { max-width:980px; margin:0 auto; padding:0 32px; }
-.section-label { font-size:10px; font-weight:500; color:var(--light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:14px; }
-.section-title { font-family:'Cormorant Garamond', serif; font-size:22px; font-weight:500; color:var(--dark); margin-bottom:4px; line-height:1.2; }
-.subtitle { font-size:12px; color:var(--light); margin-bottom:32px; }
+.section-label { font-size:10px; font-weight:500; color:var(--on-bg-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:14px; }
+.section-title { font-family:'Cormorant Garamond', serif; font-size:22px; font-weight:500; color:var(--on-bg); margin-bottom:4px; line-height:1.2; }
+.subtitle { font-size:12px; color:var(--on-bg-muted); margin-bottom:32px; }
 
 /* ── METRICS ── */
 .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
-.metric { background:var(--dark); border-radius:10px; padding:16px 18px; }
-.metric-label { font-size:11px; color:var(--faint); margin-bottom:6px; letter-spacing:0.04em; }
+.metric { background:var(--card-dark); border:1px solid var(--card-dark-border); border-radius:10px; padding:16px 18px; }
+.metric-label { font-size:11px; color:var(--on-bg-muted); margin-bottom:6px; letter-spacing:0.04em; }
 .metric-value { font-family:'Cormorant Garamond', serif; font-size:32px; font-weight:500; color:var(--cream-bright); line-height:1; }
-.metric-sub { font-size:10px; color:var(--light); margin-top:4px; }
+.metric-sub { font-size:10px; color:var(--on-bg-muted); margin-top:4px; }
 
 /* ── CARDS ── */
 .chart-card { background:var(--white); border:1px solid var(--border); border-radius:12px; padding:18px 20px; }
@@ -60,7 +64,7 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .demo-charts-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:32px; }
 
 /* ── DIVIDER ── */
-.divider { height:1px; background:var(--border); margin:0 0 28px; opacity:0.6; }
+.divider { height:1px; background:var(--card-dark-border); margin:0 0 28px; }
 
 /* ── CALL CARDS ── */
 .call-card { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:22px; margin-bottom:16px; }
@@ -100,8 +104,8 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .gap-text { font-size:13px; line-height:1.6; color:var(--mid); }
 
 /* ── PATTERNS ── */
-.patterns { background:var(--dark); border-radius:14px; padding:22px 24px; margin-bottom:20px; }
-.patterns .section-label { color:var(--faint); }
+.patterns { background:var(--card-dark); border:1px solid var(--card-dark-border); border-radius:14px; padding:22px 24px; margin-bottom:20px; }
+.patterns .section-label { color:var(--on-bg-muted); }
 .patterns-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
 .pattern-item { font-size:13px; color:var(--faint); line-height:1.5; }
 
@@ -127,7 +131,7 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .avatar-placeholder-icon { opacity:0.2; }
 .avatar-placeholder-text { font-size:12px; color:var(--light); text-align:center; line-height:1.5; }
 
-.note { font-size:12px; color:var(--light); text-align:center; padding:20px; font-style:italic; }
+.note { font-size:12px; color:var(--on-bg-muted); text-align:center; padding:20px; font-style:italic; }
 
 /* ── CONFIRMED SIGNALS / WORD CLOUD ── */
 .word-cloud { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:baseline; padding:20px 24px; background:var(--white); border:1px solid var(--border); border-radius:12px; line-height:1.6; }
