@@ -2,6 +2,8 @@
 
 ## Active
 
+- [ ] **Fix Fathom auto-sync bot** — it injected broken JS twice this session. Add a Node syntax check (`node --check`) to the GitHub Actions workflow before it commits, or disable the bot until the participant schema is stable.
+- [ ] **Delete orphaned single mood board images** — `design-sauna.jpg`, `design-yoga.jpg`, `design-restaurant.jpg`, `design-social.jpg`, `design-coworking.jpg` no longer used, still in repo.
 - [ ] **Yelp scraper for physical wellness venues** — Othership Toronto, Remedy Place, HigherDOSE, Bathhouse NYC, Perspire Sauna, Medellín wellness/spa/yoga places, Bodytech Medellín, 108 Yoga Medellín
 - [ ] **Google Maps reviews** — same targets. May need SerpAPI or Outscraper if scraping is blocked.
 - [ ] **Drop data into NotebookLM** — once Yelp/Google data collected. Ask: emotional drivers, what people wish existed, why they leave premium clubs, how they describe themselves.
@@ -17,6 +19,11 @@
 
 ## Done
 
+- [x] Add Community Events + Practitioner Services verticals to product roadmap (7 total)
+- [x] Cluster feature card gaps by theme (data restructured to {theme, text})
+- [x] Organize quote wall by theme instead of person — 7 themes, 35 quotes
+- [x] Replace single mood board image per section with 3-photo collage (15 AI images via Pollinations FLUX)
+- [x] Replace D3 work type treemap with named cluster groups (readable at N=11)
 - [x] Build research dashboard (index.html) — live at jctitan1045.github.io/vare-research
 - [x] Load Andrew Topping's call data into dashboard
 - [x] Add demographics section to dashboard

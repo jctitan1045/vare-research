@@ -2,6 +2,38 @@
 
 ---
 
+## Session: 2026-07-03 | Dashboard Polish — Collages, Quote Clusters, Roadmap, Work Type
+
+**Focus:** Dashboard visual improvements and content depth
+
+**What happened:**
+- Added 2 new product roadmap verticals: Community Events & Practitioner Services (7 total)
+- Restructured all `gaps` arrays from flat strings to `{theme, text}` objects — now cluster visually by tag inside each feature card
+- Restructured all `quotes` arrays from flat strings to `{theme, text}` objects — 35 quotes across 11 participants assigned to 7 themes
+- Rebuilt `renderQuoteWall()` to group by theme (not person) using `THEME_ORDER` — themes: Space feel & atmosphere, The gap in Medellín, Community & belonging, Recovery & reset, All-in-one vision, Barriers & friction, Movement & wellness identity
+- Replaced design section's single AI image per space with a 3-photo collage from different quote-derived prompts (15 images total via Pollinations.ai FLUX, downloaded as static assets)
+- Replaced D3 treemap for work type with named cluster groups — pill badges with initials + first name, color-coded by category
+- [INCIDENT] GitHub Actions Fathom sync (commit 971cee9) injected malformed JS inside Andrew Topping's `gaps` array — broken participants id:12–15 (Jonas failed call + duplicates). Fixed and force-redeployed.
+- [INCIDENT] GitHub Pages deploy failed transiently ("Deployment failed, try again later") — resolved by pushing empty commit to re-trigger
+
+**Files touched:**
+- `/Users/jordancarroll/Claude Code/vare-research/index.html` — all changes
+- `design-sauna-[1-3].jpg`, `design-yoga-[1-3].jpg`, `design-restaurant-[1-3].jpg`, `design-social-[1-3].jpg`, `design-cowork-[1-3].jpg` — 15 new AI mood board images
+
+**Path move logged:**
+- OLD: `/Users/jordancarroll/Projects/vare-research/`
+- NEW: `/Users/jordancarroll/Claude Code/vare-research/`
+- GitHub remote, Pages deploy, Actions — all unchanged
+
+**Still open:**
+- Fathom auto-sync bot needs a syntax validator before it commits — it keeps injecting broken JS. Consider adding a pre-commit check in the workflow or disabling the bot entirely until the schema is fixed.
+- The old `design-sauna.jpg`, `design-yoga.jpg`, `design-restaurant.jpg`, `design-social.jpg`, `design-coworking.jpg` (original single images) are still in the repo but no longer referenced — can be deleted to save space.
+
+**Next session start:**
+Continue from `~/Claude Code/vare-research/` (new path). Dashboard is live and clean at jctitan1045.github.io/vare-research.
+
+---
+
 ## Session: 2026-06-27 | Market Research Scraping
 
 **Focus:** Customer discovery — sourcing review data from physical wellness venues
@@ -60,7 +92,7 @@ If Yelp blocks: fall back to SerpAPI ($50/mo) or Outscraper for Google reviews.
 - Fathom call naming convention confirmed: "Wellness Center Market Research Call"
 
 **Files touched:**
-- `/Users/jordancarroll/Projects/vare-research/index.html` — live dashboard (GitHub Pages)
+- `/Users/jordancarroll/Claude Code/vare-research/index.html` — live dashboard (GitHub Pages)
 - `/Users/jordancarroll/Downloads/Vare_Discovery_Script_Call1.md` — discovery script
 - `/Users/jordancarroll/Downloads/Vare_Discovery_Script_Call1.docx` — formatted DOCX
 - `/Users/jordancarroll/Downloads/Vare_Ranking_Slide.html` — screen share slide
