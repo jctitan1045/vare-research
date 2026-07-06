@@ -109,6 +109,21 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 .patterns-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
 .pattern-item { font-size:13px; color:var(--faint); line-height:1.5; }
 
+/* ── IDEAL CLIENT PROFILES (one per row + starter pack) ── */
+.icp-list { display:flex; flex-direction:column; gap:16px; margin-bottom:20px; }
+.icp-row { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:22px; display:flex; gap:24px; align-items:stretch; }
+.icp-main { flex:1.25; display:flex; flex-direction:column; gap:14px; min-width:0; }
+.starter-pack { flex:1; min-width:250px; background:repeating-linear-gradient(135deg,var(--cream-bright),var(--cream-bright) 12px,#00000005 12px,#00000005 24px); border:1.5px dashed var(--border); border-radius:12px; padding:16px 16px 18px; display:flex; flex-direction:column; gap:13px; }
+.sp-header { display:flex; align-items:center; gap:12px; }
+.sp-figure { width:54px; height:54px; border-radius:50%; background:var(--white); border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:30px; flex-shrink:0; box-shadow:0 1px 3px #0000000f; }
+.sp-kicker { font-size:9px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--light); }
+.sp-title { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:600; color:var(--dark); line-height:1.15; }
+.sp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.sp-item { background:var(--white); border:1px solid var(--border); border-radius:10px; padding:10px 6px; display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; }
+.sp-icon { font-size:23px; line-height:1; }
+.sp-label { font-size:9.5px; color:var(--mid); line-height:1.25; font-weight:500; }
+@media(max-width:760px){ .icp-row{ flex-direction:column; } .starter-pack{ min-width:0; } }
+
 /* ── AVATARS ── */
 .avatar-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:28px; align-items:start; }
 .avatar-card { background:var(--white); border:1px solid var(--border); border-radius:14px; overflow:hidden; align-self:start; }
@@ -327,10 +342,10 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 <div class="section-label">Ideal client profiles</div>
 
 <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--cream-bright);margin-bottom:10px">Primary — highest value members</div>
-<div class="demo-charts" style="margin-bottom:20px" id="icp-primary"></div>
+<div class="icp-list" id="icp-primary"></div>
 
 <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--cream-bright);margin-bottom:10px">Secondary — growth &amp; pipeline</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px" id="icp-secondary"></div>
+<div class="icp-list" id="icp-secondary"></div>
 
 <div class="divider" style="margin-top:20px"></div>
 <!-- ③ CUSTOMER AVATARS -->
@@ -2500,7 +2515,15 @@ const ICPS = {
       wtp: "500k – 1M COP/mo",
       psychographic: "Already spending on wellness piecemeal — SmartFit, Reset, yoga separately. Knows what contrast therapy is and wants it done right. Values a clean, uncrowded environment over price. Will consolidate immediately if the quality is there.",
       draws: ["Sauna + cold plunge done properly", "Functional gym (not SmartFit volume)", "Quiet hours and booking that works", "Community of similar people"],
-      based: ["Andrew Topping", "Sebastian Krestin", "Alex Salinsky", "Brett Edwards"]
+      based: ["Andrew Topping", "Sebastian Krestin", "Alex Salinsky", "Brett Edwards"],
+      sp: { figure:"🧑🏻‍💻", items:[
+        {icon:"🧊", label:"Cold plunge"},
+        {icon:"🔥", label:"Sauna"},
+        {icon:"🏋️", label:"Functional gym"},
+        {icon:"💻", label:"Remote work"},
+        {icon:"⌚", label:"Whoop / tracker"},
+        {icon:"🥗", label:"Macros listed"}
+      ]}
     },
     {
       name: "The Wellness Professional",
@@ -2511,7 +2534,15 @@ const ICPS = {
       wtp: "300k – 600k COP/mo personal",
       psychographic: "Wants the space for their own wellness AND as a professional tool — hosting sessions, bringing clients, running groups. Disproportionate word-of-mouth value. Becomes an ambassador, not just a member. The sauna is a therapy room for them.",
       draws: ["Studio space to host sessions", "Sauna for client facilitation", "Professional wellness community", "Founding member visibility"],
-      based: ["Laurel Van Woerkom", "Isabella Wuman", "Andrew Topping"]
+      based: ["Laurel Van Woerkom", "Isabella Wuman", "Andrew Topping"],
+      sp: { figure:"🧘🏽‍♀️", items:[
+        {icon:"🧘", label:"Yoga mat"},
+        {icon:"🎟️", label:"Studio to rent"},
+        {icon:"🔥", label:"Sauna as therapy"},
+        {icon:"🍵", label:"Cacao ceremony"},
+        {icon:"🗣️", label:"Client sessions"},
+        {icon:"⭐", label:"Founding member"}
+      ]}
     },
     {
       name: "The Senior Executive Recoverer",
@@ -2522,7 +2553,15 @@ const ICPS = {
       wtp: "1M+ COP/mo",
       psychographic: "Physical recovery is the primary driver — not social, not community. Has the highest absolute price ceiling of any segment. The barrier is environment, not cost: needs to feel comfortable, non-judgmental, and genuinely premium. One member like this anchors a membership tier.",
       draws: ["Recovery-first programming", "Non-judgmental, comfortable atmosphere", "Frictionless booking and access", "Premium feel that justifies the price"],
-      based: ["Adam Anschel"]
+      based: ["Adam Anschel"],
+      sp: { figure:"👨🏼‍💼", items:[
+        {icon:"🔥", label:"Sauna"},
+        {icon:"🧊", label:"Cold plunge"},
+        {icon:"🏋️", label:"Kettlebells"},
+        {icon:"🛎️", label:"Concierge booking"},
+        {icon:"⛳", label:"Country-club feel"},
+        {icon:"🥗", label:"Clean food"}
+      ]}
     }
   ],
   secondary: [
@@ -2535,7 +2574,15 @@ const ICPS = {
       wtp: "300k – 500k COP/mo",
       psychographic: "Runs or leads communities — wellness circles, entrepreneurs, expat groups. Not just a member but a potential event host and pipeline generator. Mid-range personal WTP but their network value is disproportionate. Bring 5–10 people when they show up.",
       draws: ["Event hosting capability", "Group sauna / contrast sessions", "Community-first culture", "Founder or partner-level recognition"],
-      based: ["Juliana Trujillo", "Laurel Van Woerkom", "Isabella Wuman"]
+      based: ["Juliana Trujillo", "Laurel Van Woerkom", "Isabella Wuman"],
+      sp: { figure:"🙋🏽‍♀️", items:[
+        {icon:"🎪", label:"Event space"},
+        {icon:"🔥", label:"Group sauna"},
+        {icon:"🍵", label:"Cacao circle"},
+        {icon:"📣", label:"Brings the crowd"},
+        {icon:"🎟️", label:"Host slots"},
+        {icon:"🤝", label:"Partner status"}
+      ]}
     },
     {
       name: "The Upwardly Mobile Local",
@@ -2546,34 +2593,63 @@ const ICPS = {
       wtp: "200k – 400k COP/mo",
       psychographic: "Wellness-curious but price-sensitive. Sees international venues as 'dollar prices' and self-excludes before even visiting. Needs a free or guest-pass first experience to convert. Not the primary revenue driver today, but critical for local legitimacy and long-term market positioning.",
       draws: ["Free intro event or guest pass", "Local pricing tier", "Colombian community feel", "Accessible location"],
-      based: ["Juan Pablo Madrid", "Angie La Mas Linda", "Isabel Vargas"]
+      based: ["Juan Pablo Madrid", "Angie La Mas Linda", "Isabel Vargas"],
+      sp: { figure:"🧑🏽", items:[
+        {icon:"🎟️", label:"Free guest pass"},
+        {icon:"💵", label:"Local pricing"},
+        {icon:"🏋️", label:"Daily gym"},
+        {icon:"📍", label:"Close by"},
+        {icon:"🇨🇴", label:"Local community"},
+        {icon:"🧊", label:"First cold plunge"}
+      ]}
     }
   ]
 };
 
 function renderICPs() {
+  function starterPack(icp) {
+    if(!icp.sp) return '';
+    return `
+      <div class="starter-pack">
+        <div class="sp-header">
+          <div class="sp-figure">${icp.sp.figure}</div>
+          <div>
+            <div class="sp-kicker">Starter pack</div>
+            <div class="sp-title">${icp.name}</div>
+          </div>
+        </div>
+        <div class="sp-grid">
+          ${icp.sp.items.map(it=>`
+            <div class="sp-item"><div class="sp-icon">${it.icon}</div><div class="sp-label">${it.label}</div></div>
+          `).join('')}
+        </div>
+      </div>`;
+  }
   function card(icp, size) {
     return `
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
-          <div style="display:flex;align-items:center;gap:12px">
-            <div style="width:42px;height:42px;border-radius:50%;background:${icp.color};display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${icp.emoji}</div>
-            <div>
-              <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--dark);line-height:1.2">${icp.name}</div>
-              <div style="font-size:11px;color:var(--light);margin-top:2px;font-style:italic">${icp.tagline}</div>
+      <div class="icp-row">
+        <div class="icp-main">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:42px;height:42px;border-radius:50%;background:${icp.color};display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${icp.emoji}</div>
+              <div>
+                <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--dark);line-height:1.2">${icp.name}</div>
+                <div style="font-size:11px;color:var(--light);margin-top:2px;font-style:italic">${icp.tagline}</div>
+              </div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-size:9px;color:var(--light);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px">WTP</div>
+              <div style="font-size:12px;font-weight:600;color:var(--dark)">${icp.wtp}</div>
             </div>
           </div>
-          <div style="text-align:right;flex-shrink:0">
-            <div style="font-size:9px;color:var(--light);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px">WTP</div>
-            <div style="font-size:12px;font-weight:600;color:var(--dark)">${icp.wtp}</div>
+          <div style="font-size:11px;font-weight:500;color:var(--mid);background:var(--cream-bright);border-radius:6px;padding:7px 10px">${icp.demo}</div>
+          <div style="font-size:12px;color:var(--mid);line-height:1.7">${icp.psychographic}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px">
+            ${icp.draws.map(d=>`<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:var(--cream-bright);color:var(--mid);border:1px solid var(--border)">${d}</span>`).join('')}
           </div>
+          <div style="font-size:10px;color:var(--light);padding-top:10px;border-top:1px solid var(--border);margin-top:auto">Based on: ${icp.based.join(', ')}</div>
         </div>
-        <div style="font-size:11px;font-weight:500;color:var(--mid);background:var(--cream-bright);border-radius:6px;padding:7px 10px">${icp.demo}</div>
-        <div style="font-size:12px;color:var(--mid);line-height:1.7">${icp.psychographic}</div>
-        <div style="display:flex;flex-wrap:wrap;gap:5px">
-          ${icp.draws.map(d=>`<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:var(--cream-bright);color:var(--mid);border:1px solid var(--border)">${d}</span>`).join('')}
-        </div>
-        <div style="font-size:10px;color:var(--light);padding-top:10px;border-top:1px solid var(--border)">Based on: ${icp.based.join(', ')}</div>
+        ${starterPack(icp)}
       </div>`;
   }
   document.getElementById('icp-primary').innerHTML = ICPS.primary.map(icp => card(icp)).join('');
