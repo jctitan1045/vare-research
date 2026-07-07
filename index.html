@@ -1999,7 +1999,7 @@ const MARKET_LANDSCAPE = {
   pillars: ["Gym","Movement / Yoga","Sauna","Cold plunge","Cowork","Healthy food","Community / events","Recovery tech"],
   vare: { "Gym":"full","Movement / Yoga":"full","Sauna":"full","Cold plunge":"full","Cowork":"full","Healthy food":"full","Community / events":"full","Recovery tech":"part" },
   takeaways: [
-    "Still no full-stack membership community. The closest bundles are Kin / Kiin Living (Poblado, ~670k/mo) and — newly surfaced in Laureles — INNTU Hotel, whose gym + sauna + Turco + pool are open to the public. Neither combines cowork + food + curated community into one membership.",
+    "There IS a close analog now: Wake BioHotel's Sastra Longevity Club — gym, movement studio, infrared sauna, contrast jacuzzi, a farm-to-table restaurant and diagnostics-led biohacking, sold as one membership. Kin / Kiin (Poblado) and INNTU (Laureles, public-access gym + sauna + pool) round out the near-all-in-ones. The remaining wedge: a warm daily community + cowork at an accessible ($150–200) price — versus Wake's premium, clinical longevity positioning.",
     "Recovery is more crowded than the calls implied — but it's transactional. Poblado alone stacks Nordica, Reset, Celestino, Element, Clínica Antienvejecimiento, El Cielo and Wellcomm for sauna / cold plunge — mostly day-pass or à-la-carte (Celestino day ~100k, Element cold plunge 50k/10min). Almost none sell it as a daily membership + community. That, not 'sauna exists,' is the wedge.",
     "Single verticals are cheap and confirmed. Web-verified monthly: SmartFit Black ~120k, Power Club ~209k, 108 Yoga 305k unlimited. Members already stack 3–4 of these plus a food delivery.",
     "Price position holds — but must be earned. Varé's 350–500k membership sits above any single vertical and below the cost of assembling gym + recovery + cowork + food separately. Since each piece exists cheaply elsewhere, the premium has to be justified by the bundle, the community, and the daily-anchor experience."
@@ -2010,6 +2010,11 @@ const MARKET_LANDSCAPE = {
       strength:"Closest thing to an all-in-one today — cowork + gym + sauna + cold plunge under one roof, with two membership tiers.",
       gap:"Pipes music into the gym/cowork (a member is petitioning to stop it); Poblado-only, 'too far from Laureles.' Public pricing not listed.",
       who:["Brett","Sebastian"] },
+    { name:"Wake BioHotel (Sastra Longevity Club)", cat:"Longevity / biohacking club", area:"Poblado", model:"Membership + hotel", src:"web", price:"by inquiry (Sastra Club)", priceNum:null,
+      cover:{"Gym":"full","Movement / Yoga":"full","Sauna":"full","Cold plunge":"part","Cowork":"info","Healthy food":"full","Community / events":"part","Recovery tech":"full"},
+      strength:"Arguably the closest thing to Varé's concept — a longevity / biohacking membership club (Sastra) with a light-filled gym, a movement studio (yoga, barre, sound healing), infrared sauna, hot/cold contrast jacuzzi, wellness pool, a farm-to-table restaurant (Silo) and diagnostics-led biohacking, all under one brand.",
+      gap:"Premium longevity/biohotel positioning (diagnostics-led, hotel-attached) reads more upscale-clinical than a warm daily community club; coworking isn't listed on the longevity offering; membership + day-pass pricing is by inquiry.",
+      who:[] },
     { name:"INNTU Hotel", cat:"Hotel wellness (public access)", area:"Laureles — Segundo Parque", model:"Hotel / public access", src:"web", price:"n/a (WhatsApp)", priceNum:null,
       cover:{"Gym":"full","Sauna":"full","Cold plunge":"part","Healthy food":"part"},
       strength:"Gym + sauna + Turco + jacuzzi + pool + spa, and all services are open to the public (no guest requirement) — the closest all-in-one in Laureles.",
@@ -2136,7 +2141,7 @@ function renderMarketLandscape(){
   const matrix = `
     <div class="chart-card" style="margin-bottom:16px">
       <div class="chart-title">Who covers what — and where the white space is</div>
-      <div class="chart-sub">● offered &nbsp; ◐ partial &nbsp; <span style="color:#C9A54A;font-weight:700">?</span> needs info &nbsp; · not offered. Only Varé spans the full stack; Kin/Kiin and INNTU come closest. Row dot = source: <span style="color:#30B860">●</span> in calls · <span style="color:#4A9EC4">●</span> web · <span style="color:#1E3028">●</span> confirmed both.</div>
+      <div class="chart-sub">● offered &nbsp; ◐ partial &nbsp; <span style="color:#C9A54A;font-weight:700">?</span> needs info &nbsp; · not offered. Only Varé spans the full stack; Wake, Kin/Kiin and INNTU come closest. Row dot = source: <span style="color:#30B860">●</span> in calls · <span style="color:#4A9EC4">●</span> web · <span style="color:#1E3028">●</span> confirmed both.</div>
       <div style="overflow-x:auto;margin-top:12px">
         <table style="border-collapse:collapse;width:100%;min-width:760px">
           <thead><tr>${th}</tr></thead>
