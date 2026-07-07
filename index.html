@@ -2015,9 +2015,9 @@ const MARKET_LANDSCAPE = {
       strength:"The sauna + social benchmark everyone compares to; hosts yoga and events.",
       gap:"No covered outdoor recovery, crowding, WhatsApp booking, and no real hot→cold break. Locals call it 'a dollar price.'",
       who:["Sebastian","Alex","Angie","Juan Pablo","Brett"] },
-    { name:"Reset", cat:"Recovery / spa", area:"—", price:"130k/mo", priceNum:130,
+    { name:"Reset", cat:"Recovery / spa", area:"Inside Action Black · La 33", price:"130k/mo", priceNum:130,
       cover:{"Sauna":"full","Cold plunge":"part"},
-      strength:"Spa-style membership with sauna + jacuzzi.",
+      strength:"Spa-style membership with sauna + jacuzzi, co-located with the Action Black gym on La 33.",
       gap:"WhatsApp-only booking ('95% of the time it's not available'), no cold break, guest capped once / 6 months — heavily underused by paying members.",
       who:["Alex","Adam"] },
     { name:"SaunaSpace", cat:"Recovery + yoga", area:"—", price:"—", priceNum:null,
@@ -2045,9 +2045,9 @@ const MARKET_LANDSCAPE = {
       strength:"Dedicated HYROX / hybrid-functional training — a rising format.",
       gap:"North-side only; single vertical.",
       who:["Juan Pablo (Duet)"] },
-    { name:"Action Black", cat:"Gym", area:"—", price:"130k/mo", priceNum:130,
+    { name:"Action Black", cat:"Gym", area:"La 33 (+ others)", price:"130k/mo", priceNum:130,
       cover:{"Gym":"full"},
-      strength:"Mid-premium gym.",
+      strength:"Mid-premium gym; the La 33 location shares a roof with the Reset spa.",
       gap:"Single vertical — member would switch if bundled with recovery + cowork.",
       who:["Alex"] },
     { name:"Rivertown", cat:"Cowork / café", area:"Laureles", price:"—", priceNum:null,
@@ -2065,11 +2065,21 @@ const MARKET_LANDSCAPE = {
       strength:"'Gold-standard feel' — open roof, plants, high ceilings, natural light.",
       gap:"Cowork only.",
       who:["Adam"] },
-    { name:"Healing Forest", cat:"Pilates / movement", area:"—", price:"'expensive'", priceNum:null,
+    { name:"Healing Forest Wellness Clinic", cat:"Wellness clinic", area:"—", price:"'expensive'", priceNum:null,
       cover:{"Movement / Yoga":"full"},
-      strength:"Quality Pilates.",
-      gap:"Priced people out.",
+      strength:"Quality Pilates within a broader wellness-clinic offering.",
+      gap:"Priced people out (per participant); full service list still to confirm.",
       who:["Isabella"] }
+  ],
+  radar: [
+    { name:"Power Club", cat:"Premium gym chain" },
+    { name:"Amsterdam Plaza", cat:"Hotel / venue" },
+    { name:"Celestino Boutique Hotel", cat:"Boutique hotel + spa" },
+    { name:"Element Wellness Center", cat:"Wellness center" },
+    { name:"Wellness Spa · Clínica Anti-Envejecimiento", cat:"Medical / anti-aging spa" },
+    { name:"El Cielo Hotel", cat:"Boutique hotel + spa" },
+    { name:"The Spa by Wellcome", cat:"Spa" },
+    { name:"Intu Hotel", cat:"Hotel + spa" }
   ],
   models: [
     { name:"Nirvana Life", area:"Bali", note:"The gold-standard all-in-one cited unprompted — massive gym, customizable food, every class, deep recovery. 'It became a bubble everyone wanted to be part of.' ~$200–300/mo." },
@@ -2157,9 +2167,18 @@ function renderMarketLandscape(){
       </div>
     </div>`;
 
-  const note = `<div style="font-size:10px;color:var(--light);font-style:italic;line-height:1.5">All venues, prices, and coverage are customer-reported from the ${DATA.participants.length} discovery calls — directional signal, not audited data. Blank cells mean not mentioned, not necessarily not offered. Smash (Jordan's partner's brand) is the on-site food concept, not a competitor.</div>`;
+  const radar = `
+    <div class="chart-card" style="margin-bottom:16px;padding:18px">
+      <div class="chart-title">Also on the radar — founder-listed</div>
+      <div class="chart-sub">Named by Jordan, not yet surfaced in a call. Categories are tentative; coverage &amp; pricing to be added (from your research or a web pull).</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+        ${(M.radar||[]).map(r=>`<div style="border:1px dashed var(--border);border-radius:20px;padding:6px 12px;background:var(--cream-bright)"><span style="font-size:12px;font-weight:500;color:var(--dark)">${r.name}</span><span style="font-size:10px;color:var(--light);margin-left:6px">${r.cat}</span></div>`).join('')}
+      </div>
+    </div>`;
 
-  el.innerHTML = takeaways + matrix + ladder + cards + models + note;
+  const note = `<div style="font-size:10px;color:var(--light);font-style:italic;line-height:1.5">The matrix, prices, and coverage are customer-reported from the ${DATA.participants.length} discovery calls — directional signal, not audited data. The "also on the radar" venues are founder-listed and still awaiting coverage/pricing. Blank cells mean not mentioned, not necessarily not offered. Smash (Jordan's partner's brand) is the on-site food concept, not a competitor.</div>`;
+
+  el.innerHTML = takeaways + matrix + ladder + cards + radar + models + note;
 }
 
 function renderProductRoadmap(){
