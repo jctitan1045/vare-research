@@ -1342,17 +1342,17 @@ function renderWorkTreemap(participants){
       members:['Operations Consultant','Medical Sales & Marketing (self-employed)','Commercial Partnerships / Biz Dev'] },
     { label:'Remote Corporate', accent:'#4A9EC4',
       members:['Remote Healthcare Analyst','Remote professional'] },
+    // Catch-all: any workType not listed above still shows up here instead of
+    // being silently dropped. Move it into a curated group above when a pattern emerges.
+    { label:'Other', accent:'#8A9E95', members:[] },
   ];
 
   const grouped = {};
   participants.forEach(p => {
     if(!p.workType) return;
-    for(const g of GROUPS){
-      if(g.members.includes(p.workType)){
-        (grouped[g.label] = grouped[g.label]||{accent:g.accent,people:[]}).people.push({name:p.name, role:p.workType});
-        break;
-      }
-    }
+    const match = GROUPS.find(g => g.members.includes(p.workType));
+    const g = match || GROUPS[GROUPS.length - 1]; // fall back to the 'Other' group
+    (grouped[g.label] = grouped[g.label]||{accent:g.accent,people:[]}).people.push({name:p.name, role:p.workType});
   });
 
   container.innerHTML = GROUPS
@@ -2002,6 +2002,10 @@ function renderFeatureGaps(gaps){
 }
 
 function renderProductRoadmap(){
+  // Denominator is always the live participant count; the numerator is always
+  // the length of the who-list. The literal count:/total: fields in the data
+  // are ignored on purpose so these numbers can never go stale.
+  const N = DATA.participants.length;
   const colDefs = [
     { key:'must',   label:'Must have',    color:'#1E3028', bg:'#EDF4EF' },
     { key:'should', label:'Should have',  color:'#4A6358', bg:'#F2F5F2' },
@@ -2023,9 +2027,9 @@ function renderProductRoadmap(){
                   <div class="product-feature-name">${f.feature}</div>
                   <span class="product-feature-chevron">▶</span>
                 </div>
-                <div class="product-feature-summary">${f.count}/${f.total} people${f.next ? ' · ' + f.next : ''}</div>
+                <div class="product-feature-summary">${f.who.length}/${N} people${f.next ? ' · ' + f.next : ''}</div>
                 <div class="product-feature-detail">
-                  <span class="product-feature-count">${f.count} of ${f.total} people mentioned this</span>
+                  <span class="product-feature-count">${f.who.length} of ${N} people mentioned this</span>
                   <div class="product-feature-who">${f.who.map(n=>`<span class="product-feature-who-chip">${n}</span>`).join('')}</div>
                   ${f.gaps.length?renderFeatureGaps(f.gaps):''}
                   ${f.next?`<div class="product-feature-next">→ ${f.next}</div>`:''}
@@ -2217,14 +2221,18 @@ function renderTenureChart(participants){
     { label: 'Whole life',  keys: ['whole', 'lifetime'] },
   ];
   BUCKETS.forEach(b => b.count = 0);
+  let unspecified = 0;
   participants.forEach(p => {
-    if(!p.tenure) return;
+    if(!p.tenure) { unspecified++; return; }
     const t = p.tenure.toLowerCase();
     const b = BUCKETS.find(b => b.keys.some(k => t.includes(k.toLowerCase())));
     if(b) b.count++;
+    else unspecified++; // freeform value that matches no bucket — still counted, never dropped
   });
-  const labels = BUCKETS.map(b => b.label);
-  const values = BUCKETS.map(b => b.count);
+  // Only surface the catch-all bucket when it actually has people, so the chart stays clean.
+  const rows = unspecified > 0 ? [...BUCKETS, { label:'Unspecified', count:unspecified }] : BUCKETS;
+  const labels = rows.map(b => b.label);
+  const values = rows.map(b => b.count);
   new Chart(document.getElementById('tenureChart'), {
     type: 'bar',
     data: { labels, datasets: [{ data: values, backgroundColor: '#1E3028', borderWidth: 0, borderRadius: 4 }] },
