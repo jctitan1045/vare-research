@@ -362,7 +362,12 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 </div>
 
 <div class="divider"></div>
-<!-- ⑤ PRODUCT ROADMAP -->
+<!-- ⑤ MARKET LANDSCAPE -->
+<div class="section-label" style="margin-bottom:12px">Market landscape — what already exists</div>
+<div id="market-landscape" style="margin-bottom:28px"></div>
+
+<div class="divider"></div>
+<!-- ⑥ PRODUCT ROADMAP -->
 <div class="section-label" style="margin-bottom:12px">Product roadmap by vertical</div>
 <div id="product-roadmap" style="margin-bottom:28px"></div>
 
@@ -1578,6 +1583,7 @@ function render(){
   </div>
 `).join('');
 
+  renderMarketLandscape();
   renderProductRoadmap();
   renderQuoteWall();
   renderDesignVision();
@@ -1987,6 +1993,173 @@ function renderFeatureGaps(gaps){
     else groups.push({theme:g.theme, texts:[g.text]});
   });
   return `<div class="product-feature-gaps">${groups.map(gr=>`<div class="product-feature-theme-label">${gr.theme}</div>${gr.texts.map(t=>`<div class="product-feature-gap">${t}</div>`).join('')}`).join('')}</div>`;
+}
+
+const MARKET_LANDSCAPE = {
+  pillars: ["Gym","Movement / Yoga","Sauna","Cold plunge","Cowork","Healthy food","Community / events","Recovery tech"],
+  vare: { "Gym":"full","Movement / Yoga":"full","Sauna":"full","Cold plunge":"full","Cowork":"full","Healthy food":"full","Community / events":"full","Recovery tech":"part" },
+  takeaways: [
+    "No one in Medellín offers the full stack. Kin Rooftop is the closest (gym + sauna + cold plunge + cowork) but adds no real food, yoga, or events — and loses members on piped-in music and a Poblado-only location.",
+    "Recovery is Nordica's to lose. It's the benchmark everyone names, and its weak points — WhatsApp booking, crowds, no true hot→cold flow, a 'dollar-price' perception among locals — are precisely the opening.",
+    "The market is fragmented by vertical. Members stitch together 3–4 memberships (e.g. SmartFit + Nordica + Rivertown + a food delivery). Consolidation into one membership is the wedge.",
+    "White space on price. A single vertical tops out ~350k/mo (108 Yoga); the only real bundle (Kin) sits ~670k. Varé's 350–500k all-in-one lands in genuine open space — premium vs. a gym, a discount vs. assembling the stack yourself."
+  ],
+  competitors: [
+    { name:"Kin Rooftop", cat:"All-in-one club", area:"Poblado / Tesoro", price:"~672k/mo", priceNum:672,
+      cover:{"Gym":"full","Movement / Yoga":"part","Sauna":"full","Cold plunge":"full","Cowork":"full","Healthy food":"part","Community / events":"part"},
+      strength:"Closest thing to an all-in-one today — cowork + gym + sauna + cold plunge under one roof.",
+      gap:"Pipes music into the gym/cowork (a member is petitioning to stop it); Poblado-only, 'too far from Laureles.'",
+      who:["Brett","Sebastian"] },
+    { name:"Nordica", cat:"Recovery / sauna", area:"Poblado", price:"~100–200k/mo · 'dollar price'", priceNum:200,
+      cover:{"Movement / Yoga":"part","Sauna":"full","Cold plunge":"full","Community / events":"full"},
+      strength:"The sauna + social benchmark everyone compares to; hosts yoga and events.",
+      gap:"No covered outdoor recovery, crowding, WhatsApp booking, and no real hot→cold break. Locals call it 'a dollar price.'",
+      who:["Sebastian","Alex","Angie","Juan Pablo","Brett"] },
+    { name:"Reset", cat:"Recovery / spa", area:"—", price:"130k/mo", priceNum:130,
+      cover:{"Sauna":"full","Cold plunge":"part"},
+      strength:"Spa-style membership with sauna + jacuzzi.",
+      gap:"WhatsApp-only booking ('95% of the time it's not available'), no cold break, guest capped once / 6 months — heavily underused by paying members.",
+      who:["Alex","Adam"] },
+    { name:"SaunaSpace", cat:"Recovery + yoga", area:"—", price:"—", priceNum:null,
+      cover:{"Movement / Yoga":"full","Sauna":"full"},
+      strength:"Sauna paired with yoga programming.",
+      gap:"Instructors split revenue three ways and do their own marketing — weak for supply-side talent.",
+      who:["Angie","Laurel"] },
+    { name:"108 Yoga", cat:"Yoga studio", area:"—", price:"350k/mo", priceNum:350,
+      cover:{"Movement / Yoga":"full","Sauna":"part","Healthy food":"part"},
+      strength:"High class quality, beginner/adaptive options, and a loved juice + coffee bar to linger at.",
+      gap:"Single vertical (yoga-first) at a premium price for one thing.",
+      who:["Andrew"] },
+    { name:"SmartFit", cat:"Gym (big-box)", area:"Multi-location", price:"80–140k/mo", priceNum:100,
+      cover:{"Gym":"full"},
+      strength:"Cheap, everywhere, familiar.",
+      gap:"'Too hot and packed,' no room for calisthenics / Olympic lifts, and a crowd energy people actively leave.",
+      who:["Andrew","Sebastian","Adam","Juan Pablo","Isabel","Zach"] },
+    { name:"BodyTech", cat:"Gym (premium)", area:"San Juan / Las Vegas", price:"~$35+/mo", priceNum:140,
+      cover:{"Gym":"full"},
+      strength:"More premium big-box option.",
+      gap:"'Overpriced for the same thing' vs SmartFit.",
+      who:["Andrew","Zach"] },
+    { name:"Konoha", cat:"HYROX gym", area:"Bello (north)", price:"175k/mo", priceNum:175,
+      cover:{"Gym":"full","Movement / Yoga":"part"},
+      strength:"Dedicated HYROX / hybrid-functional training — a rising format.",
+      gap:"North-side only; single vertical.",
+      who:["Juan Pablo (Duet)"] },
+    { name:"Action Black", cat:"Gym", area:"—", price:"130k/mo", priceNum:130,
+      cover:{"Gym":"full"},
+      strength:"Mid-premium gym.",
+      gap:"Single vertical — member would switch if bundled with recovery + cowork.",
+      who:["Alex"] },
+    { name:"Rivertown", cat:"Cowork / café", area:"Laureles", price:"—", priceNum:null,
+      cover:{"Cowork":"full","Healthy food":"part"},
+      strength:"A 'third home' — daily coffee + work where the staff know your name.",
+      gap:"Pure café — no wellness or recovery.",
+      who:["Sebastian"] },
+    { name:"Pergamino", cat:"Café / cowork", area:"Multi (Laureles)", price:"—", priceNum:null,
+      cover:{"Cowork":"full","Healthy food":"part"},
+      strength:"Quality coffee + work-friendly, multiple locations.",
+      gap:"Café only.",
+      who:["Alex","Juan Pablo (Duet)","Zach"] },
+    { name:"Hardin", cat:"Cowork", area:"Envigado", price:"—", priceNum:null,
+      cover:{"Cowork":"full","Healthy food":"part"},
+      strength:"'Gold-standard feel' — open roof, plants, high ceilings, natural light.",
+      gap:"Cowork only.",
+      who:["Adam"] },
+    { name:"Healing Forest", cat:"Pilates / movement", area:"—", price:"'expensive'", priceNum:null,
+      cover:{"Movement / Yoga":"full"},
+      strength:"Quality Pilates.",
+      gap:"Priced people out.",
+      who:["Isabella"] }
+  ],
+  models: [
+    { name:"Nirvana Life", area:"Bali", note:"The gold-standard all-in-one cited unprompted — massive gym, customizable food, every class, deep recovery. 'It became a bubble everyone wanted to be part of.' ~$200–300/mo." },
+    { name:"Othership", area:"Toronto / NYC", note:"Large-format guided sauna + cold-plunge classes (30–40-person sauna). The 'classes inside the sauna' model two participants referenced." },
+    { name:"Soho House", area:"Global", note:"Members-club tiering — open floor below, member floors above, welcome drinks and credits. The structure Ali wants 'in a Medellín jungle style.'" }
+  ]
+};
+
+function renderMarketLandscape(){
+  const el = document.getElementById('market-landscape');
+  if(!el) return;
+  const M = MARKET_LANDSCAPE, P = M.pillars;
+  const dot = v => v==='full' ? '<span style="color:#1E3028;font-size:14px">●</span>'
+                 : v==='part' ? '<span style="color:#8A9E95;font-size:14px" title="partial">◐</span>'
+                 : '<span style="color:#D8D8D2;font-size:12px">·</span>';
+  const th = `<th style="text-align:left;padding:8px 10px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--light);position:sticky;left:0;background:var(--white)">Venue</th>`
+    + P.map(p=>`<th style="padding:8px 6px;font-size:9.5px;font-weight:600;color:var(--light);width:64px;line-height:1.2">${p}</th>`).join('')
+    + `<th style="padding:8px 10px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--light);text-align:right">Price</th>`;
+  const row = (name, cover, price, opts={}) => `
+    <tr style="border-top:1px solid var(--border);${opts.vare?'background:#EDF4EF':''}">
+      <td style="padding:9px 10px;font-size:12px;font-weight:${opts.vare?600:500};color:var(--dark);position:sticky;left:0;background:${opts.vare?'#EDF4EF':'var(--white)'};white-space:nowrap">${opts.vare?'★ ':''}${name}${opts.cat?`<div style="font-size:9.5px;color:var(--light);font-weight:400">${opts.cat}${opts.area&&opts.area!=='—'?' · '+opts.area:''}</div>`:''}</td>
+      ${P.map(p=>`<td style="text-align:center;padding:9px 6px">${dot(cover[p])}</td>`).join('')}
+      <td style="padding:9px 10px;font-size:11px;color:var(--mid);text-align:right;white-space:nowrap">${price||'—'}</td>
+    </tr>`;
+  const matrix = `
+    <div class="chart-card" style="margin-bottom:16px">
+      <div class="chart-title">Who covers what — and where the white space is</div>
+      <div class="chart-sub">● offered &nbsp; ◐ partial &nbsp; · not offered. Only Varé spans the full stack; Kin comes closest.</div>
+      <div style="overflow-x:auto;margin-top:12px">
+        <table style="border-collapse:collapse;width:100%;min-width:720px">
+          <thead><tr>${th}</tr></thead>
+          <tbody>
+            ${row(M.vare===M.vare?'Varé (planned)':'', M.vare, '350–500k / $150–200', {vare:true, cat:'The all-in-one', area:''})}
+            ${M.competitors.map(c=>row(c.name, c.cover, c.price, {cat:c.cat, area:c.area})).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+
+  const maxP = 700;
+  const ladderPts = M.competitors.filter(c=>c.priceNum).sort((a,b)=>a.priceNum-b.priceNum);
+  const ladder = `
+    <div class="chart-card" style="margin-bottom:16px">
+      <div class="chart-title">Price ladder (customer-reported, COP thousands/mo)</div>
+      <div class="chart-sub">Single-vertical venues cluster low; the only bundle (Kin) sits high. Varé's target band is the gap between.</div>
+      <div style="position:relative;height:70px;margin:22px 8px 8px">
+        <div style="position:absolute;top:34px;left:0;right:0;height:2px;background:var(--border)"></div>
+        <div style="position:absolute;top:20px;height:30px;left:${350/maxP*100}%;width:${(500-350)/maxP*100}%;background:#1E302818;border:1px dashed #1E3028;border-radius:4px" title="Varé target 350–500k"></div>
+        <div style="position:absolute;top:2px;left:${350/maxP*100}%;font-size:9px;color:#1E3028;font-weight:600">Varé 350–500k</div>
+        ${ladderPts.map((c,i)=>`
+          <div style="position:absolute;top:28px;left:${c.priceNum/maxP*100}%;transform:translateX(-50%)">
+            <div style="width:9px;height:9px;border-radius:50%;background:#4A6358;margin:0 auto"></div>
+            <div style="font-size:9px;color:var(--mid);white-space:nowrap;transform:translateX(-50%);margin-left:50%;margin-top:${i%2?14:2}px">${c.name} ${c.priceNum}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+
+  const cards = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:16px">
+      ${M.competitors.map(c=>`
+        <div class="chart-card" style="padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--dark)">${c.name}</div>
+            <div style="font-size:11px;color:var(--mid);white-space:nowrap">${c.price}</div>
+          </div>
+          <div style="font-size:10px;color:var(--light);text-transform:uppercase;letter-spacing:0.05em;margin:2px 0 8px">${c.cat}${c.area&&c.area!=='—'?' · '+c.area:''}</div>
+          <div style="font-size:12px;color:var(--mid);line-height:1.55"><span style="color:#30B860">▲</span> ${c.strength}</div>
+          <div style="font-size:12px;color:var(--mid);line-height:1.55;margin-top:5px"><span style="color:#D04090">▼</span> ${c.gap}</div>
+          <div style="font-size:10px;color:var(--light);margin-top:8px;border-top:1px solid var(--border);padding-top:7px">Named by: ${c.who.join(', ')}</div>
+        </div>`).join('')}
+    </div>`;
+
+  const takeaways = `
+    <div class="chart-card" style="margin-bottom:16px;padding:18px">
+      <div class="chart-title" style="margin-bottom:10px">The read on the market</div>
+      ${M.takeaways.map(t=>`<div style="display:flex;gap:9px;margin-bottom:9px"><span style="color:#4A6358;flex-shrink:0">→</span><span style="font-size:12.5px;color:var(--mid);line-height:1.6">${t}</span></div>`).join('')}
+    </div>`;
+
+  const models = `
+    <div class="chart-card" style="margin-bottom:12px;padding:18px">
+      <div class="chart-title">North-star models (out of market, cited unprompted)</div>
+      <div class="chart-sub">Not competitors — the references participants reached for when describing the ideal.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:12px">
+        ${M.models.map(m=>`<div style="border:1px dashed var(--border);border-radius:10px;padding:12px"><div style="font-size:13px;font-weight:600;color:var(--dark)">${m.name} <span style="font-size:10px;color:var(--light);font-weight:400">· ${m.area}</span></div><div style="font-size:11.5px;color:var(--mid);line-height:1.5;margin-top:5px">${m.note}</div></div>`).join('')}
+      </div>
+    </div>`;
+
+  const note = `<div style="font-size:10px;color:var(--light);font-style:italic;line-height:1.5">All venues, prices, and coverage are customer-reported from the ${DATA.participants.length} discovery calls — directional signal, not audited data. Blank cells mean not mentioned, not necessarily not offered. Smash (Jordan's partner's brand) is the on-site food concept, not a competitor.</div>`;
+
+  el.innerHTML = takeaways + matrix + ladder + cards + models + note;
 }
 
 function renderProductRoadmap(){
