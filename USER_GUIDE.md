@@ -3,10 +3,10 @@
 ## Adding a new discovery call to the dashboard
 
 1. Pull the transcript from Fathom (name it "Wellness Center Market Research Call")
-2. Open `/Users/jordancarroll/Projects/vare-research/index.html`
+2. Open `/Users/jordancarroll/Claude Code/vare-research/index.html`
 3. Add a new object to `DATA.participants` array — copy the Andrew object as a template
 4. Fill in all fields from the transcript
-5. Push to GitHub: `cd /Users/jordancarroll/Projects/vare-research && git add index.html && git commit -m "Add [name] call" && git push`
+5. Push to GitHub: `cd /Users/jordancarroll/Claude Code/vare-research && git add index.html && git commit -m "Add [name] call" && git push`
 6. Dashboard live URL updates automatically: https://jctitan1045.github.io/vare-research/
 
 ## Running a discovery call
@@ -34,7 +34,7 @@ Share directly with Lorenzo or anyone else. Always up to date.
 | File | Where |
 |------|-------|
 | Live dashboard | https://jctitan1045.github.io/vare-research/ |
-| Dashboard source | `/Users/jordancarroll/Projects/vare-research/index.html` |
+| Dashboard source | `/Users/jordancarroll/Claude Code/vare-research/index.html` |
 | Discovery script (DOCX) | `/Users/jordancarroll/Downloads/Vare_Discovery_Script_Call1.docx` |
 | Ranking slide | `/Users/jordancarroll/Downloads/Vare_Ranking_Slide.html` |
 | Othership reviews | `/Users/jordancarroll/Downloads/othership_reviews_notebooklm.txt` |

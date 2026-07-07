@@ -2,6 +2,24 @@
 
 ---
 
+## Session: 2026-07-05 | Repo moved to hub (logged from consolidation session)
+
+**Focus:** Local folder consolidation. Logged here from the consolidation session because the working vare session did not write its own close entry.
+
+**What happened:**
+- Repo moved locally from `~/Projects/vare-research` → `~/Claude Code/vare-research` as part of consolidating all of Jordan's projects under one hub (`~/Claude Code/`).
+- GitHub remote (`jctitan1045/vare-research`), branches, GitHub Pages deploy, and the `update-calls` Actions workflow are all UNCHANGED — cloud runs from the repo, not the local folder. Work from the new path going forward.
+- Updated the hardcoded old path in the `vare-fathom-sync` Claude Code scheduled task (`~/.claude/scheduled-tasks/vare-fathom-sync/SKILL.md`) to the new location, and quoted its `cd` command (the new path contains a space).
+
+**Still open:**
+- [DECISION NEEDED] The `vare-fathom-sync` Claude task and the cloud `update-calls.py` Action do the identical Fathom→participant→push job. The 2026-07-03 entry records an `[INCIDENT]` where the Actions sync injected malformed JS and broke participants id:12–15 — so this duplication has already caused corruption. Recommend retiring one (keep the cloud Action).
+- Untracked in the folder after move: `.claude/`, `.DS_Store`, `PROP 01 VARÉ.pdf` — triage/commit or gitignore as appropriate.
+
+**Files touched:**
+- No repo file content changed here (path fix was in the external scheduled-task SKILL.md, not this repo).
+
+---
+
 ## Session: 2026-07-03 | Dashboard Polish — Collages, Quote Clusters, Roadmap, Work Type
 
 **Focus:** Dashboard visual improvements and content depth
