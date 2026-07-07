@@ -2021,7 +2021,7 @@ const MARKET_LANDSCAPE = {
       gap:"'Too hot and packed,' no room for calisthenics / Olympic lifts, and a crowd energy people actively leave.",
       who:["Andrew","Sebastian","Adam","Juan Pablo","Isabel","Zach"] },
     { name:"Power Club (PWR:Wellness)", cat:"Gym + wellness (premium chain)", area:"Tesoro — Amsterdam Plaza + sedes", model:"Membership + à-la-carte", src:"web", price:"gym ~209k/mo (dated) · wellness à-la-carte", priceNum:209,
-      cover:{"Gym":"full","Movement / Yoga":"part","Sauna":"part","Cold plunge":"part","Recovery tech":"part"},
+      cover:{"Gym":"full","Movement / Yoga":"part","Sauna":"info","Cold plunge":"info","Recovery tech":"info"},
       strength:"PWR:Wellness — a dedicated wellness center at the Amsterdam Plaza (Tesoro) location — confirmed for massage, therapy and nutrition alongside the premium gym. A gym + on-site recovery combo that's rare at this tier.",
       gap:"Confirmed services are massage / therapy / nutrition; whether the recovery area includes a sauna / cold plunge — and if it's bundled or a paid add-on — still needs confirming via their Instagram (@pwrwellness_official) or WhatsApp.",
       who:[] },
@@ -2122,6 +2122,7 @@ function renderMarketLandscape(){
   const srcDot = s => s ? `<span title="${SRC[s].t}" style="color:${SRC[s].c};font-size:11px">●</span> ` : '';
   const dot = v => v==='full' ? '<span style="color:#1E3028;font-size:14px">●</span>'
                  : v==='part' ? '<span style="color:#8A9E95;font-size:14px" title="partial">◐</span>'
+                 : v==='info' ? '<span style="color:#C9A54A;font-size:12px;font-weight:700" title="needs info — to be confirmed">?</span>'
                  : '<span style="color:#D8D8D2;font-size:12px">·</span>';
   const th = `<th style="text-align:left;padding:8px 10px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--light);position:sticky;left:0;background:var(--white)">Venue</th>`
     + P.map(p=>`<th style="padding:8px 6px;font-size:9.5px;font-weight:600;color:var(--light);width:64px;line-height:1.2">${p}</th>`).join('')
@@ -2135,7 +2136,7 @@ function renderMarketLandscape(){
   const matrix = `
     <div class="chart-card" style="margin-bottom:16px">
       <div class="chart-title">Who covers what — and where the white space is</div>
-      <div class="chart-sub">● offered &nbsp; ◐ partial &nbsp; · not offered. Only Varé spans the full stack; Kin/Kiin and INNTU come closest. Row dot = source: <span style="color:#30B860">●</span> in calls · <span style="color:#4A9EC4">●</span> web · <span style="color:#1E3028">●</span> confirmed both.</div>
+      <div class="chart-sub">● offered &nbsp; ◐ partial &nbsp; <span style="color:#C9A54A;font-weight:700">?</span> needs info &nbsp; · not offered. Only Varé spans the full stack; Kin/Kiin and INNTU come closest. Row dot = source: <span style="color:#30B860">●</span> in calls · <span style="color:#4A9EC4">●</span> web · <span style="color:#1E3028">●</span> confirmed both.</div>
       <div style="overflow-x:auto;margin-top:12px">
         <table style="border-collapse:collapse;width:100%;min-width:760px">
           <thead><tr>${th}</tr></thead>
