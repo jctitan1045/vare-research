@@ -1,0 +1,8 @@
+# Fathom research calls to intentionally EXCLUDE from the new-call notifier.
+# One token per line — a guest name or a Fathom call-id substring (matched
+# case-insensitively against "<guest> <url>"). Lines starting with # are comments.
+#
+# Jonas Arequipa (Jul 2, 2026) — failed/aborted discovery call, deliberately not
+# on the dashboard (see WORKBENCH 2026-07-03). Ignore so it stops being flagged.
+Jonas Arequipa
+731099771

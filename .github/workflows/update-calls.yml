@@ -1,4 +1,10 @@
-name: Daily Fathom sync
+name: Fathom new-call notifier
+
+# NOTIFY ONLY. This workflow used to auto-inject LLM-extracted participant JS into
+# index.html and commit it — that corrupted the live dashboard twice (2026-07-03 and
+# 2026-07-07 / commit 8b73f4a). It no longer edits or commits anything. It just checks
+# Fathom for research calls that aren't on the dashboard yet and opens/updates a GitHub
+# issue so Jordan can hand-add + verify them. See scripts/notify_new_calls.py.
 
 on:
   schedule:
@@ -7,10 +13,11 @@ on:
   workflow_dispatch: # allow manual trigger from GitHub UI
 
 permissions:
-  contents: write
+  contents: read
+  issues: write
 
 jobs:
-  sync:
+  notify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,15 +27,23 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Run Fathom sync
+      - name: Detect un-added Fathom research calls
+        id: detect
         env:
           FATHOM_API_KEY: ${{ secrets.FATHOM_API_KEY }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python scripts/update_calls.py
+        run: python scripts/notify_new_calls.py
 
-      - name: Commit and push if changed
+      - name: Open or update tracking issue
+        if: steps.detect.outputs.new_count != '' && steps.detect.outputs.new_count != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          git diff --staged --quiet || (git commit -m "Auto: add $(date +%b\ %-d) call from Fathom" && git pull --rebase && git push)
+          title="🆕 New Fathom research call(s) ready to add"
+          existing=$(gh issue list --state open --search "$title in:title" --json number --jq '.[0].number' 2>/dev/null || true)
+          if [ -n "$existing" ]; then
+            echo "Updating existing issue #$existing"
+            gh issue comment "$existing" --body-file fathom_new_calls.md
+          else
+            echo "Creating new tracking issue"
+            gh issue create --title "$title" --body-file fathom_new_calls.md
+          fi

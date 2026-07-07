@@ -2,6 +2,33 @@
 
 ---
 
+## Session: 2026-07-07 | Killed the auto-inject Fathom sync (2nd corruption) → notify-only + deploy smoke-check
+
+**Focus:** Root-cause and fix the recurring Actions corruption of index.html.
+
+**What happened:**
+- 2nd corruption confirmed: cloud Action commit `8b73f4a` "Auto: add Jul 7 call" grabbed the WRONG call (re-added Armin Shafee, already id:12) AND spliced a quoted-key JSON object *into Andrew Topping's (id:1) `gaps` array* — a syntax error that blanks the whole live dashboard. Same class of bug as the 2026-07-03 incident (ids 12–15).
+- Root causes in the old `scripts/update_calls.py`: (1) `inject_participant()` regex `(.*?)(\]\s*\})` is non-greedy and matched the FIRST `]}` (end of participant 1's gaps + object), splicing the new record inside id:1 instead of at the array end; (2) it wrapped the LLM's quoted-key JSON (`{ "name":... }`) inside its own `{ id, date, fathomUrl, ... }`, producing a nested unkeyed `{` = invalid JS; (3) name-dedup was unreliable. Parsing/editing live JS with regex is inherently fragile.
+- **[DECISION] Retired auto-injection entirely** (WORKBENCH had leaned "keep cloud Action"; two corruptions overruled that). No process auto-edits index.html anymore. Manual add is what correctly shipped both Jul 7 calls anyway.
+- Rewrote the cloud Action as **notify-only**: `.github/workflows/update-calls.yml` → `scripts/notify_new_calls.py` detects Fathom research calls not yet on the dashboard (guest name from `calendar_invitees` / title, loose-matched against `id:N, name:"..."`) and opens/updates a GitHub issue. Only needs `FATHOM_API_KEY`; no Anthropic, no commit, no file writes. Verified live: correctly saw ids 12/14/15 as present.
+- Added `scripts/notify_skip.txt` (Jonas Arequipa / call 731099771 = the known failed Jul 2 call) so intentionally-excluded calls don't nag daily.
+- Added **JS smoke-check** `scripts/validate_index.js` — evals the `const DATA` block in a VM and asserts participants/ids/shape. Verified it PASSES on current index.html and FAILS on the corrupt `8b73f4a` blob. Wired as a **required gate in `deploy-pages.yml`** before upload, so no broken DATA block (manual or automated) can ever deploy.
+- Deleted the dangerous `scripts/update_calls.py`. Added `.gitignore` (ephemeral `fathom_new_calls.md`, `.DS_Store`).
+- Local duplicate `vare-fathom-sync` scheduled task was **already** out of the active dir (now `~/.claude/scheduled-tasks-retired/`); added a prominent RETIRED banner to its SKILL.md so it's never re-enabled.
+
+**Files touched:**
+- `scripts/notify_new_calls.py` (new), `scripts/validate_index.js` (new), `scripts/notify_skip.txt` (new)
+- `scripts/update_calls.py` (deleted)
+- `.github/workflows/update-calls.yml` (notify-only rewrite), `.github/workflows/deploy-pages.yml` (smoke-check gate)
+- `.gitignore` (new)
+- `~/.claude/scheduled-tasks-retired/vare-fathom-sync/SKILL.md` (RETIRED banner — external to repo)
+
+**Still open / NEXT:**
+- **Not committed/pushed** — changes are in the working tree. Review, then push to `main`; the notify-only Action and the deploy gate only take effect once on GitHub. Pushing also runs the smoke-check on the current (valid) index.html.
+- Optional: prune unreferenced original mood-board images (`design-sauna.jpg`, etc.) per 2026-07-03 note.
+
+---
+
 ## Session: 2026-07-05 | Repo moved to hub (logged from consolidation session)
 
 **Focus:** Local folder consolidation. Logged here from the consolidation session because the working vare session did not write its own close entry.
