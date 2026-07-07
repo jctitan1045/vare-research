@@ -1999,87 +1999,115 @@ const MARKET_LANDSCAPE = {
   pillars: ["Gym","Movement / Yoga","Sauna","Cold plunge","Cowork","Healthy food","Community / events","Recovery tech"],
   vare: { "Gym":"full","Movement / Yoga":"full","Sauna":"full","Cold plunge":"full","Cowork":"full","Healthy food":"full","Community / events":"full","Recovery tech":"part" },
   takeaways: [
-    "No one in Medellín offers the full stack. Kin Rooftop is the closest (gym + sauna + cold plunge + cowork) but adds no real food, yoga, or events — and loses members on piped-in music and a Poblado-only location.",
-    "Recovery is Nordica's to lose. It's the benchmark everyone names, and its weak points — WhatsApp booking, crowds, no true hot→cold flow, a 'dollar-price' perception among locals — are precisely the opening.",
-    "The market is fragmented by vertical. Members stitch together 3–4 memberships (e.g. SmartFit + Nordica + Rivertown + a food delivery). Consolidation into one membership is the wedge.",
-    "White space on price. A single vertical tops out ~350k/mo (108 Yoga); the only real bundle (Kin) sits ~670k. Varé's 350–500k all-in-one lands in genuine open space — premium vs. a gym, a discount vs. assembling the stack yourself."
+    "Still no full-stack membership community. The closest bundles are Kin / Kiin Living (Poblado, ~670k/mo) and — newly surfaced in Laureles — INNTU Hotel, whose gym + sauna + Turco + pool are open to the public. Neither combines cowork + food + curated community into one membership.",
+    "Recovery is more crowded than the calls implied — but it's transactional. Poblado alone stacks Nordica, Reset, Celestino, Element, Clínica Antienvejecimiento, El Cielo and Wellcomm for sauna / cold plunge — mostly day-pass or à-la-carte (Celestino day ~100k, Element cold plunge 50k/10min). Almost none sell it as a daily membership + community. That, not 'sauna exists,' is the wedge.",
+    "Single verticals are cheap and confirmed. Web-verified monthly: SmartFit Black ~120k, Power Club ~209k, 108 Yoga 305k unlimited. Members already stack 3–4 of these plus a food delivery.",
+    "Price position holds — but must be earned. Varé's 350–500k membership sits above any single vertical and below the cost of assembling gym + recovery + cowork + food separately. Since each piece exists cheaply elsewhere, the premium has to be justified by the bundle, the community, and the daily-anchor experience."
   ],
   competitors: [
-    { name:"Kin Rooftop", cat:"All-in-one club", area:"Poblado / Tesoro", price:"~672k/mo", priceNum:672,
+    { name:"Kin / Kiin Living", cat:"All-in-one club", area:"Poblado / Tesoro", model:"Membership", src:"call", price:"~672k/mo", priceNum:672,
       cover:{"Gym":"full","Movement / Yoga":"part","Sauna":"full","Cold plunge":"full","Cowork":"full","Healthy food":"part","Community / events":"part"},
-      strength:"Closest thing to an all-in-one today — cowork + gym + sauna + cold plunge under one roof.",
-      gap:"Pipes music into the gym/cowork (a member is petitioning to stop it); Poblado-only, 'too far from Laureles.'",
+      strength:"Closest thing to an all-in-one today — cowork + gym + sauna + cold plunge under one roof, with two membership tiers.",
+      gap:"Pipes music into the gym/cowork (a member is petitioning to stop it); Poblado-only, 'too far from Laureles.' Public pricing not listed.",
       who:["Brett","Sebastian"] },
-    { name:"Nordica", cat:"Recovery / sauna", area:"Poblado", price:"~100–200k/mo · 'dollar price'", priceNum:200,
-      cover:{"Movement / Yoga":"part","Sauna":"full","Cold plunge":"full","Community / events":"full"},
-      strength:"The sauna + social benchmark everyone compares to; hosts yoga and events.",
-      gap:"No covered outdoor recovery, crowding, WhatsApp booking, and no real hot→cold break. Locals call it 'a dollar price.'",
-      who:["Sebastian","Alex","Angie","Juan Pablo","Brett"] },
-    { name:"Reset", cat:"Recovery / spa", area:"Inside Action Black · La 33", price:"130k/mo", priceNum:130,
-      cover:{"Sauna":"full","Cold plunge":"part"},
-      strength:"Spa-style membership with sauna + jacuzzi, co-located with the Action Black gym on La 33.",
-      gap:"WhatsApp-only booking ('95% of the time it's not available'), no cold break, guest capped once / 6 months — heavily underused by paying members.",
-      who:["Alex","Adam"] },
-    { name:"SaunaSpace", cat:"Recovery + yoga", area:"—", price:"—", priceNum:null,
-      cover:{"Movement / Yoga":"full","Sauna":"full"},
-      strength:"Sauna paired with yoga programming.",
-      gap:"Instructors split revenue three ways and do their own marketing — weak for supply-side talent.",
-      who:["Angie","Laurel"] },
-    { name:"108 Yoga", cat:"Yoga studio", area:"—", price:"350k/mo", priceNum:350,
-      cover:{"Movement / Yoga":"full","Sauna":"part","Healthy food":"part"},
-      strength:"High class quality, beginner/adaptive options, and a loved juice + coffee bar to linger at.",
-      gap:"Single vertical (yoga-first) at a premium price for one thing.",
-      who:["Andrew"] },
-    { name:"SmartFit", cat:"Gym (big-box)", area:"Multi-location", price:"80–140k/mo", priceNum:100,
+    { name:"INNTU Hotel", cat:"Hotel wellness (public access)", area:"Laureles — Segundo Parque", model:"Hotel / public access", src:"web", price:"n/a (WhatsApp)", priceNum:null,
+      cover:{"Gym":"full","Sauna":"full","Cold plunge":"part","Healthy food":"part"},
+      strength:"Gym + sauna + Turco + jacuzzi + pool + spa, and all services are open to the public (no guest requirement) — the closest all-in-one in Laureles.",
+      gap:"Hotel-operated (not a community/membership club); no cowork; pricing WhatsApp-gated.",
+      who:[] },
+    { name:"SmartFit", cat:"Gym (big-box)", area:"Multi-location", model:"Membership", src:"call+web", price:"Black ~120k/mo", priceNum:120,
       cover:{"Gym":"full"},
       strength:"Cheap, everywhere, familiar.",
       gap:"'Too hot and packed,' no room for calisthenics / Olympic lifts, and a crowd energy people actively leave.",
       who:["Andrew","Sebastian","Adam","Juan Pablo","Isabel","Zach"] },
-    { name:"BodyTech", cat:"Gym (premium)", area:"San Juan / Las Vegas", price:"~$35+/mo", priceNum:140,
+    { name:"Power Club", cat:"Gym (premium chain)", area:"Poblado + sedes", model:"Membership", src:"web", price:"~209k/mo (dated)", priceNum:209,
+      cover:{"Gym":"full","Movement / Yoga":"part"},
+      strength:"Upscale gym chain with classes; a rung above SmartFit/BodyTech.",
+      gap:"Single vertical; only dated public pricing found (needs confirming).",
+      who:[] },
+    { name:"BodyTech", cat:"Gym (premium)", area:"San Juan / Las Vegas", model:"Membership", src:"call+web", price:"premium (~$35 recalled)", priceNum:null,
       cover:{"Gym":"full"},
       strength:"More premium big-box option.",
-      gap:"'Overpriced for the same thing' vs SmartFit.",
+      gap:"'Overpriced for the same thing' vs SmartFit; a participant's ~$35 figure looks low for the brand — confirm.",
       who:["Andrew","Zach"] },
-    { name:"Konoha", cat:"HYROX gym", area:"Bello (north)", price:"175k/mo", priceNum:175,
+    { name:"Konoha", cat:"HYROX gym", area:"Bello (north)", model:"Membership", src:"call", price:"175k/mo", priceNum:175,
       cover:{"Gym":"full","Movement / Yoga":"part"},
       strength:"Dedicated HYROX / hybrid-functional training — a rising format.",
       gap:"North-side only; single vertical.",
       who:["Juan Pablo (Duet)"] },
-    { name:"Action Black", cat:"Gym", area:"La 33 (+ others)", price:"130k/mo", priceNum:130,
+    { name:"Action Black", cat:"Gym", area:"La 33 (+ others)", model:"Membership", src:"call", price:"130k/mo", priceNum:130,
       cover:{"Gym":"full"},
       strength:"Mid-premium gym; the La 33 location shares a roof with the Reset spa.",
       gap:"Single vertical — member would switch if bundled with recovery + cowork.",
       who:["Alex"] },
-    { name:"Rivertown", cat:"Cowork / café", area:"Laureles", price:"—", priceNum:null,
+    { name:"Nordica", cat:"Recovery / sauna", area:"Poblado", model:"Membership / visit", src:"call", price:"~100–200k/mo · 'dollar price'", priceNum:200,
+      cover:{"Movement / Yoga":"part","Sauna":"full","Cold plunge":"full","Community / events":"full"},
+      strength:"The sauna + social benchmark everyone compares to; hosts yoga and events.",
+      gap:"No covered outdoor recovery, crowding, WhatsApp booking, and no real hot→cold break. Locals call it 'a dollar price.'",
+      who:["Sebastian","Alex","Angie","Juan Pablo","Brett"] },
+    { name:"Reset", cat:"Recovery / spa", area:"Inside Action Black · La 33", model:"Membership", src:"call+web", price:"~130–190k/mo (incl. a massage)", priceNum:160,
+      cover:{"Sauna":"full","Cold plunge":"part"},
+      strength:"Spa-style membership with sauna + jacuzzi, co-located with the Action Black gym on La 33; a monthly plan bundles in one massage.",
+      gap:"WhatsApp-only booking ('95% of the time it's not available'), no cold break, guest capped once / 6 months — heavily underused by paying members.",
+      who:["Alex","Adam"] },
+    { name:"Celestino Boutique Hotel & Spa", cat:"Hotel recovery spa", area:"Poblado — Cra 37", model:"Day-pass / membership", src:"web", price:"day ~100k ($25) · mo membership", priceNum:null,
+      cover:{"Sauna":"full","Cold plunge":"full"},
+      strength:"Sauna + steam + jacuzzi + cold plunge with day, weekly and monthly membership tiers — a clean contrast circuit in Poblado.",
+      gap:"Hotel spa, not a community; à-la-carte pricing via WhatsApp/Fresha; no gym / cowork / food.",
+      who:[] },
+    { name:"Element Wellness Center", cat:"Recovery spa (à-la-carte)", area:"Poblado", model:"À-la-carte", src:"web", price:"cold plunge 50k · massage 180–290k", priceNum:null,
+      cover:{"Sauna":"part","Cold plunge":"full","Recovery tech":"full"},
+      strength:"The deepest recovery menu in the set — cold plunge, hot/cold therapy, compression boots, oxygen therapy, hot mineral baths, massage.",
+      gap:"Pure pay-per-session recovery — no membership, gym, cowork, or community.",
+      who:[] },
+    { name:"Clínica Antienvejecimiento & Wellness Spa", cat:"Medical / aesthetic spa", area:"Poblado", model:"À-la-carte (medical)", src:"web", price:"n/a (WhatsApp)", priceNum:null,
+      cover:{"Sauna":"full","Cold plunge":"full"},
+      strength:"A 7-stage hydric circuit — Temazcal (sauna), Iglú (cold), rainforest & thematic cubicles — plus aesthetic medicine.",
+      gap:"Medical-aesthetic positioning and per-service pricing; not a lifestyle membership.",
+      who:[] },
+    { name:"Wellcomm ('The Spa by Wellcome')", cat:"Hotel thermal spa", area:"Poblado — Manila", model:"Hotel spa / thermal", src:"web", price:"n/a", priceNum:null,
+      cover:{"Sauna":"full","Healthy food":"part"},
+      strength:"Hammam thermal-baths journey (multi-temperature pools) plus three restaurants and a coffee shop.",
+      gap:"Adults-only hotel spa; wellness is a guest amenity, not a membership community.",
+      who:[] },
+    { name:"El Cielo Hotel", cat:"Luxury hotel spa", area:"Poblado", model:"Hotel spa (by quote)", src:"web", price:"by quote (luxury)", priceNum:null,
+      cover:{"Sauna":"part","Gym":"part"},
+      strength:"Michelin-key luxury hotel with a botanical spa, pool and gym.",
+      gap:"High-end day-spa / guest model; concierge-quote pricing; not a community club.",
+      who:[] },
+    { name:"Healing Forest Wellness Clinic", cat:"Wellness clinic", area:"—", model:"Day-pass / à-la-carte", src:"call+web", price:"infrared sauna ~$22 · plunge ~$18", priceNum:null,
+      cover:{"Movement / Yoga":"full","Sauna":"part","Cold plunge":"part"},
+      strength:"Pilates plus infrared sauna and a cold plunge (7°C) within a broader wellness-clinic offering.",
+      gap:"'Priced people out' per a participant; à-la-carte, not a membership.",
+      who:["Isabella"] },
+    { name:"SaunaSpace", cat:"Recovery + yoga", area:"—", model:"Class / visit", src:"call", price:"—", priceNum:null,
+      cover:{"Movement / Yoga":"full","Sauna":"full"},
+      strength:"Sauna paired with yoga programming.",
+      gap:"Instructors split revenue three ways and do their own marketing — weak for supply-side talent.",
+      who:["Angie","Laurel"] },
+    { name:"108 Yoga", cat:"Yoga studio", area:"Poblado", model:"Class pack", src:"call+web", price:"305k/mo unlimited", priceNum:305,
+      cover:{"Movement / Yoga":"full","Sauna":"part","Healthy food":"part"},
+      strength:"High class quality, beginner/adaptive options, a loved juice + coffee bar, and 40+ weekly sessions.",
+      gap:"Single vertical (yoga-first) at a premium price for one thing.",
+      who:["Andrew"] },
+    { name:"Rivertown", cat:"Cowork / café", area:"Laureles", model:"Café / cowork", src:"call", price:"—", priceNum:null,
       cover:{"Cowork":"full","Healthy food":"part"},
       strength:"A 'third home' — daily coffee + work where the staff know your name.",
       gap:"Pure café — no wellness or recovery.",
       who:["Sebastian"] },
-    { name:"Pergamino", cat:"Café / cowork", area:"Multi (Laureles)", price:"—", priceNum:null,
+    { name:"Pergamino", cat:"Café / cowork", area:"Multi (Laureles)", model:"Café", src:"call", price:"—", priceNum:null,
       cover:{"Cowork":"full","Healthy food":"part"},
       strength:"Quality coffee + work-friendly, multiple locations.",
       gap:"Café only.",
       who:["Alex","Juan Pablo (Duet)","Zach"] },
-    { name:"Hardin", cat:"Cowork", area:"Envigado", price:"—", priceNum:null,
+    { name:"Hardin", cat:"Cowork", area:"Envigado", model:"Cowork", src:"call", price:"—", priceNum:null,
       cover:{"Cowork":"full","Healthy food":"part"},
       strength:"'Gold-standard feel' — open roof, plants, high ceilings, natural light.",
       gap:"Cowork only.",
-      who:["Adam"] },
-    { name:"Healing Forest Wellness Clinic", cat:"Wellness clinic", area:"—", price:"'expensive'", priceNum:null,
-      cover:{"Movement / Yoga":"full"},
-      strength:"Quality Pilates within a broader wellness-clinic offering.",
-      gap:"Priced people out (per participant); full service list still to confirm.",
-      who:["Isabella"] }
+      who:["Adam"] }
   ],
-  radar: [
-    { name:"Power Club", cat:"Premium gym chain" },
-    { name:"Amsterdam Plaza", cat:"Hotel / venue" },
-    { name:"Celestino Boutique Hotel", cat:"Boutique hotel + spa" },
-    { name:"Element Wellness Center", cat:"Wellness center" },
-    { name:"Wellness Spa · Clínica Anti-Envejecimiento", cat:"Medical / anti-aging spa" },
-    { name:"El Cielo Hotel", cat:"Boutique hotel + spa" },
-    { name:"The Spa by Wellcome", cat:"Spa" },
-    { name:"Intu Hotel", cat:"Hotel + spa" }
+  excluded: [
+    { name:"Amsterdam Plaza", reason:"Turned out to be a gastro + workspace gallery in Poblado (Cra 25 #4-165), not a wellness venue — excluded from the competitive set." }
   ],
   models: [
     { name:"Nirvana Life", area:"Bali", note:"The gold-standard all-in-one cited unprompted — massive gym, customizable food, every class, deep recovery. 'It became a bubble everyone wanted to be part of.' ~$200–300/mo." },
@@ -2092,6 +2120,8 @@ function renderMarketLandscape(){
   const el = document.getElementById('market-landscape');
   if(!el) return;
   const M = MARKET_LANDSCAPE, P = M.pillars;
+  const SRC = { 'call':{c:'#30B860',t:'Named in calls',label:'in calls'}, 'web':{c:'#4A9EC4',t:'Web-researched (official site)',label:'web'}, 'call+web':{c:'#1E3028',t:'Confirmed — named in calls + verified on the web',label:'confirmed'} };
+  const srcDot = s => s ? `<span title="${SRC[s].t}" style="color:${SRC[s].c};font-size:11px">●</span> ` : '';
   const dot = v => v==='full' ? '<span style="color:#1E3028;font-size:14px">●</span>'
                  : v==='part' ? '<span style="color:#8A9E95;font-size:14px" title="partial">◐</span>'
                  : '<span style="color:#D8D8D2;font-size:12px">·</span>';
@@ -2100,20 +2130,20 @@ function renderMarketLandscape(){
     + `<th style="padding:8px 10px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--light);text-align:right">Price</th>`;
   const row = (name, cover, price, opts={}) => `
     <tr style="border-top:1px solid var(--border);${opts.vare?'background:#EDF4EF':''}">
-      <td style="padding:9px 10px;font-size:12px;font-weight:${opts.vare?600:500};color:var(--dark);position:sticky;left:0;background:${opts.vare?'#EDF4EF':'var(--white)'};white-space:nowrap">${opts.vare?'★ ':''}${name}${opts.cat?`<div style="font-size:9.5px;color:var(--light);font-weight:400">${opts.cat}${opts.area&&opts.area!=='—'?' · '+opts.area:''}</div>`:''}</td>
+      <td style="padding:9px 10px;font-size:12px;font-weight:${opts.vare?600:500};color:var(--dark);position:sticky;left:0;background:${opts.vare?'#EDF4EF':'var(--white)'};white-space:nowrap">${opts.vare?'★ ':srcDot(opts.src)}${name}${opts.cat?`<div style="font-size:9.5px;color:var(--light);font-weight:400">${opts.cat}${opts.area&&opts.area!=='—'?' · '+opts.area:''}${opts.model?' · '+opts.model:''}</div>`:''}</td>
       ${P.map(p=>`<td style="text-align:center;padding:9px 6px">${dot(cover[p])}</td>`).join('')}
       <td style="padding:9px 10px;font-size:11px;color:var(--mid);text-align:right;white-space:nowrap">${price||'—'}</td>
     </tr>`;
   const matrix = `
     <div class="chart-card" style="margin-bottom:16px">
       <div class="chart-title">Who covers what — and where the white space is</div>
-      <div class="chart-sub">● offered &nbsp; ◐ partial &nbsp; · not offered. Only Varé spans the full stack; Kin comes closest.</div>
+      <div class="chart-sub">● offered &nbsp; ◐ partial &nbsp; · not offered. Only Varé spans the full stack; Kin/Kiin and INNTU come closest. Row dot = source: <span style="color:#30B860">●</span> in calls · <span style="color:#4A9EC4">●</span> web · <span style="color:#1E3028">●</span> confirmed both.</div>
       <div style="overflow-x:auto;margin-top:12px">
-        <table style="border-collapse:collapse;width:100%;min-width:720px">
+        <table style="border-collapse:collapse;width:100%;min-width:760px">
           <thead><tr>${th}</tr></thead>
           <tbody>
-            ${row(M.vare===M.vare?'Varé (planned)':'', M.vare, '350–500k / $150–200', {vare:true, cat:'The all-in-one', area:''})}
-            ${M.competitors.map(c=>row(c.name, c.cover, c.price, {cat:c.cat, area:c.area})).join('')}
+            ${row('Varé (planned)', M.vare, '350–500k / $150–200', {vare:true, cat:'The all-in-one', area:'', model:'Membership + community'})}
+            ${M.competitors.map(c=>row(c.name, c.cover, c.price, {cat:c.cat, area:c.area, model:c.model, src:c.src})).join('')}
           </tbody>
         </table>
       </div>
@@ -2123,16 +2153,16 @@ function renderMarketLandscape(){
   const ladderPts = M.competitors.filter(c=>c.priceNum).sort((a,b)=>a.priceNum-b.priceNum);
   const ladder = `
     <div class="chart-card" style="margin-bottom:16px">
-      <div class="chart-title">Price ladder (customer-reported, COP thousands/mo)</div>
-      <div class="chart-sub">Single-vertical venues cluster low; the only bundle (Kin) sits high. Varé's target band is the gap between.</div>
+      <div class="chart-title">Monthly membership price ladder (COP thousands)</div>
+      <div class="chart-sub">Single-vertical venues cluster low; the only real bundle (Kin/Kiin) sits high. Day-pass and à-la-carte spas are excluded (no comparable monthly). Varé's target band is the gap between.</div>
       <div style="position:relative;height:70px;margin:22px 8px 8px">
         <div style="position:absolute;top:34px;left:0;right:0;height:2px;background:var(--border)"></div>
         <div style="position:absolute;top:20px;height:30px;left:${350/maxP*100}%;width:${(500-350)/maxP*100}%;background:#1E302818;border:1px dashed #1E3028;border-radius:4px" title="Varé target 350–500k"></div>
         <div style="position:absolute;top:2px;left:${350/maxP*100}%;font-size:9px;color:#1E3028;font-weight:600">Varé 350–500k</div>
         ${ladderPts.map((c,i)=>`
-          <div style="position:absolute;top:28px;left:${c.priceNum/maxP*100}%;transform:translateX(-50%)">
-            <div style="width:9px;height:9px;border-radius:50%;background:#4A6358;margin:0 auto"></div>
-            <div style="font-size:9px;color:var(--mid);white-space:nowrap;transform:translateX(-50%);margin-left:50%;margin-top:${i%2?14:2}px">${c.name} ${c.priceNum}</div>
+          <div style="position:absolute;top:28px;left:${Math.min(c.priceNum,maxP)/maxP*100}%;transform:translateX(-50%)">
+            <div style="width:9px;height:9px;border-radius:50%;background:${SRC[c.src]?SRC[c.src].c:'#4A6358'};margin:0 auto"></div>
+            <div style="font-size:9px;color:var(--mid);white-space:nowrap;transform:translateX(-50%);margin-left:50%;margin-top:${i%2?14:2}px">${c.name.split(' (')[0]} ${c.priceNum}</div>
           </div>`).join('')}
       </div>
     </div>`;
@@ -2145,10 +2175,10 @@ function renderMarketLandscape(){
             <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--dark)">${c.name}</div>
             <div style="font-size:11px;color:var(--mid);white-space:nowrap">${c.price}</div>
           </div>
-          <div style="font-size:10px;color:var(--light);text-transform:uppercase;letter-spacing:0.05em;margin:2px 0 8px">${c.cat}${c.area&&c.area!=='—'?' · '+c.area:''}</div>
+          <div style="font-size:10px;color:var(--light);text-transform:uppercase;letter-spacing:0.05em;margin:2px 0 8px">${c.cat}${c.area&&c.area!=='—'?' · '+c.area:''} · ${c.model} <span style="color:${SRC[c.src].c};text-transform:none;font-weight:600">· ${SRC[c.src].label}</span></div>
           <div style="font-size:12px;color:var(--mid);line-height:1.55"><span style="color:#30B860">▲</span> ${c.strength}</div>
           <div style="font-size:12px;color:var(--mid);line-height:1.55;margin-top:5px"><span style="color:#D04090">▼</span> ${c.gap}</div>
-          <div style="font-size:10px;color:var(--light);margin-top:8px;border-top:1px solid var(--border);padding-top:7px">Named by: ${c.who.join(', ')}</div>
+          ${c.who.length?`<div style="font-size:10px;color:var(--light);margin-top:8px;border-top:1px solid var(--border);padding-top:7px">Named by: ${c.who.join(', ')}</div>`:''}
         </div>`).join('')}
     </div>`;
 
@@ -2167,18 +2197,12 @@ function renderMarketLandscape(){
       </div>
     </div>`;
 
-  const radar = `
-    <div class="chart-card" style="margin-bottom:16px;padding:18px">
-      <div class="chart-title">Also on the radar — founder-listed</div>
-      <div class="chart-sub">Named by Jordan, not yet surfaced in a call. Categories are tentative; coverage &amp; pricing to be added (from your research or a web pull).</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
-        ${(M.radar||[]).map(r=>`<div style="border:1px dashed var(--border);border-radius:20px;padding:6px 12px;background:var(--cream-bright)"><span style="font-size:12px;font-weight:500;color:var(--dark)">${r.name}</span><span style="font-size:10px;color:var(--light);margin-left:6px">${r.cat}</span></div>`).join('')}
-      </div>
-    </div>`;
+  const excluded = (M.excluded && M.excluded.length) ? `
+    <div style="font-size:10.5px;color:var(--light);line-height:1.5;margin-bottom:10px"><strong style="color:var(--mid)">Checked and excluded:</strong> ${M.excluded.map(e=>`${e.name} — ${e.reason}`).join(' ')}</div>` : '';
 
-  const note = `<div style="font-size:10px;color:var(--light);font-style:italic;line-height:1.5">The matrix, prices, and coverage are customer-reported from the ${DATA.participants.length} discovery calls — directional signal, not audited data. The "also on the radar" venues are founder-listed and still awaiting coverage/pricing. Blank cells mean not mentioned, not necessarily not offered. Smash (Jordan's partner's brand) is the on-site food concept, not a competitor.</div>`;
+  const note = `<div style="font-size:10px;color:var(--light);font-style:italic;line-height:1.5">Source per row: <span style="color:#30B860">●</span> named in the ${DATA.participants.length} discovery calls · <span style="color:#4A9EC4">●</span> web-researched from official sites (Jul 2026) · <span style="color:#1E3028">●</span> confirmed by both. Local spa/hotel pricing is often WhatsApp-gated and shown as n/a; blank cells mean not offered or not confirmed, not necessarily absent. Smash (Jordan's partner's brand) is the on-site food concept, not a competitor.</div>`;
 
-  el.innerHTML = takeaways + matrix + ladder + cards + radar + models + note;
+  el.innerHTML = takeaways + matrix + ladder + cards + excluded + models + note;
 }
 
 function renderProductRoadmap(){
