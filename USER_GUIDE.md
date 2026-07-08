@@ -6,8 +6,11 @@
 2. Open `/Users/jordancarroll/Claude Code/vare-research/index.html`
 3. Add a new object to `DATA.participants` array — copy the Andrew object as a template
 4. Fill in all fields from the transcript
-5. Push to GitHub: `cd /Users/jordancarroll/Claude Code/vare-research && git add index.html && git commit -m "Add [name] call" && git push`
-6. Dashboard live URL updates automatically: https://jctitan1045.github.io/vare-research/
+5. (Optional but recommended) Sanity-check before pushing: `node scripts/validate_index.js` — catches any typo that would break the whole dashboard
+6. Push to GitHub: `cd /Users/jordancarroll/Claude Code/vare-research && git add index.html && git commit -m "Add [name] call" && git push`
+7. Dashboard live URL updates automatically: https://jctitan1045.github.io/vare-research/ — the deploy re-runs the same smoke-check and will refuse to publish a broken `DATA` block
+
+**Heads up on new calls:** a daily GitHub Action checks Fathom and opens a GitHub issue when a research call isn't on the dashboard yet, so you don't have to remember. It only notifies — it never edits the dashboard. To silence a call you're intentionally skipping (e.g. a failed one), add its guest name or Fathom call-id to `scripts/notify_skip.txt`.
 
 ## Running a discovery call
 

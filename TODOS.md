@@ -2,7 +2,6 @@
 
 ## Active
 
-- [ ] **Push the notify-only Fathom fix to `main`** — working-tree changes from 2026-07-07 (notify-only Action, JS smoke-check deploy gate, deleted auto-injector). They only take effect once pushed.
 - [ ] **Delete orphaned single mood board images** — `design-sauna.jpg`, `design-yoga.jpg`, `design-restaurant.jpg`, `design-social.jpg`, `design-coworking.jpg` no longer used, still in repo.
 - [ ] **Yelp scraper for physical wellness venues** — Othership Toronto, Remedy Place, HigherDOSE, Bathhouse NYC, Perspire Sauna, Medellín wellness/spa/yoga places, Bodytech Medellín, 108 Yoga Medellín
 - [ ] **Google Maps reviews** — same targets. May need SerpAPI or Outscraper if scraping is blocked.
@@ -19,7 +18,8 @@
 
 ## Done
 
-- [x] **Retire Fathom auto-sync auto-injection (2 corruption incidents)** — cloud Action rewritten notify-only (`scripts/notify_new_calls.py` → GitHub issue), JS smoke-check (`scripts/validate_index.js`) added as a deploy gate, old `update_calls.py` deleted, local `vare-fathom-sync` task confirmed retired.
+- [x] **Retire Fathom auto-sync auto-injection (2 corruption incidents)** — cloud Action rewritten notify-only (`scripts/notify_new_calls.py` → GitHub issue), JS smoke-check (`scripts/validate_index.js`) added as a deploy gate, old `update_calls.py` deleted, local `vare-fathom-sync` task confirmed retired. **Pushed to `main` + verified running in Actions** (deploy gate logged 15 participants OK; notifier run returned new_count=0).
+- [x] Gitignore local `.claude/` and the 31MB `PROP 01 VARÉ.pdf`.
 - [x] Add Community Events + Practitioner Services verticals to product roadmap (7 total)
 - [x] Cluster feature card gaps by theme (data restructured to {theme, text})
 - [x] Organize quote wall by theme instead of person — 7 themes, 35 quotes

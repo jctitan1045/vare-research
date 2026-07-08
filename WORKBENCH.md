@@ -2,30 +2,30 @@
 
 ---
 
-## Session: 2026-07-07 | Killed the auto-inject Fathom sync (2nd corruption) → notify-only + deploy smoke-check
+## 2026-07-08 09:27, Claude Code
 
-**Focus:** Root-cause and fix the recurring Actions corruption of index.html.
+**Focus:** Kill the recurring GitHub-Actions corruption of the dashboard — 2nd incident — and ship a safe replacement.
+
+**Next session, start here:**
+- Read: `scripts/notify_new_calls.py` + `.github/workflows/update-calls.yml` (the new notify-only path).
+- In flight: nothing — fix is shipped, pushed to `main`, and verified running in Actions.
+- Single next move: when the notifier opens a GitHub issue for a genuinely new call, hand-add that participant to `DATA.participants` and push (deploy runs the smoke-check).
 
 **What happened:**
-- 2nd corruption confirmed: cloud Action commit `8b73f4a` "Auto: add Jul 7 call" grabbed the WRONG call (re-added Armin Shafee, already id:12) AND spliced a quoted-key JSON object *into Andrew Topping's (id:1) `gaps` array* — a syntax error that blanks the whole live dashboard. Same class of bug as the 2026-07-03 incident (ids 12–15).
-- Root causes in the old `scripts/update_calls.py`: (1) `inject_participant()` regex `(.*?)(\]\s*\})` is non-greedy and matched the FIRST `]}` (end of participant 1's gaps + object), splicing the new record inside id:1 instead of at the array end; (2) it wrapped the LLM's quoted-key JSON (`{ "name":... }`) inside its own `{ id, date, fathomUrl, ... }`, producing a nested unkeyed `{` = invalid JS; (3) name-dedup was unreliable. Parsing/editing live JS with regex is inherently fragile.
-- **[DECISION] Retired auto-injection entirely** (WORKBENCH had leaned "keep cloud Action"; two corruptions overruled that). No process auto-edits index.html anymore. Manual add is what correctly shipped both Jul 7 calls anyway.
-- Rewrote the cloud Action as **notify-only**: `.github/workflows/update-calls.yml` → `scripts/notify_new_calls.py` detects Fathom research calls not yet on the dashboard (guest name from `calendar_invitees` / title, loose-matched against `id:N, name:"..."`) and opens/updates a GitHub issue. Only needs `FATHOM_API_KEY`; no Anthropic, no commit, no file writes. Verified live: correctly saw ids 12/14/15 as present.
-- Added `scripts/notify_skip.txt` (Jonas Arequipa / call 731099771 = the known failed Jul 2 call) so intentionally-excluded calls don't nag daily.
-- Added **JS smoke-check** `scripts/validate_index.js` — evals the `const DATA` block in a VM and asserts participants/ids/shape. Verified it PASSES on current index.html and FAILS on the corrupt `8b73f4a` blob. Wired as a **required gate in `deploy-pages.yml`** before upload, so no broken DATA block (manual or automated) can ever deploy.
-- Deleted the dangerous `scripts/update_calls.py`. Added `.gitignore` (ephemeral `fathom_new_calls.md`, `.DS_Store`).
-- Local duplicate `vare-fathom-sync` scheduled task was **already** out of the active dir (now `~/.claude/scheduled-tasks-retired/`); added a prominent RETIRED banner to its SKILL.md so it's never re-enabled.
+- Confirmed 2nd corruption: cloud commit `8b73f4a` re-added the wrong guest (Armin, already id:12) AND spliced a quoted-key JSON object into participant id:1's `gaps` array — invalid JS that blanks the whole live site. Root cause in old `update_calls.py`: non-greedy regex `(.*?)(\]\s*\})` matched the first `]}` (inside id:1), plus it nested the LLM's `{ "name":... }` inside its own `{ id,... }`.
+- Rewrote the Action **notify-only** (`notify_new_calls.py` → opens/updates a GitHub issue); deleted the injector; added `notify_skip.txt` (skips the failed Jonas Jul-2 call).
+- Added JS smoke-check `validate_index.js` and made it a **required gate** in `deploy-pages.yml`.
+- Pushed to `main`; verified in Actions: deploy smoke-check logged `✅ 15 participants`, and a manual notifier run returned `new_count=0` (dedup + skiplist + `FATHOM_API_KEY` all working).
+- Gitignored local `.claude/` and the 31 MB `PROP 01 VARÉ.pdf`.
 
-**Files touched:**
-- `scripts/notify_new_calls.py` (new), `scripts/validate_index.js` (new), `scripts/notify_skip.txt` (new)
-- `scripts/update_calls.py` (deleted)
-- `.github/workflows/update-calls.yml` (notify-only rewrite), `.github/workflows/deploy-pages.yml` (smoke-check gate)
-- `.gitignore` (new)
-- `~/.claude/scheduled-tasks-retired/vare-fathom-sync/SKILL.md` (RETIRED banner — external to repo)
+**Decisions:**
+- [DECISION] Retired auto-injection entirely (over the old "keep the cloud Action" lean) — two corruptions proved regex-splicing LLM output into a live single-file dashboard is too fragile; a bad splice blanks everything. Manual add + notify-only + a deploy gate is safer and manual is what already shipped correctly.
+- [DECISION] Gitignored the proposal PDF rather than committing it — avoids bloating the repo/Pages artifact with a 31 MB binary; reversible.
 
-**Still open / NEXT:**
-- **Not committed/pushed** — changes are in the working tree. Review, then push to `main`; the notify-only Action and the deploy gate only take effect once on GitHub. Pushing also runs the smoke-check on the current (valid) index.html.
-- Optional: prune unreferenced original mood-board images (`design-sauna.jpg`, etc.) per 2026-07-03 note.
+**Still open:**
+- Cosmetic only: delete 5 orphaned single mood-board images (`design-sauna.jpg`, etc.).
+
+**Files touched:** scripts/notify_new_calls.py (new), scripts/validate_index.js (new), scripts/notify_skip.txt (new), scripts/update_calls.py (deleted), .github/workflows/update-calls.yml, .github/workflows/deploy-pages.yml, .gitignore, ARCHITECTURE.md, USER_GUIDE.md, TODOS.md, WORKBENCH.md, ~/.claude/scheduled-tasks-retired/vare-fathom-sync/SKILL.md
 
 ---
 

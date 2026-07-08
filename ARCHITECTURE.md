@@ -80,8 +80,10 @@ Market research infrastructure for the Vare Wellness Center (Medellín). Tracks 
 
 ---
 
-## Fathom Integration
+## Fathom Integration (NOTIFY-ONLY as of 2026-07-07)
 
 - Call naming convention: **"Wellness Center Market Research Call"**
-- Pull new calls via Fathom MCP (`mcp__fathom__search_meetings`, `mcp__fathom__get_meeting_transcript`)
-- After each call: add participant object to `DATA.participants` in index.html, push to GitHub
+- **Adding a call is manual + verified.** Pull the transcript (Fathom MCP or fathom.video), add one object to `DATA.participants` in `index.html`, push. No automation edits the file — the old auto-injector corrupted the live site twice and was retired.
+- **`scripts/notify_new_calls.py`** (cloud `update-calls.yml`, daily `0 4 * * *` + manual dispatch): detects research calls in Fathom not yet on the dashboard (guest from `calendar_invitees`/title, loose-matched against `id:N, name:"…"`), and opens/updates a GitHub issue. Needs only `FATHOM_API_KEY`. Never writes `index.html`, never commits. `scripts/notify_skip.txt` lists calls to ignore (e.g. failed calls).
+- **`scripts/validate_index.js`** — JS smoke-check that evals the `const DATA` block and asserts participant/id/shape validity. Runs as a **required gate in `deploy-pages.yml`** before every Pages deploy, so a broken DATA block can never ship. Run locally with `node scripts/validate_index.js`.
+- Retired duplicate: the Claude Code scheduled task `vare-fathom-sync` (now under `~/.claude/scheduled-tasks-retired/`) did the same auto-add job — do not re-enable.
