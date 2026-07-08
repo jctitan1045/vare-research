@@ -2,3 +2,9 @@
 fathom_new_calls.md
 
 .DS_Store
+
+# Local Claude Code project config (per-machine, not shared)
+.claude/
+
+# Large source proposal doc — kept local, not committed / not deployed via Pages
+PROP 01 VARÉ.pdf
