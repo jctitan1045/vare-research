@@ -49,6 +49,12 @@ html { scroll-behavior:smooth; }
 [id^="sec-"], #exec-summary { scroll-margin-top:18px; }
 .toc-link { display:inline-block; font-size:11.5px; font-weight:500; color:var(--dark); background:var(--cream-bright); border:1px solid var(--border); border-radius:20px; padding:5px 12px; text-decoration:none; white-space:nowrap; transition:background 0.15s, border-color 0.15s; }
 .toc-link:hover { background:var(--white); border-color:var(--dark); }
+.section-label.collapsible { cursor:pointer; display:flex; align-items:center; }
+.section-label .sec-chevron { margin-left:auto; font-size:10px; color:var(--light); transition:transform 0.2s; }
+.section-label.open .sec-chevron { transform:rotate(180deg); }
+.section-body.collapsed { display:none; }
+.toc-allbtn { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--light); cursor:pointer; background:none; border:none; padding:0 6px; }
+.toc-allbtn:hover { color:var(--dark); }
 .section-title { font-family:'Cormorant Garamond', serif; font-size:28px; font-weight:500; color:var(--cream-bright); margin-bottom:4px; line-height:1.2; }
 .subtitle { font-size:12px; color:var(--on-bg-muted); margin-bottom:32px; }
 
@@ -2135,6 +2141,49 @@ const MARKET_LANDSCAPE = {
   ]
 };
 
+function setupCollapsible(){
+  const labels = [...document.querySelectorAll('.page .section-label[id]')];
+  labels.forEach((label, i) => {
+    if(label.dataset.collapsibleReady) return;
+    label.dataset.collapsibleReady = '1';
+    label.classList.add('collapsible');
+    const chev = document.createElement('span'); chev.className='sec-chevron'; chev.textContent='▾';
+    label.appendChild(chev);
+    // gather following siblings up to the next section label
+    const sibs = []; let n = label.nextElementSibling;
+    while(n && !(n.classList.contains('section-label') && n.id)){ sibs.push(n); n = n.nextElementSibling; }
+    // leave trailing dividers in place (they separate sections)
+    while(sibs.length && sibs[sibs.length-1].classList && sibs[sibs.length-1].classList.contains('divider')) sibs.pop();
+    if(!sibs.length) return;
+    const body = document.createElement('div'); body.className='section-body';
+    label.parentNode.insertBefore(body, sibs[0]);
+    sibs.forEach(s => body.appendChild(s));
+    label._body = body;
+    const open = (i === 0); // first section open by default; the rest start minimized
+    label.classList.toggle('open', open);
+    body.classList.toggle('collapsed', !open);
+    label.addEventListener('click', () => {
+      const willOpen = body.classList.contains('collapsed');
+      body.classList.toggle('collapsed', !willOpen);
+      label.classList.toggle('open', willOpen);
+    });
+  });
+  window.setAllSections = (open) => labels.forEach(l => {
+    if(!l._body) return;
+    l._body.classList.toggle('collapsed', !open);
+    l.classList.toggle('open', open);
+  });
+  // any in-page anchor (TOC pills, summary buttons) opens its target section
+  const openFor = (id) => {
+    const t = document.getElementById(id); if(!t) return;
+    let label = (t.classList.contains('section-label') && t.id) ? t
+              : (t.closest('.section-body') ? t.closest('.section-body').previousElementSibling : null);
+    if(label && label._body){ label._body.classList.remove('collapsed'); label.classList.add('open'); }
+  };
+  document.querySelectorAll('a[href^="#"]').forEach(a =>
+    a.addEventListener('click', () => openFor(a.getAttribute('href').slice(1))));
+}
+
 function renderTOC(){
   const el = document.getElementById('toc');
   if(!el) return;
@@ -2153,7 +2202,14 @@ function renderTOC(){
   ];
   el.innerHTML = `
     <div class="chart-card" style="padding:14px 18px">
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--light);margin-bottom:10px">Contents</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--light)">Contents</div>
+        <div style="margin-left:auto;display:flex;gap:4px;align-items:center">
+          <button class="toc-allbtn" onclick="setAllSections(true)">Expand all</button>
+          <span style="color:var(--border)">·</span>
+          <button class="toc-allbtn" onclick="setAllSections(false)">Collapse all</button>
+        </div>
+      </div>
       <div style="display:flex;flex-wrap:wrap;gap:8px">
         ${items.map((it,i)=>`<a class="toc-link" href="#${it[0]}"><span style="color:var(--light);font-variant-numeric:tabular-nums">${String(i+1).padStart(2,'0')}</span>&nbsp; ${it[1]}</a>`).join('')}
       </div>
@@ -3226,6 +3282,7 @@ function renderICPs() {
 }
 
 render();
+setupCollapsible();
 
 function showProfile(name) {
   const x = DATA.participants.find(p => p.name === name);
