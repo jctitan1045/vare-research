@@ -367,7 +367,12 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 <div id="market-landscape" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
-<!-- ⑥ PRODUCT ROADMAP -->
+<!-- ⑥ THE MOAT -->
+<div class="section-label" style="margin-bottom:12px">The moat — what makes Varé one of one</div>
+<div id="moat" style="margin-bottom:28px"></div>
+
+<div class="divider"></div>
+<!-- ⑦ PRODUCT ROADMAP -->
 <div class="section-label" style="margin-bottom:12px">Product roadmap by vertical</div>
 <div id="product-roadmap" style="margin-bottom:28px"></div>
 
@@ -1584,6 +1589,7 @@ function render(){
 `).join('');
 
   renderMarketLandscape();
+  renderMoat();
   renderProductRoadmap();
   renderQuoteWall();
   renderDesignVision();
@@ -2118,6 +2124,90 @@ const MARKET_LANDSCAPE = {
     { name:"Soho House", area:"Global", note:"Members-club tiering — open floor below, member floors above, welcome drinks and credits. The structure Ali wants 'in a Medellín jungle style.'" }
   ]
 };
+
+const MOAT = {
+  thesis: "Our moat isn't any single feature — it's the combination. A couple of competitors touch one or two of these; no one in Medellín offers them together, inside one membership community. That's what makes Varé one of one.",
+  pillars: [
+    { icon:"🔥", title:"The biggest sauna — run as classes", claim:"A facilitated large-format sauna, first of its kind here",
+      detail:"The largest sauna in the city, programmed as guided wellness experiences with high-end teachers (many already in our network) and unique classes — not solo drop-ins.",
+      whoElse:"Recovery venues (Nordika, Celestino, Element) are transactional drop-ins; Wake has an infrared sauna but no facilitated classes. The Othership 'classes-in-the-sauna' format doesn't exist in Medellín.",
+      evidence:"Asked for by name by Juan Pablo (Duet) & Zach; Juan Pablo (Duet) is a ready-made facilitator." },
+    { icon:"🍵", title:"Medellín's first non-alcoholic bar", claim:"A genuine market first",
+      detail:"Elixirs, functional detox drinks and mocktails better than anywhere else — a social buzz for the sober-curious.",
+      whoElse:"No dedicated non-alcoholic elixir bar surfaced anywhere in the 20-venue scan. The closest is a café cacao menu — not a social bar.",
+      evidence:"Wanted by Laurel, Andrew, Juliana & Armin (functional drinks / cacao); Zach, who doesn't drink, endorsed it on his call." },
+    { icon:"🌙", title:"Late-night coworking", claim:"The only evening work-and-social space",
+      detail:"Come to eat, hang out and cowork late into the evening — a real unmet need for people who work across time zones.",
+      whoElse:"Rivertown, Pergamino and Hardin close early; Kiin's cowork is resident-oriented. No one runs a night-time work-and-social space.",
+      evidence:"The 'reason to stay before and after' / third-home theme ran through the calls (Sebastian, Alex, Armin, Ali)." },
+    { icon:"🤸", title:"Unique movement + macros on every menu", claim:"Programming and transparency no one combines",
+      detail:"Mobility, animal-flow and hybrid classes you can't get elsewhere — plus every dish macro-labeled so members can fully delegate their food.",
+      whoElse:"Gyms sell volume, not curated mobility; no restaurant here lists macros. Pairing unique movement with a macro-labeled kitchen is unclaimed ground.",
+      evidence:"Macros were the single most-requested food feature (12 of 15). Unique movement from Zach (animal flow) & Juan Pablo (Duet) (hybrid / HYROX)." },
+    { icon:"🫒", title:"A seed-oil-free kitchen", claim:"A clean-fat promise no restaurant makes",
+      detail:"No seed oils — with the option to choose your cooking fat (grass-fed butter, ghee, and more).",
+      whoElse:"No Medellín restaurant markets a seed-oil-free kitchen or lets you pick your fat. It's exactly what converts health-optimizers who currently cook every meal at home.",
+      evidence:"Zach ('good oils, not fried, and I'd eat out'), Armin (minimal oils / grass-fed butter), Ali (minimal oils)." }
+  ],
+  // pyramid tiers, apex → base
+  pyramid: [
+    { label:"ONE OF ONE", sub:"an unbeatable position", fill:"#1E3028" },
+    { label:"5 CATEGORY FIRSTS & ONLYS", sub:"the differentiators below", fill:"#4A6358" },
+    { label:"THE ALL-IN-ONE BUNDLE", sub:"grounded in 15 calls + a 20-venue scan", fill:"#8A9E95" }
+  ]
+};
+
+function renderMoat(){
+  const el = document.getElementById('moat');
+  if(!el) return;
+  const M = MOAT;
+  // 3-tier pyramid geometry (triangle apex 200,20 → base 40..360 at y=230)
+  const apex=[200,20], bl=[40,230], br=[360,230];
+  const xAt=(y,side)=>{ const f=(y-apex[1])/(bl[1]-apex[1]); return side<0 ? apex[0]-(apex[0]-bl[0])*f : apex[0]+(br[0]-apex[0])*f; };
+  const ys=[20,90,160,230];
+  const bands = M.pyramid.map((t,i)=>{
+    const y0=ys[i], y1=ys[i+1];
+    const pts = i===0
+      ? `${apex[0]},${y0} ${xAt(y1,1)},${y1} ${xAt(y1,-1)},${y1}`
+      : `${xAt(y0,-1)},${y0} ${xAt(y0,1)},${y0} ${xAt(y1,1)},${y1} ${xAt(y1,-1)},${y1}`;
+    const my=(y0+y1)/2 + (i===0?8:0);
+    return `<polygon points="${pts}" fill="${t.fill}"></polygon>
+      <text x="200" y="${my-2}" text-anchor="middle" fill="#F4F1E8" font-size="${i===0?11:13}" font-weight="700" letter-spacing="0.06em">${t.label}</text>
+      <text x="200" y="${my+13}" text-anchor="middle" fill="#F4F1E8" font-size="9" opacity="0.8">${t.sub}</text>`;
+  }).join('');
+  const pyramid = `
+    <svg viewBox="0 0 400 250" style="width:100%;max-width:360px;height:auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Moat pyramid">
+      ${bands}
+    </svg>`;
+
+  const top = `
+    <div class="chart-card" style="padding:22px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+      <div style="flex:1;min-width:240px;text-align:center">${pyramid}</div>
+      <div style="flex:1.3;min-width:260px">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--dark);line-height:1.25;margin-bottom:10px">Not a feature. A combination no one in Medellín offers.</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.7">${M.thesis}</div>
+      </div>
+    </div>`;
+
+  const cards = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
+      ${M.pillars.map((p,i)=>`
+        <div class="chart-card" style="padding:18px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:flex-start;gap:11px">
+            <div style="font-size:24px;line-height:1;flex-shrink:0">${p.icon}</div>
+            <div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--dark);line-height:1.2">${p.title}</div>
+              <div style="display:inline-block;margin-top:4px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#1E3028;background:#EDF4EF;border:1px solid var(--border);border-radius:20px;padding:2px 9px">${p.claim}</div>
+            </div>
+          </div>
+          <div style="font-size:12.5px;color:var(--mid);line-height:1.6">${p.detail}</div>
+          <div style="font-size:11.5px;color:var(--mid);line-height:1.55;background:var(--cream-bright);border-radius:8px;padding:9px 11px"><span style="color:#D04090;font-weight:600">Who else does this?</span> ${p.whoElse}</div>
+          <div style="font-size:10.5px;color:var(--light);line-height:1.5;margin-top:auto;border-top:1px solid var(--border);padding-top:7px"><span style="color:#4A6358;font-weight:600">From the research:</span> ${p.evidence}</div>
+        </div>`).join('')}
+    </div>`;
+
+  el.innerHTML = top + cards;
+}
 
 function renderMarketLandscape(){
   const el = document.getElementById('market-landscape');
