@@ -1,4 +1,4 @@
-# WORKBENCH — Vare Research
+# WORKBENCH — Waha Research
 
 ---
 

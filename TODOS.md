@@ -1,4 +1,4 @@
-# TODOS — Vare Research
+# TODOS — Waha Research
 
 ## Active
 
@@ -35,7 +35,7 @@
 - [x] Build DOCX version of script
 - [x] Build ranking slide (HTML, dark, screen-share ready)
 - [x] Push to GitHub Pages (jctitan1045/vare-research)
-- [x] Confirm Vare brand name
+- [x] Confirm Waha brand name
 - [x] Confirm Fathom call naming convention
 - [x] Pull 330 Othership App Store reviews
 - [x] Pull 4,515 wellness App Store reviews (wide sweep)

@@ -1,4 +1,4 @@
-# USER GUIDE — Vare Research
+# USER GUIDE — Waha Research
 
 ## Adding a new discovery call to the dashboard
 

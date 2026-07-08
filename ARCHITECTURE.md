@@ -1,8 +1,8 @@
-# ARCHITECTURE — Vare Research
+# ARCHITECTURE — Waha Research
 
 ## What this project is
 
-Market research infrastructure for the Vare Wellness Center (Medellín). Tracks customer discovery calls and competitive intelligence. Shared with business partner Lorenzo via live GitHub Pages URL.
+Market research infrastructure for the Waha Wellness Center (Medellín). Tracks customer discovery calls and competitive intelligence. Shared with business partner Lorenzo via live GitHub Pages URL.
 
 ---
 
