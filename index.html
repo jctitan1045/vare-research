@@ -45,6 +45,10 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 
 .page { max-width:980px; margin:0 auto; padding:0 32px; }
 .section-label { font-size:11px; font-weight:500; color:var(--cream-bright); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:14px; }
+html { scroll-behavior:smooth; }
+[id^="sec-"], #exec-summary { scroll-margin-top:18px; }
+.toc-link { display:inline-block; font-size:11.5px; font-weight:500; color:var(--dark); background:var(--cream-bright); border:1px solid var(--border); border-radius:20px; padding:5px 12px; text-decoration:none; white-space:nowrap; transition:background 0.15s, border-color 0.15s; }
+.toc-link:hover { background:var(--white); border-color:var(--dark); }
 .section-title { font-family:'Cormorant Garamond', serif; font-size:28px; font-weight:500; color:var(--cream-bright); margin-bottom:4px; line-height:1.2; }
 .subtitle { font-size:12px; color:var(--on-bg-muted); margin-bottom:32px; }
 
@@ -306,10 +310,11 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 <div class="page">
 
 <!-- ⓪ INVESTOR SUMMARY -->
-<div id="exec-summary" style="margin-bottom:30px"></div>
+<div id="exec-summary" style="margin-bottom:16px"></div>
+<div id="toc" style="margin-bottom:30px"></div>
 
 <!-- ① WHO ARE THEY? -->
-<div class="section-label">Who's in this research</div>
+<div class="section-label" id="sec-who">Who's in this research</div>
 <div class="metrics">
   <div class="metric"><div class="metric-label">Participants</div><div class="metric-value" id="m-total">—</div><div class="metric-sub">Target: 30+</div></div>
   <div class="metric"><div class="metric-label">Nationalities</div><div class="metric-value" id="m-nations">—</div><div class="metric-sub">represented</div></div>
@@ -342,7 +347,7 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 
 <div class="divider"></div>
 <!-- ② IDEAL CLIENT PROFILES -->
-<div class="section-label">Ideal client profiles</div>
+<div class="section-label" id="sec-icp">Ideal client profiles</div>
 
 <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--cream-bright);margin-bottom:10px">Primary — highest value members</div>
 <div class="icp-list" id="icp-primary"></div>
@@ -352,12 +357,12 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 
 <div class="divider" style="margin-top:20px"></div>
 <!-- ③ CUSTOMER AVATARS -->
-<div class="section-label" style="margin-bottom:14px">Customer avatars</div>
+<div class="section-label" id="sec-avatars" style="margin-bottom:14px">Customer avatars</div>
 <div class="avatar-grid" id="avatar-grid"></div>
 
 <div class="divider"></div>
 <!-- ④ LOCATION PREFERENCE -->
-<div class="section-label" style="margin-bottom:12px">Where they want it</div>
+<div class="section-label" id="sec-location" style="margin-bottom:12px">Where they want it</div>
 <div class="chart-card" style="margin-bottom:28px">
   <div class="chart-title">Explicit location preference</div>
   <div class="chart-sub">Where they said they'd put it — not where they live. Click a dot for names. Hover for label.</div>
@@ -366,33 +371,33 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 
 <div class="divider"></div>
 <!-- ⑤ MARKET LANDSCAPE -->
-<div class="section-label" style="margin-bottom:12px">Market landscape — what already exists</div>
+<div class="section-label" id="sec-market" style="margin-bottom:12px">Market landscape — what already exists</div>
 <div id="market-landscape" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
 <!-- ⑥ THE MOAT -->
-<div class="section-label" style="margin-bottom:12px">The moat — what makes Varé one of one</div>
+<div class="section-label" id="sec-moat" style="margin-bottom:12px">The moat — what makes Varé one of one</div>
 <div id="moat" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
 <!-- ⑦ PRODUCT ROADMAP -->
-<div class="section-label" style="margin-bottom:12px">Product roadmap by vertical</div>
+<div class="section-label" id="sec-roadmap" style="margin-bottom:12px">Product roadmap by vertical</div>
 <div id="product-roadmap" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
 <!-- ⑥ QUOTE WALL -->
-<div class="section-label" style="margin-bottom:12px">What they said</div>
+<div class="section-label" id="sec-quotes" style="margin-bottom:12px">What they said</div>
 <div id="quote-wall" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
 <!-- ⑦ DESIGN PROMPTS -->
-<div class="section-label" style="margin-bottom:12px">Design prompts & visual reference</div>
+<div class="section-label" id="sec-design" style="margin-bottom:12px">Design prompts & visual reference</div>
 <p style="font-size:12px;color:var(--light);margin-bottom:20px">Research-derived prompts for each space. Copy → paste into Midjourney, DALL-E, or Claude to generate mood board concepts.</p>
 <div id="design-vision" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
 <!-- ⑧ PEOPLE PIPELINE -->
-<div class="section-label" style="margin-bottom:10px">People pipeline</div>
+<div class="section-label" id="sec-pipeline" style="margin-bottom:10px">People pipeline</div>
 <div class="pipeline-section" id="people-pipeline" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
@@ -1592,6 +1597,7 @@ function render(){
 `).join('');
 
   renderExecSummary();
+  renderTOC();
   renderMarketLandscape();
   renderMoat();
   renderProductRoadmap();
@@ -2128,6 +2134,31 @@ const MARKET_LANDSCAPE = {
     { name:"Soho House", area:"Global", note:"Members-club tiering — open floor below, member floors above, welcome drinks and credits. The structure Ali wants 'in a Medellín jungle style.'" }
   ]
 };
+
+function renderTOC(){
+  const el = document.getElementById('toc');
+  if(!el) return;
+  const items = [
+    ['exec-summary','Overview'],
+    ['sec-who',"Who's in this research"],
+    ['sec-icp','Ideal client profiles'],
+    ['sec-avatars','Customer avatars'],
+    ['sec-location','Where they want it'],
+    ['sec-market','Market landscape'],
+    ['sec-moat','The moat'],
+    ['sec-roadmap','Product roadmap'],
+    ['sec-quotes','What they said'],
+    ['sec-design','Design vision'],
+    ['sec-pipeline','People pipeline']
+  ];
+  el.innerHTML = `
+    <div class="chart-card" style="padding:14px 18px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--light);margin-bottom:10px">Contents</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        ${items.map((it,i)=>`<a class="toc-link" href="#${it[0]}"><span style="color:var(--light);font-variant-numeric:tabular-nums">${String(i+1).padStart(2,'0')}</span>&nbsp; ${it[1]}</a>`).join('')}
+      </div>
+    </div>`;
+}
 
 function renderExecSummary(){
   const el = document.getElementById('exec-summary');
