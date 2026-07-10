@@ -10,7 +10,7 @@ Best-practice + correctness review of the Waha research dashboard (started 2026-
 
 ## B. Research best-practices
 - [ ] **B5 — Sample bias not disclosed.** Add a "how to read this / sample composition" note (warm-network + expat skew).
-- [ ] **B6 — WTP is stated + anchored.** Add a revealed-preference view (what people already pay monthly) and/or Van Westendorp.
+- [x] **B6 — WTP is stated + anchored.** Added a "What they already pay" section: per-participant monthly spend across the bundled categories (revealed preference), median/range/% stats, and a stated-vs-revealed callout. Exec WTP chip reframed to "stated WTP · median already spends ~620k." *Done 2026-07-09.*
 - [ ] **B7 — Small-sample features read as signal.** Mark n≤2 features as "low-sample / emerging."
 - [ ] **B8 — No evidence weighting / commitment funnel.** Add an Interested → Call-2 → Waitlist → Deposit funnel.
 

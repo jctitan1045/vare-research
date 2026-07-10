@@ -376,6 +376,11 @@ html { scroll-behavior:smooth; }
 </div>
 
 <div class="divider"></div>
+<!-- ④·⑤ REVEALED PREFERENCE -->
+<div class="section-label" id="sec-spend" style="margin-bottom:12px">What they already pay</div>
+<div id="spend" style="margin-bottom:28px"></div>
+
+<div class="divider"></div>
 <!-- ⑤ MARKET LANDSCAPE -->
 <div class="section-label" id="sec-market" style="margin-bottom:12px">Market landscape — what already exists</div>
 <div id="market-landscape" style="margin-bottom:28px"></div>
@@ -1667,6 +1672,7 @@ function render(){
   renderDesignVision();
   renderPipeline();
   renderLocationMap();
+  renderSpend();
   setTimeout(renderInsightsCharts, 150);
 }
 
@@ -2249,6 +2255,7 @@ function renderTOC(){
     ['sec-icp','Ideal client profiles'],
     ['sec-avatars','Customer avatars'],
     ['sec-location','Where they want it'],
+    ['sec-spend','What they pay'],
     ['sec-market','Market landscape'],
     ['sec-moat','The moat'],
     ['sec-roadmap','Product roadmap'],
@@ -2277,6 +2284,8 @@ function renderExecSummary(){
   if(!el) return;
   const n = DATA.participants.length;
   const calls = new Set(DATA.participants.map(p=>p.fathomUrl)).size;
+  const spendT = DATA.participants.map(p=>Object.values(p.monthlySpend||{}).reduce((a,b)=>a+(+b||0),0)).filter(t=>t>0).sort((a,b)=>a-b);
+  const medSpend = spendT.length ? (spendT.length%2 ? spendT[(spendT.length-1)/2] : Math.round((spendT[spendT.length/2-1]+spendT[spendT.length/2])/2)) : 0;
   const venues = (typeof MARKET_LANDSCAPE!=='undefined') ? MARKET_LANDSCAPE.competitors.length : 0;
   const moatN = (typeof MOAT!=='undefined') ? MOAT.pillars.length : 0;
   const stat = (v,l,s)=>`
@@ -2293,7 +2302,7 @@ function renderExecSummary(){
       <div style="display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 4px">
         ${stat(n, 'participants', `across ${calls} calls · target 30+`)}
         ${stat(venues+'+', 'venues mapped', 'none do the full stack')}
-        ${stat('$150–200', 'monthly WTP', '≈ 350–500k COP')}
+        ${stat('$150–200', 'stated WTP', `median already spends ~${medSpend}k`)}
         ${stat(moatN, 'moat pillars', 'incl. day-one community')}
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px">
@@ -2389,6 +2398,50 @@ function renderMoat(){
     </div>`;
 
   el.innerHTML = top + cards;
+}
+
+function renderSpend(){
+  const el = document.getElementById('spend');
+  if(!el) return;
+  const rows = DATA.participants.map(p => ({
+    name: p.name.split(' (')[0],
+    total: Object.values(p.monthlySpend||{}).reduce((a,b)=>a+(+b||0),0)
+  })).filter(r=>r.total>0).sort((a,b)=>b.total-a.total);
+  if(!rows.length) return;
+  const totals = rows.map(r=>r.total).sort((a,b)=>a-b);
+  const median = totals.length%2 ? totals[(totals.length-1)/2] : Math.round((totals[totals.length/2-1]+totals[totals.length/2])/2);
+  const max = rows[0].total;
+  const pct350 = Math.round(totals.filter(t=>t>=350).length/totals.length*100);
+  const bandLo=350, bandHi=500;
+  const fmt = k => k>=1000 ? (k/1000).toFixed(1).replace(/\.0$/,'')+'M' : k+'k';
+  const barColor = t => t>=500 ? '#1E3028' : t>=350 ? '#4A6358' : '#8A9E95';
+
+  const stat=(v,l)=>`<div style="min-width:96px"><div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--dark);line-height:1">${v}</div><div style="font-size:10.5px;color:var(--light)">${l}</div></div>`;
+
+  const bars = rows.map(r=>`
+    <div style="display:flex;align-items:center;gap:8px;margin:2px 0">
+      <div style="width:104px;font-size:11px;color:var(--mid);text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.name}</div>
+      <div style="flex:1;position:relative;height:15px;background:var(--cream-bright);border-radius:3px;overflow:hidden">
+        <div style="position:absolute;top:0;bottom:0;left:${bandLo/max*100}%;width:${(bandHi-bandLo)/max*100}%;background:#1E302816"></div>
+        <div style="position:absolute;top:0;bottom:0;left:0;width:${r.total/max*100}%;background:${barColor(r.total)};border-radius:3px"></div>
+      </div>
+      <div style="width:48px;font-size:11px;color:var(--dark);flex-shrink:0">${fmt(r.total)}</div>
+    </div>`).join('');
+
+  el.innerHTML = `
+    <div class="chart-card" style="padding:22px">
+      <div class="chart-title">What participants already pay each month — the revealed-preference signal</div>
+      <div class="chart-sub">Reported spend across the categories Waha bundles (gym, recovery, food, coworking, movement &amp; community). This is money already leaving the wallet — a stronger pricing signal than a hypothetical. Bars ≥ 500k are darkest; the shaded stripe is Waha's <strong>350–500k</strong> target band.</div>
+      <div style="display:flex;gap:22px;flex-wrap:wrap;margin:16px 0 14px">
+        ${stat('~'+fmt(median), 'median already spent / mo')}
+        ${stat(fmt(totals[0])+'–'+fmt(totals[totals.length-1]), 'range across participants')}
+        ${stat(pct350+'%', 'already spend ≥ 350k')}
+      </div>
+      <div style="margin-top:6px">${bars}</div>
+      <div style="font-size:12px;color:var(--mid);line-height:1.65;background:var(--cream-bright);border-radius:8px;padding:12px 14px;margin-top:16px">
+        <strong style="color:var(--dark)">Stated vs. revealed.</strong> Most participants <em>said</em> they'd pay $150–200/mo — directional, and anchored by how the price question was walked up ($150 → $200 → $250) on the calls. In practice the median participant <strong>already spends ~${fmt(median)}/mo (≈ $${Math.round(median/4)})</strong> assembling this stack across separate memberships, and the top third spend 1M+. Waha's target band sits <strong>inside the proven-spend zone</strong> — the pitch is consolidation at a discount, not a new expense.
+      </div>
+    </div>`;
 }
 
 function renderMarketLandscape(){
