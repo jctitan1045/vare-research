@@ -15,7 +15,7 @@ Best-practice + correctness review of the Waha research dashboard (started 2026-
 - [ ] **B8 — No evidence weighting / commitment funnel.** Add an Interested → Call-2 → Waitlist → Deposit funnel.
 
 ## C. Accessibility & UX
-- [ ] **C9 — Accessibility gaps.** Collapsible headers are `<div>`s (no role/aria/keyboard); zero semantic headings. Make headers real buttons + promote to headings.
+- [x] **C9 — Accessibility gaps.** Section headers are now real `<button>`s (`aria-expanded`/`aria-controls`, native keyboard, focus ring) inside `role="heading" aria-level="2"`; section bodies are `role="region"` labelled by their heading; added a page `<h1>` and made the TOC a `<nav aria-label>`. `aria-expanded` stays in sync on toggle / expand-all / anchor-open. *Done 2026-07-09.*
 - [ ] **C10 — No "last updated" date.** Add a "data as of …" stamp.
 - [ ] **C11 — No print/PDF handling.** Print stylesheet that force-expands all sections.
 - [ ] **C12 — Collapsed-by-default trade-off.** Consider defaulting Moat + Market open.

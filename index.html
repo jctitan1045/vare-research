@@ -53,6 +53,10 @@ html { scroll-behavior:smooth; }
 .section-label .sec-chevron { margin-left:auto; font-size:10px; color:var(--light); transition:transform 0.2s; }
 .section-label.open .sec-chevron { transform:rotate(180deg); }
 .section-body.collapsed { display:none; }
+.section-toggle { all:unset; box-sizing:border-box; display:flex; align-items:center; width:100%; cursor:pointer; }
+.section-toggle:focus-visible { outline:2px solid var(--cream-bright); outline-offset:4px; border-radius:3px; }
+.section-toggle-text { flex:0 1 auto; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 .toc-allbtn { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--light); cursor:pointer; background:none; border:none; padding:0 6px; }
 .toc-allbtn:hover { color:var(--dark); }
 .section-title { font-family:'Cormorant Garamond', serif; font-size:28px; font-weight:500; color:var(--cream-bright); margin-bottom:4px; line-height:1.2; }
@@ -314,10 +318,11 @@ html { scroll-behavior:smooth; }
 <div class="grad-bar"></div>
 
 <div class="page">
+<h1 class="sr-only">Waha Club — Wellness Center market-research dashboard</h1>
 
 <!-- ⓪ INVESTOR SUMMARY -->
 <div id="exec-summary" style="margin-bottom:16px"></div>
-<div id="toc" style="margin-bottom:30px"></div>
+<nav id="toc" aria-label="Section contents" style="margin-bottom:30px"></nav>
 
 <!-- ① WHO ARE THEY? -->
 <div class="section-label" id="sec-who">Who's in this research</div>
@@ -2209,38 +2214,54 @@ function setupCollapsible(){
     if(label.dataset.collapsibleReady) return;
     label.dataset.collapsibleReady = '1';
     label.classList.add('collapsible');
-    const chev = document.createElement('span'); chev.className='sec-chevron'; chev.textContent='▾';
-    label.appendChild(chev);
     // gather following siblings up to the next section label
     const sibs = []; let n = label.nextElementSibling;
     while(n && !(n.classList.contains('section-label') && n.id)){ sibs.push(n); n = n.nextElementSibling; }
     // leave trailing dividers in place (they separate sections)
     while(sibs.length && sibs[sibs.length-1].classList && sibs[sibs.length-1].classList.contains('divider')) sibs.pop();
     if(!sibs.length) return;
-    const body = document.createElement('div'); body.className='section-body';
+    const body = document.createElement('div');
+    body.className = 'section-body';
+    body.id = label.id + '-body';
+    body.setAttribute('role', 'region');
+    body.setAttribute('aria-labelledby', label.id);
     label.parentNode.insertBefore(body, sibs[0]);
     sibs.forEach(s => body.appendChild(s));
-    label._body = body;
+
     const open = (i === 0); // first section open by default; the rest start minimized
+    // Rebuild the header as an accessible disclosure: heading > button[aria-expanded/controls]
+    const title = label.textContent;
+    label.textContent = '';
+    label.setAttribute('role', 'heading');
+    label.setAttribute('aria-level', '2');
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'section-toggle';
+    btn.setAttribute('aria-controls', body.id);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.innerHTML = `<span class="section-toggle-text">${title}</span><span class="sec-chevron" aria-hidden="true">▾</span>`;
+    label.appendChild(btn);
+
+    label._body = body; label._btn = btn;
     label.classList.toggle('open', open);
     body.classList.toggle('collapsed', !open);
-    label.addEventListener('click', () => {
-      const willOpen = body.classList.contains('collapsed');
-      body.classList.toggle('collapsed', !willOpen);
-      label.classList.toggle('open', willOpen);
-    });
+
+    const setState = (openIt) => {
+      body.classList.toggle('collapsed', !openIt);
+      label.classList.toggle('open', openIt);
+      btn.setAttribute('aria-expanded', String(openIt));
+    };
+    label._setState = setState;
+    btn.addEventListener('click', () => setState(body.classList.contains('collapsed')));
+    // native <button> already handles Enter/Space
   });
-  window.setAllSections = (open) => labels.forEach(l => {
-    if(!l._body) return;
-    l._body.classList.toggle('collapsed', !open);
-    l.classList.toggle('open', open);
-  });
+  window.setAllSections = (open) => labels.forEach(l => l._setState && l._setState(open));
   // any in-page anchor (TOC pills, summary buttons) opens its target section
   const openFor = (id) => {
     const t = document.getElementById(id); if(!t) return;
-    let label = (t.classList.contains('section-label') && t.id) ? t
-              : (t.closest('.section-body') ? t.closest('.section-body').previousElementSibling : null);
-    if(label && label._body){ label._body.classList.remove('collapsed'); label.classList.add('open'); }
+    const label = (t.classList.contains('section-label') && t.id) ? t
+      : (t.closest('.section-body') ? document.getElementById(t.closest('.section-body').getAttribute('aria-labelledby')) : null);
+    if(label && label._setState) label._setState(true);
   };
   document.querySelectorAll('a[href^="#"]').forEach(a =>
     a.addEventListener('click', () => openFor(a.getAttribute('href').slice(1))));
