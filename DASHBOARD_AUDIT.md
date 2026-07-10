@@ -22,5 +22,5 @@ Best-practice + correctness review of the Waha research dashboard (started 2026-
 
 ## D. Bigger enhancements (maybe / later)
 - [ ] **D13 — Segment filter** (locals/expats · consumer/instructor · WTP tier).
-- [ ] **D14 — Dedicated supply-side view** (instructor rates, collaboration models, audiences).
+- [x] **D14 — Dedicated supply-side view.** New "Supply side — instructors & community partners" section: `supply` field on the 8 supply-side participants (single-source), rendered as cards (Offers / Audience / Collaboration model / Needs) + an intro capturing the recurring per-head-fee-then-50/50 model. In the TOC + collapsible. *Done 2026-07-09.*
 - [ ] **D15 — Objections/dealbreakers view + theme-saturation curve.**
