@@ -1588,7 +1588,7 @@ function render(){
   renderICPs();
   renderAvatars();
   const p=DATA.participants, n=p.length;
-  document.getElementById('badge-text').textContent=`${n} call${n!==1?'s':''} · Research in progress`;
+  document.getElementById('badge-text').textContent=`${n} participant${n!==1?'s':''} · Research in progress`;
   document.getElementById('m-total').textContent=n;
   document.getElementById('m-nations').textContent=new Set(p.map(x=>x.nationality).filter(Boolean)).size;
   document.getElementById('m-worktypes').textContent=new Set(p.map(x=>x.workType).filter(Boolean)).size;
@@ -2276,6 +2276,7 @@ function renderExecSummary(){
   const el = document.getElementById('exec-summary');
   if(!el) return;
   const n = DATA.participants.length;
+  const calls = new Set(DATA.participants.map(p=>p.fathomUrl)).size;
   const venues = (typeof MARKET_LANDSCAPE!=='undefined') ? MARKET_LANDSCAPE.competitors.length : 0;
   const moatN = (typeof MOAT!=='undefined') ? MOAT.pillars.length : 0;
   const stat = (v,l,s)=>`
@@ -2288,9 +2289,9 @@ function renderExecSummary(){
     <div class="chart-card" style="padding:26px 26px 22px;border-left:4px solid #4A6358">
       <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#4A6358;margin-bottom:9px">The opportunity</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:600;color:var(--dark);line-height:1.22;margin-bottom:12px;max-width:820px">Medellín has no all-in-one wellness membership. We're building it — with the community already in place.</div>
-      <div style="font-size:13.5px;color:var(--mid);line-height:1.7;max-width:800px">Across ${n} discovery calls and a scan of ${venues}+ real venues, the gap is consistent: gyms, saunas, coworking and healthy food are sold separately, and the closest bundles are hotel-attached wellness tourism — not a resident community. Waha combines the full stack into one membership at an accessible price, and opens plugged into Medellín's expat communities from day one.</div>
+      <div style="font-size:13.5px;color:var(--mid);line-height:1.7;max-width:800px">Across ${calls} discovery calls with ${n} participants and a scan of ${venues}+ real venues, the gap is consistent: gyms, saunas, coworking and healthy food are sold separately, and the closest bundles are hotel-attached wellness tourism — not a resident community. Waha combines the full stack into one membership at an accessible price, and opens plugged into Medellín's expat communities from day one.</div>
       <div style="display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 4px">
-        ${stat(n, 'discovery calls', 'target 30+')}
+        ${stat(n, 'participants', `across ${calls} calls · target 30+`)}
         ${stat(venues+'+', 'venues mapped', 'none do the full stack')}
         ${stat('$150–200', 'monthly WTP', '≈ 350–500k COP')}
         ${stat(moatN, 'moat pillars', 'incl. day-one community')}
@@ -2475,7 +2476,7 @@ function renderMarketLandscape(){
   const excluded = (M.excluded && M.excluded.length) ? `
     <div style="font-size:10.5px;color:var(--light);line-height:1.5;margin-bottom:10px"><strong style="color:var(--mid)">Checked and excluded:</strong> ${M.excluded.map(e=>`${e.name} — ${e.reason}`).join(' ')}</div>` : '';
 
-  const note = `<div style="font-size:10px;color:var(--light);font-style:italic;line-height:1.5">Source per row: <span style="color:#30B860">●</span> named in the ${DATA.participants.length} discovery calls · <span style="color:#4A9EC4">●</span> web-researched from official sites (Jul 2026) · <span style="color:#1E3028">●</span> confirmed by both. Local spa/hotel pricing is often WhatsApp-gated and shown as n/a; blank cells mean not offered or not confirmed, not necessarily absent. Smash (Jordan's partner's brand) is the on-site food concept, not a competitor.</div>`;
+  const note = `<div style="font-size:10px;color:var(--light);font-style:italic;line-height:1.5">Source per row: <span style="color:#30B860">●</span> named by the ${DATA.participants.length} participants ·<span style="color:#4A9EC4">●</span> web-researched from official sites (Jul 2026) · <span style="color:#1E3028">●</span> confirmed by both. Local spa/hotel pricing is often WhatsApp-gated and shown as n/a; blank cells mean not offered or not confirmed, not necessarily absent. Smash (Jordan's partner's brand) is the on-site food concept, not a competitor.</div>`;
 
   el.innerHTML = takeaways + matrix + ladder + cards + excluded + models + note;
 }
@@ -2654,7 +2655,7 @@ function renderActionItems(){
     { priority:'high', label:'Put macros-on-menu in the product spec', reason:'Mentioned unprompted by every participant so far. Non-negotiable for both avatars.' },
     { priority:'high', label:'Design a "known by name" onboarding', reason:'Staff-member relationships outweigh amenities in every retention story heard so far.' },
     confirmed.includes('Sauna') || confirmed.includes('Cold plunge') ? { priority:'high', label:'Lock in sauna + cold plunge in Phase 1', reason:'Confirmed by ≥50% of calls. This is the anchor recovery stack.' } : null,
-    { priority:'mid', label:`Run ${Math.max(0,10-n)} more discovery calls before drawing conclusions`, reason:`At ${n} call${n!==1?'s':''}, patterns are directional — not statistically reliable. Target 10 before freezing the product spec.` },
+    { priority:'mid', label:`Run ${Math.max(0,10-n)} more discovery calls before drawing conclusions`, reason:`At ${n} participant${n!==1?'s':''}, patterns are directional — not statistically reliable. Target 10 before freezing the product spec.` },
     { priority:'mid', label:'Contact Reggie (investor referral from Andrew)', reason:'High-priority lead — investor conversation, not just research.' },
     { priority:'mid', label:'Test crowding framing in next calls', reason:'Sebastian cited crowding as a primary churn driver. Need to know if this is persona-specific or universal.' },
     { priority:'low', label:'Collect Yelp + Google reviews for physical venues', reason:'App Store reviews captured. Physical venue emotional drivers still missing from competitive intel.' },
