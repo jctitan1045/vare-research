@@ -3,7 +3,7 @@
 Best-practice + correctness review of the Waha research dashboard (started 2026-07-09). Checked items are done and live.
 
 ## A. Correctness (fix these)
-- [ ] **A1 — Price field mixes currencies.** `priceCeiling`/`priceGoodDeal` jumble USD and COP-thousands in one field, so the Price-calibration chart mis-buckets. Normalize to COP-thousands; audit all participants.
+- [x] **A1 — Price field mixed currencies.** Audited all 16 against their own notes + spend. Three un-converted expats (Andrew, Sebastian, Alex) were in USD → converted ×4 to COP-thousands. Colombians (Juliana/Isabella/JP Madrid/Isabel) and already-converted expats (Adam/Brett/Laurel/Armin/Ali/Zach/Jonas) left as-is. All `priceCeiling`/`priceGoodDeal` now COP-thousands; Price-calibration chart re-buckets correctly (1/3/3/7). Day-pass ranges untouched. *Done 2026-07-09.*
 - [x] **A2 — "16 calls" was inaccurate.** It's 16 participants across 15 recordings (one joint call). Badge, exec summary, stat chip, market-landscape note, and pipeline recommendation now say "participants" (with "across N calls" where useful). *Done 2026-07-09.*
 - [ ] **A3 — Supply-side blended into demand aggregates.** 8 of 16 are instructors/community-builders; their WTP + rankings distort consumer aggregates. Segment or caveat.
 - [ ] **A4 — Near-duplicate roadmap features.** "Social" and "Community events" categories double-represent themed events / free intro events. Merge or de-dupe.
