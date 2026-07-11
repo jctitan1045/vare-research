@@ -49,6 +49,12 @@ html { scroll-behavior:smooth; }
 [id^="sec-"], #exec-summary { scroll-margin-top:18px; }
 .toc-link { display:inline-block; font-size:11.5px; font-weight:500; color:var(--dark); background:var(--cream-bright); border:1px solid var(--border); border-radius:20px; padding:5px 12px; text-decoration:none; white-space:nowrap; transition:background 0.15s, border-color 0.15s; }
 .toc-link:hover { background:var(--white); border-color:var(--dark); }
+.seg-chip { font-size:11.5px; font-weight:500; color:var(--dark); background:var(--cream-bright); border:1px solid var(--border); border-radius:20px; padding:5px 12px; cursor:pointer; }
+.seg-chip:hover { border-color:var(--dark); }
+.seg-chip.active { background:var(--dark); color:var(--cream-bright); border-color:var(--dark); }
+.seg-chip .seg-count { color:var(--light); font-weight:600; }
+.seg-chip.active .seg-count { color:var(--cream-bright); opacity:0.75; }
+.seg-chip:focus-visible { outline:2px solid var(--dark); outline-offset:2px; }
 .section-label.collapsible { cursor:pointer; display:flex; align-items:center; }
 .section-label .sec-chevron { margin-left:auto; font-size:10px; color:var(--light); transition:transform 0.2s; }
 .section-label.open .sec-chevron { transform:rotate(180deg); }
@@ -326,6 +332,7 @@ html { scroll-behavior:smooth; }
 
 <!-- ① WHO ARE THEY? -->
 <div class="section-label" id="sec-who">Who's in this research</div>
+<div id="segment-filter" style="margin-bottom:16px"></div>
 <div class="metrics">
   <div class="metric"><div class="metric-label">Participants</div><div class="metric-value" id="m-total">—</div><div class="metric-sub">Target: 30+</div></div>
   <div class="metric"><div class="metric-label">Nationalities</div><div class="metric-value" id="m-nations">—</div><div class="metric-sub">represented</div></div>
@@ -1354,6 +1361,26 @@ const DATA = { participants: [
   }
 ]};
 
+// ── SEGMENT FILTER ──────────────────────────────────────────────
+// ACTIVE is the participant set the data views render from. Curated
+// strategic sections (exec summary, ICPs, avatars, market, moat, supply)
+// always read DATA.participants (the full set); the data/aggregate views
+// read ACTIVE so a segment (e.g. Consumers vs Supply-side) can be isolated.
+let ACTIVE = DATA.participants;
+const SEGMENTS = {
+  all:       { label:'All',              fn:()=>true },
+  consumers: { label:'Consumers',        fn:p=>!p.supply },
+  supply:    { label:'Supply-side',      fn:p=>!!p.supply },
+  locals:    { label:'Locals',           fn:p=>p.nationality==='Colombian' },
+  expats:    { label:'Expats',           fn:p=>p.nationality && p.nationality!=='Colombian' }
+};
+let SEGMENT = 'all';
+window.setSegment = (s) => {
+  SEGMENT = s;
+  ACTIVE = DATA.participants.filter(SEGMENTS[s].fn);
+  render();
+};
+
 const ROLE_CONFIG = {
   "Consumer":                { cls:"consumer", label:"Consumer" },
   "Instructor / Facilitator":{ cls:"instructor", label:"Instructor / Facilitator" },
@@ -1406,7 +1433,7 @@ const PIPELINE_GROUPS = [
 ];
 
 function renderPipeline(){
-  const p = DATA.participants;
+  const p = ACTIVE;
   document.getElementById('people-pipeline').innerHTML = PIPELINE_GROUPS.map(grp => {
     const members = p.filter(x => (x.roles||[]).includes(grp.key));
     if (!members.length) return '';
@@ -1608,9 +1635,12 @@ function barChart(id,data){
 }
 
 function render(){
+  // destroy existing Chart.js instances so render() is safely re-runnable (segment filter)
+  if(window.Chart) Object.values(Chart.instances||{}).slice().forEach(c=>{ try{c.destroy();}catch(e){} });
+  renderFilterChips();
   renderICPs();
   renderAvatars();
-  const p=DATA.participants, n=p.length;
+  const p=ACTIVE, n=p.length;
   document.getElementById('badge-text').textContent=`${n} participant${n!==1?'s':''} · Research in progress`;
   document.getElementById('m-total').textContent=n;
   document.getElementById('m-nations').textContent=new Set(p.map(x=>x.nationality).filter(Boolean)).size;
@@ -2281,6 +2311,23 @@ function setupCollapsible(){
     a.addEventListener('click', () => openFor(a.getAttribute('href').slice(1))));
 }
 
+function renderFilterChips(){
+  const el = document.getElementById('segment-filter');
+  if(!el) return;
+  const full = DATA.participants;
+  const chips = Object.entries(SEGMENTS).map(([k,s]) => {
+    const c = full.filter(s.fn).length;
+    const active = k === SEGMENT;
+    return `<button type="button" class="seg-chip${active?' active':''}" aria-pressed="${active}" onclick="setSegment('${k}')">${s.label} <span class="seg-count">${c}</span></button>`;
+  }).join('');
+  const note = SEGMENT === 'all' ? ''
+    : `<span style="font-size:11px;color:var(--light);margin-left:4px">— data &amp; roadmap views below reflect this segment; strategy sections (opportunity, ICPs, market, moat, supply) show all ${full.length}</span>`;
+  el.innerHTML = `<div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px">
+      <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--light);margin-right:2px">View data for</span>
+      ${chips}${note}
+    </div>`;
+}
+
 function renderTOC(){
   const el = document.getElementById('toc');
   if(!el) return;
@@ -2464,7 +2511,7 @@ function renderMoat(){
 function renderSpend(){
   const el = document.getElementById('spend');
   if(!el) return;
-  const rows = DATA.participants.map(p => ({
+  const rows = ACTIVE.map(p => ({
     name: p.name.split(' (')[0],
     total: Object.values(p.monthlySpend||{}).reduce((a,b)=>a+(+b||0),0)
   })).filter(r=>r.total>0).sort((a,b)=>b.total-a.total);
@@ -2600,9 +2647,9 @@ function renderProductRoadmap(){
   // participants' `featureVotes`, and the denominator is the live participant
   // count. Nothing here is hand-typed — add a call (with its featureVotes) and
   // every count/who-list on this board updates automatically.
-  const N = DATA.participants.length;
+  const N = ACTIVE.length;
   const whoByFeature = {};
-  DATA.participants.forEach(p => (p.featureVotes||[]).forEach(feat => {
+  ACTIVE.forEach(p => (p.featureVotes||[]).forEach(feat => {
     (whoByFeature[feat] = whoByFeature[feat] || []).push(p.name);
   }));
   const shortName = full => full.startsWith('Juan Pablo (Duet') ? 'Juan Pablo (Duet)'
@@ -2655,7 +2702,7 @@ function renderQuoteWall(){
     "Barriers & friction",
     "Movement & wellness identity"
   ];
-  const all = DATA.participants.flatMap(x=>
+  const all = ACTIVE.flatMap(x=>
     (x.quotes||[]).map(q=>({
       theme: typeof q === 'object' ? q.theme : 'Other',
       text:  typeof q === 'object' ? q.text  : q,
@@ -3024,7 +3071,7 @@ function renderHoodMap(participants){
 }
 
 function renderLocationMap(){
-  const p = DATA.participants;
+  const p = ACTIVE;
   // Only use locationPull (explicit answer), not neighborhood (where they live)
   // Each locationPull may name multiple areas — split on common delimiters and take each mention
   const counts = {};   // neighborhood key → count
@@ -3042,6 +3089,9 @@ function renderLocationMap(){
     });
   });
 
+  // re-init guard: reset the container if Leaflet already initialized it (segment re-render)
+  const mapEl = document.getElementById('location-map');
+  if(mapEl._leaflet_id){ mapEl._leaflet_id = null; mapEl.innerHTML = ''; }
   const map = L.map('location-map', { zoomControl: true, scrollWheelZoom: false })
     .setView([6.2442, -75.5812], 13);
 
@@ -3087,7 +3137,7 @@ function toggleProfile(card){
 }
 
 function renderInsightsCharts(){
-  const p = DATA.participants;
+  const p = ACTIVE;
   // Ranking frequency — horizontal pill stack
   (function() {
     const rankCount = {};
