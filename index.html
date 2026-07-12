@@ -166,6 +166,8 @@ html { scroll-behavior:smooth; }
 .avatar-draws { font-size:12px; color:var(--mid); line-height:1.6; }
 .avatar-draws strong { font-weight:500; color:var(--dark); }
 .avatar-quote { font-family:'Cormorant Garamond', serif; font-size:14px; font-style:italic; color:var(--mid); line-height:1.6; border-left:2px solid var(--dark); padding-left:10px; }
+.based-name { font:inherit; color:var(--dark); background:none; border:none; padding:0; cursor:pointer; text-decoration:underline; text-decoration-color:var(--border); text-underline-offset:2px; }
+.based-name:hover, .based-name:focus-visible { text-decoration-color:var(--dark); color:var(--dark); }
 .avatar-placeholder { background:var(--cream-bright); border:1.5px dashed var(--border); border-radius:14px; padding:28px 20px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; min-height:200px; }
 .avatar-placeholder-icon { opacity:0.2; }
 .avatar-placeholder-text { font-size:12px; color:var(--light); text-align:center; line-height:1.5; }
@@ -369,11 +371,6 @@ html { scroll-behavior:smooth; }
 <div class="icp-list" id="icp-secondary"></div>
 
 <div class="divider" style="margin-top:20px"></div>
-<!-- ③ CUSTOMER AVATARS -->
-<div class="section-label" id="sec-avatars" style="margin-bottom:14px">Customer avatars</div>
-<div class="avatar-grid" id="avatar-grid"></div>
-
-<div class="divider"></div>
 <!-- ④ LOCATION PREFERENCE -->
 <div class="section-label" id="sec-location" style="margin-bottom:12px">Where they want it</div>
 <div class="chart-card" style="margin-bottom:28px">
@@ -1389,36 +1386,34 @@ function roleTag(role){
   return `<span class="role-tag ${cfg.cls}">${cfg.label}</span>`;
 }
 
-function renderAvatars(){
-  const filled = AVATARS.map(a=>`
-    <div class="avatar-card">
-      <div class="avatar-head" onclick="this.closest('.avatar-card').classList.toggle('open')">
-        <div class="avatar-icon" style="background:${a.color}">${a.emoji}</div>
-        <div style="flex:1;min-width:0">
-          <div class="avatar-name">${a.name}</div>
-          <div class="avatar-handle">${a.handle}</div>
-        </div>
-        <svg class="avatar-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4.5L7 9.5L12 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="avatar-body">
-        <div class="avatar-desc">${a.desc}</div>
-        <div class="avatar-traits">${a.traits.map(t=>`<span class="avatar-trait">${t}</span>`).join('')}</div>
-        <div class="avatar-draws">${a.draws}</div>
-        <div class="avatar-quote">"${a.quote}"</div>
-        <div style="font-size:11px;color:var(--light)">Participants: ${a.participants.join(', ')}</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
-          ${a.participants.map(name=>`<button onclick="event.stopPropagation();showProfile('${name.replace(/'/g,"\\'")}\')" style="font-size:11px;font-weight:500;padding:5px 12px;border-radius:20px;border:1px solid var(--dark);background:var(--dark);color:var(--cream-bright);cursor:pointer;letter-spacing:0.02em">View ${name.split(' ')[0]}'s profile →</button>`).join('')}
-        </div>
+// Customer avatars are authored in the AVATARS array above and surfaced inside
+// the ICP click-through (showAvatar), not as a standalone section. Keep adding
+// one avatar per participant here — it will fold into the matching ICP(s)
+// automatically via the participant's `icps` field.
+function avatarFor(name){ return AVATARS.find(a => (a.participants||[]).includes(name)); }
+
+function showAvatar(name){
+  const a = avatarFor(name);
+  if(!a){ showProfile(name); return; }  // no avatar authored yet → fall back to full profile
+  document.getElementById('profileModalContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+      <div class="avatar-icon" style="background:${a.color};width:48px;height:48px;font-size:22px">${a.emoji}</div>
+      <div>
+        <div class="call-name" style="font-size:22px">${a.name}</div>
+        <div class="call-meta">${a.handle}</div>
       </div>
     </div>
-  `);
-  const placeholders = AVATAR_PLACEHOLDERS.map(p=>`
-    <div class="avatar-placeholder">
-      <div class="avatar-placeholder-icon">👤</div>
-      <div class="avatar-placeholder-text"><strong>${p.label}</strong><br>${p.hint}</div>
+    <div class="avatar-desc" style="font-size:13px;margin-bottom:14px">${a.desc}</div>
+    <div class="avatar-traits" style="margin-bottom:14px">${a.traits.map(t=>`<span class="avatar-trait">${t}</span>`).join('')}</div>
+    <div class="avatar-draws" style="margin-bottom:14px">${a.draws}</div>
+    ${a.gap?`<div class="inner" style="margin-bottom:14px"><div class="inner-label">Key gap</div><div style="font-size:13px;color:var(--mid);line-height:1.7;margin-top:4px">${a.gap}</div></div>`:''}
+    <div class="avatar-quote" style="margin-bottom:18px">"${a.quote}"</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      ${(a.participants||[]).map(n=>`<button type="button" onclick="showProfile('${n.replace(/'/g,"\\'")}\')" style="font-size:12px;font-weight:500;padding:7px 14px;border-radius:20px;border:1px solid var(--dark);background:var(--dark);color:var(--cream-bright);cursor:pointer">View ${n.split(' ')[0]}'s full call profile →</button>`).join('')}
     </div>
-  `);
-  document.getElementById('avatar-grid').innerHTML = [...filled, ...placeholders].join('');
+  `;
+  document.getElementById('profileModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
 function renderWorkTreemap(participants){
@@ -1571,7 +1566,6 @@ function render(){
   if(window.Chart) Object.values(Chart.instances||{}).slice().forEach(c=>{ try{c.destroy();}catch(e){} });
   renderFilterChips();
   renderICPs();
-  renderAvatars();
   const p=ACTIVE, n=p.length;
   document.getElementById('badge-text').textContent=`${n} participant${n!==1?'s':''} · Research in progress`;
   document.getElementById('m-total').textContent=n;
@@ -2268,7 +2262,6 @@ function renderTOC(){
     ['exec-summary','Overview'],
     ['sec-who',"Who's in this research"],
     ['sec-icp','Ideal client profiles'],
-    ['sec-avatars','Customer avatars'],
     ['sec-location','Where they want it'],
     ['sec-spend','What they pay'],
     ['sec-market','Market landscape'],
@@ -3438,7 +3431,7 @@ function renderICPs() {
           <div style="display:flex;flex-wrap:wrap;gap:5px">
             ${icp.draws.map(d=>`<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:var(--cream-bright);color:var(--mid);border:1px solid var(--border)">${d}</span>`).join('')}
           </div>
-          <div style="font-size:10px;color:var(--light);padding-top:10px;border-top:1px solid var(--border);margin-top:auto">Based on: ${(basedByIcp[icp.name]||[]).join(', ')}</div>
+          <div style="font-size:10px;color:var(--light);padding-top:10px;border-top:1px solid var(--border);margin-top:auto">Based on: ${(basedByIcp[icp.name]||[]).map(n=>`<button type="button" class="based-name" onclick="showAvatar('${n.replace(/'/g,"\\'")}\')">${n}</button>`).join(', ')} <span style="opacity:0.7">· tap a name for their avatar</span></div>
         </div>
         ${starterPack(icp)}
       </div>`;
