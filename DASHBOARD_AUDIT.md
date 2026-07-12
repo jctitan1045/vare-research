@@ -16,7 +16,7 @@ Best-practice + correctness review of the Waha research dashboard (started 2026-
 
 ## C. Accessibility & UX
 - [x] **C9 — Accessibility gaps.** Section headers are now real `<button>`s (`aria-expanded`/`aria-controls`, native keyboard, focus ring) inside `role="heading" aria-level="2"`; section bodies are `role="region"` labelled by their heading; added a page `<h1>` and made the TOC a `<nav aria-label>`. `aria-expanded` stays in sync on toggle / expand-all / anchor-open. *Done 2026-07-09.*
-- [ ] **C10 — No "last updated" date.** Add a "data as of …" stamp.
+- [x] **C10 — No "last updated" date.** Added a "Data as of {latest call date} · N participants across M calls · updates as calls are added" stamp in the exec summary. Date derived from the most recent participant date, so it self-updates. *Done 2026-07-09.*
 - [ ] **C11 — No print/PDF handling.** Print stylesheet that force-expands all sections.
 - [ ] **C12 — Collapsed-by-default trade-off.** Consider defaulting Moat + Market open.
 

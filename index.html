@@ -2377,6 +2377,9 @@ function renderExecSummary(){
   const calls = new Set(DATA.participants.map(p=>p.fathomUrl)).size;
   const spendT = DATA.participants.map(p=>Object.values(p.monthlySpend||{}).reduce((a,b)=>a+(+b||0),0)).filter(t=>t>0).sort((a,b)=>a-b);
   const medSpend = spendT.length ? (spendT.length%2 ? spendT[(spendT.length-1)/2] : Math.round((spendT[spendT.length/2-1]+spendT[spendT.length/2])/2)) : 0;
+  // "data as of" = most recent call date, derived so it stays honest as calls are added
+  const dates = DATA.participants.map(p=>new Date(p.date)).filter(d=>!isNaN(d));
+  const asOf = dates.length ? new Date(Math.max(...dates)).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
   const venues = (typeof MARKET_LANDSCAPE!=='undefined') ? MARKET_LANDSCAPE.competitors.length : 0;
   const moatN = (typeof MOAT!=='undefined') ? MOAT.pillars.length : 0;
   const stat = (v,l,s)=>`
@@ -2400,6 +2403,7 @@ function renderExecSummary(){
         <a href="#moat" style="font-size:12px;font-weight:600;text-decoration:none;padding:8px 16px;border-radius:20px;background:var(--dark);color:var(--cream-bright)">Why we're one of one →</a>
         <a href="#market-landscape" style="font-size:12px;font-weight:600;text-decoration:none;padding:8px 16px;border-radius:20px;border:1px solid var(--dark);color:var(--dark)">The competitive map →</a>
       </div>
+      <div style="font-size:10.5px;color:var(--light);margin-top:16px;border-top:1px solid var(--border);padding-top:10px">Data as of ${asOf} · ${n} participants across ${calls} calls · updates as calls are added</div>
     </div>`;
 }
 
