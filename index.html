@@ -2186,6 +2186,11 @@ const MARKET_LANDSCAPE = {
   ]
 };
 
+// Sections open on first load — the core "story" (who / customer / gap / why-us).
+// Detail & reference sections (location, spend, roadmap, supply, quotes, design)
+// start collapsed so the page reads as an argument, not a wall of data.
+const OPEN_BY_DEFAULT = new Set(['sec-who','sec-icp','sec-market','sec-moat']);
+
 function setupCollapsible(){
   const labels = [...document.querySelectorAll('.page .section-label[id]')];
   labels.forEach((label, i) => {
@@ -2206,7 +2211,7 @@ function setupCollapsible(){
     label.parentNode.insertBefore(body, sibs[0]);
     sibs.forEach(s => body.appendChild(s));
 
-    const open = (i === 0); // first section open by default; the rest start minimized
+    const open = OPEN_BY_DEFAULT.has(label.id); // core story open; details minimized
     // Rebuild the header as an accessible disclosure: heading > button[aria-expanded/controls]
     const title = label.textContent;
     label.textContent = '';
