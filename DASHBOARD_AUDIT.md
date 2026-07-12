@@ -31,5 +31,5 @@ Goal: less duplication, more "so what." From the three-move plan.
 - [x] **E-moveB — Takeaway per section.** Each analytical section leads with a grounded "What this tells us" line (`SECTION_TAKEAWAYS`, injected in setupCollapsible). *Done.*
 - [x] **E-move2 — Consolidate willingness-to-pay.** Stated WTP was in 3 places; pulled the stated-ceiling chart out of the demographics grid and merged it with revealed spend into one "What they'll pay — stated vs. revealed" section. *Done.*
 - [x] **E-move3 — Merge Market + Moat → "Where we win."** One section: "The gap — what already exists" (landscape) + "Why it's ours — the moat." *Done.*
-- [ ] **E-moveC — Design prompts → Appendix.** Move the builder-only design/Midjourney prompts behind a collapsed appendix so main scroll is the argument. *(next candidate)*
+- [x] **E-moveC — Design prompts removed.** Rather than appendix it, deleted the builder-only Design prompts / Midjourney section outright (markup, data, render, CSS, TOC). *Done 2026-07-12.*
 - [ ] **Other flagged duplicates:** demand shown 3× (ranking chart §2 / roadmap / ICP starter packs) — relates to A4; two map widgets (where they live vs. want it).
