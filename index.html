@@ -166,8 +166,14 @@ html { scroll-behavior:smooth; }
 .avatar-draws { font-size:12px; color:var(--mid); line-height:1.6; }
 .avatar-draws strong { font-weight:500; color:var(--dark); }
 .avatar-quote { font-family:'Cormorant Garamond', serif; font-size:14px; font-style:italic; color:var(--mid); line-height:1.6; border-left:2px solid var(--dark); padding-left:10px; }
-.based-name { font:inherit; color:var(--dark); background:none; border:none; padding:0; cursor:pointer; text-decoration:underline; text-decoration-color:var(--border); text-underline-offset:2px; }
-.based-name:hover, .based-name:focus-visible { text-decoration-color:var(--dark); color:var(--dark); }
+.based-name { display:flex; align-items:center; gap:9px; width:100%; text-align:left; font:inherit; color:var(--dark); background:none; border:none; padding:4px 0; cursor:pointer; border-radius:4px; }
+.based-name:hover .based-person, .based-name:focus-visible .based-person { text-decoration:underline; text-underline-offset:2px; }
+.match-dots { font-size:9px; letter-spacing:1.5px; font-family:ui-monospace,Menlo,monospace; flex-shrink:0; }
+.match-dots.m-strong { color:var(--dark); }
+.match-dots.m-partial { color:#8A9E95; }
+.match-dots.m-loose { color:#C0CBC4; }
+.match-label { font-size:9px; text-transform:uppercase; letter-spacing:0.06em; color:var(--light); width:48px; flex-shrink:0; }
+.based-person { font-size:12px; color:var(--dark); }
 .avatar-placeholder { background:var(--cream-bright); border:1.5px dashed var(--border); border-radius:14px; padding:28px 20px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; min-height:200px; }
 .avatar-placeholder-icon { opacity:0.2; }
 .avatar-placeholder-text { font-size:12px; color:var(--light); text-align:center; line-height:1.5; }
@@ -646,7 +652,7 @@ const DATA = { participants: [
     locationPull:"Poblado / San Lucas / Las Palmas",
     roles:["Consumer"],
     featureVotes:["Sauna + cold plunge", "Functional gym / movement space", "Massage / bodywork services (on-site practitioners)", "Healthy food with macros on menu", "Non-alcoholic herbal + functional drinks bar", "Regular community programming (weekly cadence)", "The ‘third-home’ feeling — known, familiar, anchoring", "Outdoor space, natural light, plants", "Hosted breathwork, cacao ceremonies & ecstatic dance", "Weekly cadence — not ad hoc, not monthly", "Group sauna & contrast-therapy sessions (led format)", "On-site massage therapist (bookable through membership)", "Osteopath and chiropractor on-site"],
-    icps:["The Expat Optimizer", "The Wellness Professional"],
+    icps:[{n:"The Expat Optimizer",m:3},{n:"The Wellness Professional",m:1}],
     call2:true, referrals:["Reggie (investor)","Brett (trainer)"],
     services:[
       {name:"Hot yoga", note:"Paid 350k/mo for 108 Yoga alone — class format, instructor quality, and vibe drove the decision."},
@@ -699,7 +705,7 @@ const DATA = { participants: [
     locationPull:"Laureles — Conquistadores / must be walkable",
     roles:["Consumer"],
     featureVotes:["Sauna + cold plunge", "Functional gym / movement space", "Healthy food with macros on menu", "Day-long menu (morning coffee through evening dinner)", "Reliable wifi + guaranteed work seating", "Quiet zones / acoustic separation from social areas", "Day pass / drop-in access (no full membership required)", "Non-judgmental, comfortable atmosphere", "The ‘third-home’ feeling — known, familiar, anchoring"],
-    icps:["The Expat Optimizer"],
+    icps:[{n:"The Expat Optimizer",m:2}],
     call2:true, referrals:[],
     services:[
       {name:"Coworking / place to work", note:"Comes to Rivertown 4x/week afternoons. Needs guaranteed seat, outlets, WiFi. 'Everyone knows my name' — the third-home feeling is non-negotiable."},
@@ -748,7 +754,7 @@ const DATA = { participants: [
     roles:["Consumer","Instructor / Facilitator","Potential hire"],
     supply:{"type": "Psychotherapist / yoga instructor / medicine keeper", "offers": "Vinyasa, yin, Bikram & power yoga; sound healing; cacao ceremonies. Proposed instructor cross-training as a staff perk.", "audience": "Bicultural (Colombian-American) — bridges expat & local communities.", "model": "Creative freedom is the deal — 'no micromanagement of class style or music' — plus being genuinely valued and paid fairly.", "needs": "A space that feels 'safe and seen'; 50–250-capacity event space with projector + mic for community gatherings."},
     featureVotes:["Yoga space (20–30 person capacity, mats + props on-site)", "Healthy food with macros on menu", "Non-alcoholic herbal + functional drinks bar", "Non-judgmental, comfortable atmosphere", "Intentional sensory design — scent, sound, light", "Hosted breathwork, cacao ceremonies & ecstatic dance", "Live sound healing (handpan, drums, instruments)", "Practitioner space rental (therapy rooms, predictable scheduling)"],
-    icps:["The Community Connector"],
+    icps:[{n:"The Community Connector",m:2}],
     call2:true,
     referrals:[],
     services:[
@@ -795,7 +801,7 @@ const DATA = { participants: [
     roles:["Consumer","Community builder"],
     supply:{"type": "Community founder (Parceros)", "offers": "Community events & experiences — thinks in gatherings, not personal consumption. ~3 years running Parceros.", "audience": "Bridges expats & locals and can bring 50–250 people. A venue that earns her partnership gets her whole network.", "model": "Partnership: she brings the crowd, the venue shares the upside.", "needs": "Aesthetics + capacity + working AV + fast internet in one place — 'everything here is beautiful OR functional, never both.'"},
     featureVotes:["Sauna + cold plunge", "Massage / bodywork services (on-site practitioners)", "Guided breathwork with expert facilitator", "Hosted breathwork, cacao ceremonies & ecstatic dance"],
-    icps:["The Wellness Professional", "The Community Connector"],
+    icps:[{n:"The Wellness Professional",m:2},{n:"The Community Connector",m:3}],
     call2:true,
     referrals:["Akram (AI events organizer — high-ticket crowd)","ClickClack (existing venue partner)"],
     services:[
@@ -842,7 +848,7 @@ const DATA = { participants: [
     roles:["Consumer","Instructor / Facilitator","Community builder"],
     supply:{"type": "Coach / hypnotherapist / facilitator", "offers": "Breathwork, hypnosis, cacao ceremonies and ecstatic dance — hosts almost every week.", "audience": "Soulpreneur / Laureles wellness community; shows up 3–5x/week socially.", "model": "Free event-hosting slots inside a membership would close her; reliability + written agreements are baseline (she's been burned by broken ones).", "needs": "A bookable private therapy room (none exist in Medellín), wood floors, curated scent + light, 15–25 capacity."},
     featureVotes:["Sauna + cold plunge", "Yoga space (20–30 person capacity, mats + props on-site)", "Massage / bodywork services (on-site practitioners)", "Non-alcoholic herbal + functional drinks bar", "Regular community programming (weekly cadence)", "The ‘third-home’ feeling — known, familiar, anchoring", "Intentional sensory design — scent, sound, light", "Hosted breathwork, cacao ceremonies & ecstatic dance", "Weekly cadence — not ad hoc, not monthly", "On-site massage therapist (bookable through membership)", "Practitioner space rental (therapy rooms, predictable scheduling)", "Hypnotherapy & mindset / coaching sessions"],
-    icps:["The Wellness Professional", "The Community Connector"],
+    icps:[{n:"The Wellness Professional",m:3},{n:"The Community Connector",m:2}],
     services:[
       {name:"Therapy room rental", note:"Needs quiet private room with couch/bed + desk for hypnotherapy client sessions — a gap she can't fill anywhere in Medellín right now."},
       {name:"Event hosting space", note:"Wood floors, 15–25 capacity, staff on-site for setup and door, no surprise cleaning fees. Membership perk of free booking slots would close her on the spot."},
@@ -884,7 +890,7 @@ const DATA = { participants: [
     roles:["Consumer","Community builder"],
     supply:{"type": "Community host", "offers": "Hosts a reading club, a men's group and a 'circle of words' — always arrives with a pod.", "audience": "Belén-based, 6 years; brings 5–10 people; plant-medicine / men's-group circles.", "model": "Walk-in access + a pod-friendly layout; he'd show up 3x/week if the door's open and his people are there.", "needs": "Bookable pod space (5–10), a Soho-House-style guest policy, and flexible circle seating."},
     featureVotes:["Sauna + cold plunge", "Functional gym / movement space", "Yoga space (20–30 person capacity, mats + props on-site)", "Contrast therapy sequence (heat → cold → rest, repeatable)", "Healthy food with macros on menu", "Fast, frictionless ordering (no WhatsApp, no long waits)", "Day-long menu (morning coffee through evening dinner)", "Post-workout shakes / protein smoothies", "Regular community programming (weekly cadence)", "Guest + group-friendly access policy", "Pod / group seating zones (visual separation, not a private room)", "Reliable wifi + guaranteed work seating", "Context switching — different zones feel genuinely different", "Weekly cadence — not ad hoc, not monthly"],
-    icps:["The Expat Optimizer"],
+    icps:[{n:"The Expat Optimizer",m:1}],
     services:[
       {name:"Co-working space", note:"Uses 3 different cafes per week (~600k/mo combined). Needs outlets, stable table, good view, fresh air, reliable internet. Would consolidate if the space had everything else too."},
       {name:"Contrast therapy (sauna + cold plunge)", note:"Pays for Reset membership but barely uses it — booking via WhatsApp bot takes days and there's no cold break between rooms. Walk-in access + real contrast sequence would immediately win him."},
@@ -925,7 +931,7 @@ const DATA = { participants: [
     referrals:[],
     roles:["Consumer","Investor"],
     featureVotes:["Sauna + cold plunge", "Functional gym / movement space", "Healthy food with macros on menu", "Fast, frictionless ordering (no WhatsApp, no long waits)", "Regular community programming (weekly cadence)", "Guest + group-friendly access policy", "Pod / group seating zones (visual separation, not a private room)", "Themed signature events (DJ + breathwork, speaker series, curated evenings)", "Non-judgmental, comfortable atmosphere", "Intentional sensory design — scent, sound, light", "Outdoor space, natural light, plants", "Group sauna & contrast-therapy sessions (led format)", "Themed signature events (DJ + breathwork, speaker series)", "On-site massage therapist (bookable through membership)", "Osteopath and chiropractor on-site", "Hypnotherapy & mindset / coaching sessions"],
-    icps:["The Senior Executive Recoverer"],
+    icps:[{n:"The Senior Executive Recoverer",m:3}],
     services:[
       {name:"Physical recovery (sauna + cold plunge)", note:"Has never gone because he doesn't want to be shirtless at sub-optimal fitness. Would go if the environment felt comfortable and non-judgmental — 'I want to feel confident.'"},
       {name:"Kettlebell / functional gym", note:"Dropped SmartFit and built a home setup because he prefers kettlebells. Having kettlebells at the venue would pull him in immediately."},
@@ -968,7 +974,7 @@ const DATA = { participants: [
     roles:["Consumer","Instructor / Facilitator","Potential hire"],
     supply:{"type": "Yoga instructor / musician", "offers": "Yoga classes closing with 10–15 min of sound healing; themed events (DJ + breathwork, creator collabs).", "audience": "Her community follows her wherever she teaches — currently split between Nordika and SaunaSpace.", "model": "Wants stable base pay + a bonus per head, with the venue handling booking & marketing (she does all her own today).", "needs": "A proper yoga room (20–30 capacity, mats/props, sound system) so she can 'just show up and teach.'"},
     featureVotes:["Yoga space (20–30 person capacity, mats + props on-site)", "Contrast therapy sequence (heat → cold → rest, repeatable)", "Jacuzzi + Turkish bath (Turco)", "Healthy food with macros on menu", "Regular community programming (weekly cadence)", "Themed signature events (DJ + breathwork, speaker series, curated evenings)", "Weekly cadence — not ad hoc, not monthly", "Themed signature events (DJ + breathwork, speaker series)", "Live sound healing (handpan, drums, instruments)"],
-    icps:["The Upwardly Mobile Local"],
+    icps:[{n:"The Upwardly Mobile Local",m:2}],
     services:[
       {name:"Dedicated yoga space", note:"Neither Nordika nor SaunaSpace has an ideal yoga room. Needs 20–30 person capacity, proper mats, blocks, straps, good sound system, and both a covered option for sun and an indoor option for evenings."},
       {name:"Sauna + jacuzzi + cold plunge", note:"Loves Nordika's vibe but it lacks a covered space. Wants the full contrast stack: sauna, Turkish bath, jacuzzi, ice immersion — all in one place."},
@@ -1012,7 +1018,7 @@ const DATA = { participants: [
     roles:["Consumer","Community builder"],
     supply:{"type": "Local-market bridge", "offers": "The bridge to the local Colombian market — the first purely-local consumer in the research.", "audience": "Envigado-native friend group who see wellness venues as 'a dollar price.'", "model": "Free intro events are the proven entry — Colombians 'show up en masse for free' and convert if the experience lands.", "needs": "A local-accessible pricing tier + free first experiences to break the price-perception barrier."},
     featureVotes:["Sauna + cold plunge", "Functional gym / movement space", "Contrast therapy sequence (heat → cold → rest, repeatable)", "Jacuzzi + Turkish bath (Turco)", "Guided breathwork with expert facilitator", "Healthy food with macros on menu", "Fast, frictionless ordering (no WhatsApp, no long waits)", "Post-workout shakes / protein smoothies", "Regular community programming (weekly cadence)", "Guest + group-friendly access policy", "Free intro events for local Colombian market", "Weekly cadence — not ad hoc, not monthly", "Free intro events for Colombian market entry"],
-    icps:["The Upwardly Mobile Local"],
+    icps:[{n:"The Upwardly Mobile Local",m:3}],
     services:[
       {name:"Gym / functional fitness", note:"SmartFit 3–4x/week. Would switch if a better-equipped gym was bundled with recovery and food in one membership. Movement is non-negotiable — he'd structure his whole day around it."},
       {name:"Sauna + cold plunge", note:"Goes to a cheap local sauna (25k) and occasionally Nordika. Wants to go more but time and distance hold him back. Would go weekly if it was close and bundled into a membership."},
@@ -1054,7 +1060,7 @@ const DATA = { participants: [
     call2:true, referrals:[],
     roles:["Consumer"],
     featureVotes:["Sauna + cold plunge", "Functional gym / movement space", "Healthy food with macros on menu", "Context switching — different zones feel genuinely different"],
-    icps:["The Upwardly Mobile Local"],
+    icps:[{n:"The Upwardly Mobile Local",m:3}],
     services:[
       {name:"Gym / functional fitness", note:"Goes to SmartFit daily. Would switch if bundled with recovery + food in one membership — the bundle solves the double-membership math."},
       {name:"Healthy food / restaurant", note:"Eats at Smash and Mundo Verde when eating out. Food is her #1 priority: 'the base of everything.' Wants places similar to home cooking."},
@@ -1096,7 +1102,7 @@ const DATA = { participants: [
     call2:true, referrals:[],
     roles:["Consumer"],
     featureVotes:["Sauna + cold plunge", "Functional gym / movement space", "Contrast therapy sequence (heat → cold → rest, repeatable)", "Dance socials & classes (bachata / salsa, earlier hours)", "Quiet zones / acoustic separation from social areas", "Intentional sensory design — scent, sound, light", "Context switching — different zones feel genuinely different", "Group sauna & contrast-therapy sessions (led format)", "On-site massage therapist (bookable through membership)", "Nutritionist or supplement consultation on-site"],
-    icps:["The Expat Optimizer"],
+    icps:[{n:"The Expat Optimizer",m:2}],
     services:[
       {name:"Place to work (quiet zone)", note:"Kiin is his primary cowork spot but is now ruined by spa music played in the gym and cowork area. He's starting a petition. Needs completely silent zone — no music, no talking. Also tried Rework but too crowded."},
       {name:"Sensory deprivation tank", note:"Did float tanks in California — says 'it feels like WD-40 in my body.' Stopped going to the one above 101 Boxing because it felt too budget and only accepted cash. Considers it better than a massage when quality is right."},
@@ -1141,7 +1147,7 @@ const DATA = { participants: [
     call2:true, referrals:[],
     roles:["Consumer"],
     featureVotes:["Sauna + cold plunge", "Massage / bodywork services (on-site practitioners)", "Recovery tech — compression boots, massage chairs, red-light", "Guided breathwork with expert facilitator", "Healthy food with macros on menu", "Non-alcoholic herbal + functional drinks bar", "Fast, frictionless ordering (no WhatsApp, no long waits)", "Day-long menu (morning coffee through evening dinner)", "Regular community programming (weekly cadence)", "Guest + group-friendly access policy", "Pod / group seating zones (visual separation, not a private room)", "Reliable wifi + guaranteed work seating", "Quiet zones / acoustic separation from social areas", "Day pass / drop-in access (no full membership required)", "Non-judgmental, comfortable atmosphere", "Intentional sensory design — scent, sound, light", "Context switching — different zones feel genuinely different", "Outdoor space, natural light, plants", "Hosted breathwork, cacao ceremonies & ecstatic dance", "Weekly cadence — not ad hoc, not monthly", "On-site massage therapist (bookable through membership)", "Practitioner space rental (therapy rooms, predictable scheduling)", "Osteopath and chiropractor on-site", "Hypnotherapy & mindset / coaching sessions"],
-    icps:["The Wellness Professional"],
+    icps:[{n:"The Wellness Professional",m:3}],
     services:[
       {name:"Semi-private meeting nook", note:"Does vulnerable 1-on-1 coaching (clients sometimes crying). Needs open-but-contained — no cubicle door, but 10–20 ft from the next table, ideally walled off by plants. Would reserve one via an app if bookable."},
       {name:"Café / coworking hybrid", note:"Hates pure coworking; also hates loud cafés where a solo person can't spread out. Wants a big-enough table in his own corner, great coffee/food, strong WiFi he can take meetings on."},
@@ -1186,7 +1192,7 @@ const DATA = { participants: [
     call2:true, referrals:[],
     roles:["Consumer"],
     featureVotes:["Functional gym / movement space", "HYROX / hybrid functional training", "Recovery tech — compression boots, massage chairs, red-light", "Pool + sun deck", "Healthy food with macros on menu", "Fast, frictionless ordering (no WhatsApp, no long waits)", "Day-long menu (morning coffee through evening dinner)", "Regular community programming (weekly cadence)", "Guest + group-friendly access policy", "Themed signature events (DJ + breathwork, speaker series, curated evenings)", "Dance socials & classes (bachata / salsa, earlier hours)", "Childcare / supervised kids room", "Reliable wifi + guaranteed work seating", "Non-judgmental, comfortable atmosphere", "The ‘third-home’ feeling — known, familiar, anchoring", "Intentional sensory design — scent, sound, light", "Context switching — different zones feel genuinely different", "Outdoor space, natural light, plants", "Themed signature events (DJ + breathwork, speaker series)"],
-    icps:["The Expat Optimizer"],
+    icps:[{n:"The Expat Optimizer",m:3}],
     services:[
       {name:"Small / women-focused gym", note:"Trains almost daily. Dislikes big-gym 'Provenza energy' — prefers smaller, calmer, mostly-women rooms. Would go to an all-women's gym if they moved."},
       {name:"Strength machines", note:"Wants an abundance of machines usually missing from small gyms — hip thrust, leg press. Overcrowding would kill it for her."},
@@ -1232,7 +1238,7 @@ const DATA = { participants: [
     roles:["Instructor / Facilitator","Potential hire"],
     supply:{"type": "Trainer / facilitator", "offers": "HYROX / hybrid training + breathwork + sound healing — a signature training → breathwork → sound-healing flow. Plays handpan & drums.", "audience": "Trains at Konoha (Bello); collaborates with wellness-party brands like Frequency.", "model": "Wants revenue-share + cross-promo that amplifies his personal brand — past venue collaborations died over 'conflict of interest.'", "needs": "A reliably-held recurring schedule (Tue/Thu that actually hold), a sauna big enough to teach in, and a conscious atmosphere (no reggaeton)."},
     featureVotes:["Sauna + cold plunge", "Functional gym / movement space", "Contrast therapy sequence (heat → cold → rest, repeatable)", "HYROX / hybrid functional training", "Guided breathwork with expert facilitator", "Healthy food with macros on menu", "Non-alcoholic herbal + functional drinks bar", "Regular community programming (weekly cadence)", "Themed signature events (DJ + breathwork, speaker series, curated evenings)", "Free intro events for local Colombian market", "Reliable wifi + guaranteed work seating", "Day pass / drop-in access (no full membership required)", "Non-judgmental, comfortable atmosphere", "Intentional sensory design — scent, sound, light", "Outdoor space, natural light, plants", "Hosted breathwork, cacao ceremonies & ecstatic dance", "Weekly cadence — not ad hoc, not monthly", "Group sauna & contrast-therapy sessions (led format)", "Themed signature events (DJ + breathwork, speaker series)", "Free intro events for Colombian market entry", "Live sound healing (handpan, drums, instruments)", "Practitioner space rental (therapy rooms, predictable scheduling)"],
-    icps:["The Wellness Professional"],
+    icps:[{n:"The Wellness Professional",m:3}],
     services:[
       {name:"HYROX / hybrid training", note:"His main discipline now — run, row, ski, sled push/pull, ~8 specific movements. Trains 4x/wk at Konoha in Bello (175k/mo). Wants a venue to run hybrid classes."},
       {name:"Breathwork", note:"Specialized in it — daily personal practice on waking. Leads breathwork sessions at wellness events; one of his core offerings to deliver."},
@@ -1276,7 +1282,7 @@ const DATA = { participants: [
     call2:true, referrals:[],
     roles:["Consumer"],
     featureVotes:["Sauna + cold plunge", "Functional gym / movement space", "Contrast therapy sequence (heat → cold → rest, repeatable)", "HYROX / hybrid functional training", "Massage / bodywork services (on-site practitioners)", "Recovery tech — compression boots, massage chairs, red-light", "Red-light therapy sauna", "Guided breathwork with expert facilitator", "Healthy food with macros on menu", "Non-alcoholic herbal + functional drinks bar", "Day-long menu (morning coffee through evening dinner)", "Post-workout shakes / protein smoothies", "Regular community programming (weekly cadence)", "Reliable wifi + guaranteed work seating", "Quiet zones / acoustic separation from social areas", "Day pass / drop-in access (no full membership required)", "The ‘third-home’ feeling — known, familiar, anchoring", "Hosted breathwork, cacao ceremonies & ecstatic dance", "Group sauna & contrast-therapy sessions (led format)", "On-site massage therapist (bookable through membership)", "Hypnotherapy & mindset / coaching sessions", "Nutritionist or supplement consultation on-site"],
-    icps:["The Expat Optimizer"],
+    icps:[{n:"The Expat Optimizer",m:3}],
     services:[
       {name:"Top-tier gym (calisthenics / Olympic lifts)", note:"His #1. Struggled to find Medellín gyms with room to do calisthenics, Olympic lifts, drop weights. Bodytech was his best option. Must be walkable — dropped CrossFit for being too far."},
       {name:"Movement coaching / form work", note:"Loves working on form and movement patterns. Wants trainers/therapists who deeply understand the body — animal flow, mobility, unique movement in a small studio. Prefers 1:1 over big classes."},
@@ -1322,7 +1328,7 @@ const DATA = { participants: [
     roles:["Community builder","Instructor / Facilitator","Consumer"],
     supply:{"type": "Community partner + collaborator", "offers": "Runs the 'Reset Series' (yoga, dance, sound healing, holistic) plus hike-recovery events — brings both instructors and audiences under Social Wellness Circle.", "audience": "Medellín Hike Club (80+ on a hike), a ciclovía party, upcoming Fogata Social bonfire; plugged into Parceros, Run Club & International Breakfast Club.", "model": "Venue takes a fixed per-head fee (~35k COP); he splits the remainder 50/50 with the instructor. Free → half-off → full-price ramp to build a following.", "needs": "A safe, welcoming space (especially for women), aligned & organized operators, and food at events. 'Not about the money — building something of substance.'"},
     featureVotes:["Functional gym / movement space","Sauna + cold plunge","Contrast therapy sequence (heat → cold → rest, repeatable)","Guided breathwork with expert facilitator","Healthy food with macros on menu","Non-alcoholic herbal + functional drinks bar","Reliable wifi + guaranteed work seating","Regular community programming (weekly cadence)","Weekly cadence — not ad hoc, not monthly","Themed signature events (DJ + breathwork, speaker series, curated evenings)","Themed signature events (DJ + breathwork, speaker series)","Non-judgmental, comfortable atmosphere","The ‘third-home’ feeling — known, familiar, anchoring","Intentional sensory design — scent, sound, light","Outdoor space, natural light, plants","Hosted breathwork, cacao ceremonies & ecstatic dance","Group sauna & contrast-therapy sessions (led format)","Free intro events for local Colombian market","Free intro events for Colombian market entry","Practitioner space rental (therapy rooms, predictable scheduling)","Live sound healing (handpan, drums, instruments)","Hypnotherapy & mindset / coaching sessions"],
-    icps:["The Community Connector","The Expat Optimizer"],
+    icps:[{n:"The Community Connector",m:3},{n:"The Expat Optimizer",m:1}],
     services:[
       {name:"Event / collaboration space", note:"Runs the Reset Series (yoga, dance, sound healing, holistic) + hike-recovery events, bringing both instructors and audience. Wants an easy, aligned venue partner to host his community."},
       {name:"Safe, welcoming environment", note:"Pulled his community from a venue after a partner made women uncomfortable (~3 'creepy' complaints). A safe space — especially for women — is non-negotiable for a community leader bringing people."},
@@ -1392,17 +1398,20 @@ function roleTag(role){
 // automatically via the participant's `icps` field.
 function avatarFor(name){ return AVATARS.find(a => (a.participants||[]).includes(name)); }
 
-function showAvatar(name){
+function showAvatar(name, icpName){
   const a = avatarFor(name);
   if(!a){ showProfile(name); return; }  // no avatar authored yet → fall back to full profile
+  const m = matchTo(name, icpName);
+  const matchChip = m ? `<div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:5px 12px;border-radius:20px;background:var(--cream-bright);border:1px solid var(--border)"><span class="match-dots ${matchClass(m)}">${matchDots(m)}</span><span style="font-size:11px;color:var(--mid)"><strong>${matchLabel(m)} match</strong> to ${icpName}</span></div>` : '';
   document.getElementById('profileModalContent').innerHTML = `
-    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
       <div class="avatar-icon" style="background:${a.color};width:48px;height:48px;font-size:22px">${a.emoji}</div>
       <div>
         <div class="call-name" style="font-size:22px">${a.name}</div>
         <div class="call-meta">${a.handle}</div>
       </div>
     </div>
+    ${matchChip}
     <div class="avatar-desc" style="font-size:13px;margin-bottom:14px">${a.desc}</div>
     <div class="avatar-traits" style="margin-bottom:14px">${a.traits.map(t=>`<span class="avatar-trait">${t}</span>`).join('')}</div>
     <div class="avatar-draws" style="margin-bottom:14px">${a.draws}</div>
@@ -3379,14 +3388,32 @@ const ICPS = {
   ]
 };
 
+// Match tier helpers (per avatar↔ICP pairing): 3=Strong, 2=Partial, 1=Loose.
+function matchDots(m){ return '●'.repeat(m) + '○'.repeat(Math.max(0,3-m)); }
+function matchLabel(m){ return m>=3?'Strong':m===2?'Partial':'Loose'; }
+function matchClass(m){ return m>=3?'m-strong':m===2?'m-partial':'m-loose'; }
+// A participant's match score to a given ICP (defaults to Strong if unscored).
+function matchTo(name, icpName){
+  const p = DATA.participants.find(pp => pp.name === name);
+  if(!p || !icpName) return null;
+  const e = (p.icps||[]).find(x => (typeof x==='string'?x:x.n) === icpName);
+  if(!e) return null;
+  return typeof e==='string' ? 3 : (e.m||3);
+}
+
 function renderICPs() {
-  // SINGLE SOURCE OF TRUTH: which people anchor each profile is computed from
-  // the participants' `icps` field — add a call (with its icps) and the
-  // "Based on" lists update automatically. No hand-maintained roster here.
+  // SINGLE SOURCE OF TRUTH: which people anchor each profile — and how well they
+  // match it — is computed from the participants' `icps` field. Each entry is
+  // {n:"ICP name", m:3|2|1}. Add a call (with its icps) and the "Based on"
+  // lists + match ranking update automatically. No hand-maintained roster.
   const basedByIcp = {};
-  DATA.participants.forEach(p => (p.icps||[]).forEach(name => {
-    (basedByIcp[name] = basedByIcp[name] || []).push(p.name);
+  DATA.participants.forEach(p => (p.icps||[]).forEach(entry => {
+    const name = typeof entry==='string' ? entry : entry.n;
+    const m = typeof entry==='string' ? 3 : (entry.m||3);
+    (basedByIcp[name] = basedByIcp[name] || []).push({name:p.name, m});
   }));
+  // Best match first, then alphabetical.
+  Object.values(basedByIcp).forEach(a => a.sort((x,y)=> y.m - x.m || x.name.localeCompare(y.name)));
   function starterPack(icp) {
     if(!icp.sp) return '';
     const photo = icp.photo
@@ -3431,7 +3458,10 @@ function renderICPs() {
           <div style="display:flex;flex-wrap:wrap;gap:5px">
             ${icp.draws.map(d=>`<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:var(--cream-bright);color:var(--mid);border:1px solid var(--border)">${d}</span>`).join('')}
           </div>
-          <div style="font-size:10px;color:var(--light);padding-top:10px;border-top:1px solid var(--border);margin-top:auto">Based on: ${(basedByIcp[icp.name]||[]).map(n=>`<button type="button" class="based-name" onclick="showAvatar('${n.replace(/'/g,"\\'")}\')">${n}</button>`).join(', ')} <span style="opacity:0.7">· tap a name for their avatar</span></div>
+          <div class="based-list" style="padding-top:10px;border-top:1px solid var(--border);margin-top:auto">
+            <div style="font-size:10px;color:var(--light);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em">Who anchors this — by match · tap for avatar</div>
+            ${(basedByIcp[icp.name]||[]).map(o=>`<button type="button" class="based-name" onclick="showAvatar('${o.name.replace(/'/g,"\\'")}\','${icp.name.replace(/'/g,"\\'")}\')"><span class="match-dots ${matchClass(o.m)}" aria-hidden="true">${matchDots(o.m)}</span><span class="match-label">${matchLabel(o.m)}</span><span class="based-person">${o.name}</span></button>`).join('')}
+          </div>
         </div>
         ${starterPack(icp)}
       </div>`;
