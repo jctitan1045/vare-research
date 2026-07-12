@@ -1376,11 +1376,16 @@ const DATA = { participants: [
 // read ACTIVE so a segment (e.g. Consumers vs Supply-side) can be isolated.
 let ACTIVE = DATA.participants;
 const SEGMENTS = {
-  all:       { label:'All',              fn:()=>true },
-  consumers: { label:'Consumers',        fn:p=>!p.supply },
-  supply:    { label:'Supply-side',      fn:p=>!!p.supply },
-  locals:    { label:'Locals',           fn:p=>p.nationality==='Colombian' },
-  expats:    { label:'Expats',           fn:p=>p.nationality && p.nationality!=='Colombian' }
+  all:       { label:'All',         fn:()=>true,
+    desc:"Everyone interviewed — the full research pool." },
+  consumers: { label:'Consumers',   fn:p=>!p.supply,
+    desc:"People who would join and pay as members — the demand side (excludes instructors & community partners)." },
+  supply:    { label:'Supply-side', fn:p=>!!p.supply,
+    desc:"Instructors, facilitators & community partners who'd bring programming and audiences — the marketplace supply." },
+  locals:    { label:'Locals',      fn:p=>p.nationality==='Colombian',
+    desc:"Colombian participants — the local market." },
+  expats:    { label:'Expats',      fn:p=>p.nationality && p.nationality!=='Colombian',
+    desc:"Foreign residents (American / Canadian) — the expat & digital-nomad market." }
 };
 let SEGMENT = 'all';
 window.setSegment = (s) => {
@@ -2328,12 +2333,14 @@ function renderFilterChips(){
     const active = k === SEGMENT;
     return `<button type="button" class="seg-chip${active?' active':''}" aria-pressed="${active}" onclick="setSegment('${k}')">${s.label} <span class="seg-count">${c}</span></button>`;
   }).join('');
-  const note = SEGMENT === 'all' ? ''
-    : `<span style="font-size:11px;color:var(--light);margin-left:4px">— data &amp; roadmap views below reflect this segment; strategy sections (opportunity, ICPs, market, moat, supply) show all ${full.length}</span>`;
-  el.innerHTML = `<div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px">
+  const scope = SEGMENT === 'all' ? ''
+    : ` <span style="color:var(--light)">Data &amp; roadmap views below reflect this segment; strategy sections (opportunity, ICPs, market, moat, supply) show all ${full.length}.</span>`;
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px">
       <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--light);margin-right:2px">View data for</span>
-      ${chips}${note}
-    </div>`;
+      ${chips}
+    </div>
+    <div style="font-size:11.5px;color:var(--mid);line-height:1.5;margin-top:8px">${SEGMENTS[SEGMENT].desc}${scope}</div>`;
 }
 
 function renderTOC(){
