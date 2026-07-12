@@ -62,6 +62,8 @@ html { scroll-behavior:smooth; }
 .section-label .sec-chevron { margin-left:auto; font-size:10px; color:var(--light); transition:transform 0.2s; }
 .section-label.open .sec-chevron { transform:rotate(180deg); }
 .section-body.collapsed { display:none; }
+.section-takeaway { font-size:13.5px; line-height:1.6; color:var(--white); background:rgba(255,255,255,0.05); border-left:3px solid #CDA349; padding:11px 15px; border-radius:0 8px 8px 0; margin-bottom:18px; }
+.takeaway-kicker { display:block; font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:#CDA349; margin-bottom:4px; }
 .section-toggle { all:unset; box-sizing:border-box; display:flex; align-items:center; width:100%; cursor:pointer; }
 .section-toggle:focus-visible { outline:2px solid var(--cream-bright); outline-offset:4px; border-radius:3px; }
 .section-toggle-text { flex:0 1 auto; }
@@ -2191,6 +2193,19 @@ const MARKET_LANDSCAPE = {
 // start collapsed so the page reads as an argument, not a wall of data.
 const OPEN_BY_DEFAULT = new Set(['sec-who','sec-icp','sec-market','sec-moat']);
 
+// One-line "what this tells us" per section — the conclusion the data supports,
+// so each section reads as a decision, not just a chart. Grounded in the sample.
+const SECTION_TAKEAWAYS = {
+  'sec-who': "Both sides of the marketplace, high intent — 8 would-be members and 8 instructors/partners, a median consumer ceiling near 1.05M COP/mo, with Movement, Community and Mental reset as the near-universal wants.",
+  'sec-icp': "Five profiles, but revenue concentrates in the Expat Optimizer and Wellness Professional — while the Senior Executive carries the highest ceiling. Build the founding tier around these.",
+  'sec-location': "Demand clusters on two walkable axes — Poblado / Envigado and Laureles–Belén — where proximity (dodging Las Palmas traffic) matters more than the exact address.",
+  'sec-spend': "This isn't new spend — the median participant already pays ~620k COP/mo piecemeal across these categories, so revealed preference backs the stated ceiling. The pitch is consolidation.",
+  'sec-market': "21+ venues mapped, and not one bundles gym + recovery + food + coworking + community — the closest are hotel-attached and priced for tourists, not residents.",
+  'sec-moat': "The edge isn't any single amenity — it's one membership across the full stack plus day-one community, which no incumbent can assemble quickly.",
+  'sec-roadmap': "Sequence by demand: Movement, Community and Mental reset are must-haves across nearly everyone; coworking is a smaller, segment-specific pull.",
+  'sec-supply': "Supply is ready and cheap to activate — instructors will fill programming for a per-head fee + revenue share; what they need is a reliably-held schedule and proper rooms, not more money."
+};
+
 function setupCollapsible(){
   const labels = [...document.querySelectorAll('.page .section-label[id]')];
   labels.forEach((label, i) => {
@@ -2210,6 +2225,13 @@ function setupCollapsible(){
     body.setAttribute('aria-labelledby', label.id);
     label.parentNode.insertBefore(body, sibs[0]);
     sibs.forEach(s => body.appendChild(s));
+    // Prepend the "what this tells us" takeaway, if this section has one.
+    if(SECTION_TAKEAWAYS[label.id]){
+      const tk = document.createElement('div');
+      tk.className = 'section-takeaway';
+      tk.innerHTML = `<span class="takeaway-kicker">What this tells us</span>${SECTION_TAKEAWAYS[label.id]}`;
+      body.insertBefore(tk, body.firstChild);
+    }
 
     const open = OPEN_BY_DEFAULT.has(label.id); // core story open; details minimized
     // Rebuild the header as an accessible disclosure: heading > button[aria-expanded/controls]
