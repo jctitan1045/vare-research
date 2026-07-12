@@ -34,7 +34,10 @@ body { background:var(--bg); font-family:'Inter', -apple-system, sans-serif; col
 /* ── HEADER ── */
 .brand-header { background:var(--white); padding:22px 40px 20px; margin-bottom:0; border-bottom:none; }
 .brand-inner { max-width:980px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
-.brand-logo { display:flex; flex-direction:column; gap:4px; }
+.brand-logo { display:flex; flex-direction:column; gap:1px; }
+.wordmark { display:flex; align-items:center; gap:9px; font-family:'Cormorant Garamond', serif; font-size:40px; font-weight:600; line-height:1; color:var(--dark); letter-spacing:0.005em; }
+.wm-mark { color:var(--dark); flex-shrink:0; margin-bottom:3px; }
+.wm-sub { font-family:'Inter', sans-serif; font-size:9px; font-weight:700; letter-spacing:0.24em; text-transform:uppercase; color:var(--dark); text-align:right; opacity:0.85; }
 .brand-name { font-family:'Cormorant Garamond', serif; font-size:46px; font-weight:600; color:var(--dark); letter-spacing:-0.025em; line-height:1; display:flex; align-items:center; gap:10px; }
 .brand-mark { width:42px; height:42px; flex-shrink:0; }
 .brand-tagline { font-size:9px; font-weight:500; color:var(--mid); letter-spacing:0.18em; text-transform:uppercase; padding-left:2px; }
@@ -316,7 +319,12 @@ html { scroll-behavior:smooth; }
 <div class="brand-header">
   <div class="brand-inner">
     <div class="brand-logo">
-      <img src="vare logo copy.png" alt="Waha Club — Wellness Studio" style="height:60px;width:auto;display:block">
+      <div class="wordmark">
+        <span>wãha</span>
+        <svg class="wm-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 7c4.6 3.6 4.6 14.8 0 18.4-4.6-3.6-4.6-14.8 0-18.4z" fill="currentColor"/></svg>
+        <span>club</span>
+      </div>
+      <div class="wm-sub">Wellness Studio</div>
     </div>
     <span class="brand-badge" id="badge-text">2 calls · Research in progress</span>
   </div>
