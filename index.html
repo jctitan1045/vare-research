@@ -139,6 +139,7 @@ html { scroll-behavior:smooth; }
 .starter-pack { flex:1; min-width:250px; background:repeating-linear-gradient(135deg,var(--cream-bright),var(--cream-bright) 12px,#00000005 12px,#00000005 24px); border:1.5px dashed var(--border); border-radius:12px; padding:16px 16px 18px; display:flex; flex-direction:column; gap:13px; }
 .sp-header { display:flex; align-items:center; gap:12px; }
 .sp-figure { width:54px; height:54px; border-radius:50%; background:var(--white); border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:30px; flex-shrink:0; box-shadow:0 1px 3px #0000000f; }
+.sp-photo { width:100%; height:140px; object-fit:cover; object-position:center 25%; border-radius:10px; display:block; border:1px solid var(--border); }
 .sp-kicker { font-size:9px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--light); }
 .sp-title { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:600; color:var(--dark); line-height:1.15; }
 .sp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
@@ -3366,6 +3367,7 @@ const ICPS = {
   primary: [
     {
       name: "The Expat Optimizer",
+      photo:"assets/icp/expat-optimizer.jpg",
       tagline: "One membership to replace everything",
       emoji: "⚡",
       color: "#1E3028",
@@ -3384,6 +3386,7 @@ const ICPS = {
     },
     {
       name: "The Wellness Professional",
+      photo:"assets/icp/wellness-professional.jpg",
       tagline: "Their practice lives here",
       emoji: "🌿",
       color: "#4A6358",
@@ -3402,6 +3405,7 @@ const ICPS = {
     },
     {
       name: "The Senior Executive Recoverer",
+      photo:"assets/icp/senior-exec.jpg",
       tagline: "Premium experience, no compromises",
       emoji: "🏆",
       color: "#2D5040",
@@ -3422,6 +3426,7 @@ const ICPS = {
   secondary: [
     {
       name: "The Community Connector",
+      photo:"assets/icp/community-connector.jpg",
       tagline: "They bring the room",
       emoji: "🤝",
       color: "#5A7A6A",
@@ -3440,6 +3445,7 @@ const ICPS = {
     },
     {
       name: "The Upwardly Mobile Local",
+      photo:"assets/icp/upwardly-mobile-local.jpg",
       tagline: "The long-term local market",
       emoji: "🌱",
       color: "#3A5A4A",
@@ -3469,10 +3475,14 @@ function renderICPs() {
   }));
   function starterPack(icp) {
     if(!icp.sp) return '';
+    const photo = icp.photo
+      ? `<img class="sp-photo" src="${icp.photo}" alt="Representative portrait — ${icp.name}" onerror="this.style.display='none';this.parentElement.querySelector('.sp-figure').style.display='flex'">`
+      : '';
     return `
       <div class="starter-pack">
+        ${photo}
         <div class="sp-header">
-          <div class="sp-figure">${icp.sp.figure}</div>
+          <div class="sp-figure"${icp.photo?' style="display:none"':''}>${icp.sp.figure}</div>
           <div>
             <div class="sp-kicker">Starter pack</div>
             <div class="sp-title">${icp.name}</div>
