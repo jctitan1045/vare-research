@@ -1904,7 +1904,7 @@ const PRODUCT_PRIORITIES = [
     ]
   },
   {
-    id:"community-events", label:"Community Events & Programming", emoji:"🔥", accent:"#C2410C",
+    id:"community-events", label:"Guided Sessions & Ceremonies", emoji:"🔥", accent:"#C2410C",
     must:[
       { feature:"Hosted breathwork, cacao ceremonies & ecstatic dance",
         gaps:[
@@ -1914,14 +1914,6 @@ const PRODUCT_PRIORITIES = [
           {theme:"Community event demand", text:"Juliana ran sound-healing workshops at Smash and wants 50–250 capacity event space with projector and mic — the event dimension is her #1 requirement. Isabella cites Medellín's gap: 'nada está pensado en integrar gente alrededor de conversación'"}
         ],
         next:"Lock in weekly programming slots from day one — breathwork, contrast sessions, cacao. Partner with Laurel, Juliana and Juan Pablo (Duet) as anchor instructors." },
-      { feature:"Weekly cadence — not ad hoc, not monthly",
-        gaps:[
-          {theme:"Consistency is the #1 ask", text:"Juan Pablo (Duet): 'What I'd need most is consistency — classes Tuesday and Thursday that actually hold, so you can build the audience.' Inconsistent schedules, weak marketing and late payments are why his past venue collaborations failed. Reliable cadence is the single biggest supply-side requirement"},
-          {theme:"One great event beats many", text:"Armin (community is his #2 value) would move up the price scale for one genuinely great recurring event a month: 'that's an easy commitment and I'd go.' Depth over breadth in programming"},
-          {theme:"Health & accountability overlap", text:"Andrew wants weekly workshops aligned with the health/wellness avatar; Alex hosts reading club, men's group and circle of words and wants to 'book 5–10 into an activity — keep my pod together.' Weekly programming anchors their use of the space"},
-          {theme:"Local market access", text:"Juan: 'People in Colombia really enjoy when any event is free and it is easy to access.' A consistent weekly cadence, especially anchored by a free entry event, is the proven local market entry point"}
-        ],
-        next:"Build monthly event calendar before opening day. Commit to a fixed weekly cadence and publish it publicly — consistency is what instructors and members both demand." }
     ],
     should:[
       { feature:"Group sauna & contrast-therapy sessions (led format)",
@@ -1931,21 +1923,8 @@ const PRODUCT_PRIORITIES = [
           {theme:"Body image barrier reduction", text:"Adam has never used a cold plunge or sauna due to body image ('I don't want to be walking around in a bathing suit'). A structured group format with clear protocol lowers the self-consciousness barrier significantly versus open drop-in"}
         ],
         next:"Design a guided group contrast session as a flagship weekly event. Spec the sauna large enough (30–40) to run classes inside it." },
-      { feature:"Themed signature events (DJ + breathwork, speaker series)",
-        gaps:[
-          {theme:"Proven formats to bring", text:"Angie runs DJ + breathwork combo events at Nordika: 'these fill classes consistently.' Juan Pablo (Duet) collaborates with wellness-party brands (Frequency) and would bring signature evenings. Proven formats with audiences attached"},
-          {theme:"Earlier-hour dance socials", text:"Ali misses high-level bachata/salsa socials but 9pm starts don't fit her schedule — a trusted, earlier-hour social is a signature event she'd attend and even help program"},
-          {theme:"Learning & business angle", text:"Adam attends for 'learning and business angle' — a monthly speaker series on health, entrepreneurship, or real estate would override his low activation energy and get him to events he wouldn't otherwise attend"}
-        ],
-        next:null }
     ],
     nice:[
-      { feature:"Free intro events for Colombian market entry",
-        gaps:[
-          {theme:"Market behavior observation", text:"Juan: 'People in Colombia really enjoy when any event is free and it is easy to access.' His friends opt out before visiting because they call Nordika 'a dollar price' — the free first experience breaks the perception barrier"},
-          {theme:"Conversion strategy", text:"Once inside the space, conversion is high. Free events are a customer acquisition strategy, not a giveaway. Plan 2–3 free launch events targeting TMRC run club and Medellín wellness communities"}
-        ],
-        next:"Plan 2–3 free launch events. Target TMRC run club, Medellín breathwork community, and Juliana's and Angie's existing audiences." },
       { feature:"Live sound healing (handpan, drums, instruments)",
         gaps:[
           {theme:"Supply already exists", text:"Juan Pablo (Duet) plays handpan and drums and closes sessions with sound healing; Angie ends every yoga class with 10–15 min of it; Juliana ran sound-healing workshops at Smash. Three anchor instructors already deliver this — zero recruitment needed"},
@@ -1957,14 +1936,6 @@ const PRODUCT_PRIORITIES = [
   {
     id:"practitioners", label:"Practitioner Services", emoji:"🤲", accent:"#D04090",
     must:[
-      { feature:"On-site massage therapist (bookable through membership)",
-        gaps:[
-          {theme:"Active spend to consolidate", text:"Andrew currently pays ~160,000 COP/month for a private masseuse separately from all his other memberships — wants it under one roof. Armin pays a chiropractor ~$50/session (10-pack) and uses a massage gun at home; both would consolidate on-site"},
-          {theme:"Recovery stack integration", text:"Adam names massage as a priority alongside cold plunge and sauna; Zach wants massage chairs plus bodywork as part of his recovery stack. Easy booking is the difference between 'I'll do it later' and 'I'll book it now'"},
-          {theme:"Recovery stack integration", text:"Brett is highly body-aware and recovery-oriented. Access to a skilled massage therapist post-training aligns with his existing behavior and would deepen his weekly use of the space"},
-          {theme:"Supply-side anchor", text:"Laurel IS a practitioner (hypnotherapist) and wants to rent space — she sees the model from both sides. Her presence would anchor the practitioner roster and signal legitimacy to others"}
-        ],
-        next:"Identify 2–3 anchor practitioners (massage, osteopath, hypnotherapy) and negotiate space-rental terms before opening. Laurel Van Woerkom is the first call." },
       { feature:"Practitioner space rental (therapy rooms, predictable scheduling)",
         gaps:[
           {theme:"Booking & space requirements", text:"Laurel needs 'a therapy room with no surprise cleaning fees and predictable slot availability.' She's comparing Waha against Nordika and SaunaSpace on exactly these terms — clear pricing and reliable booking are the decision criteria"},
@@ -2586,10 +2557,25 @@ function renderProductRoadmap(){
   // count. Nothing here is hand-typed — add a call (with its featureVotes) and
   // every count/who-list on this board updates automatically.
   const N = ACTIVE.length;
+  // Near-duplicate feature strings collapse to one canonical (A4 de-dup): both
+  // variants count as one feature, and a person listing both counts once.
+  const FEATURE_ALIASES = {
+    "Weekly cadence — not ad hoc, not monthly": "Regular community programming (weekly cadence)",
+    "Themed signature events (DJ + breathwork, speaker series)": "Themed signature events (DJ + breathwork, speaker series, curated evenings)",
+    "Free intro events for Colombian market entry": "Free intro events for local Colombian market",
+    "On-site massage therapist (bookable through membership)": "Massage / bodywork services (on-site practitioners)"
+  };
+  const canonFeature = f => FEATURE_ALIASES[f] || f;
   const whoByFeature = {};
-  ACTIVE.forEach(p => (p.featureVotes||[]).forEach(feat => {
-    (whoByFeature[feat] = whoByFeature[feat] || []).push(p.name);
-  }));
+  ACTIVE.forEach(p => {
+    const seen = new Set();
+    (p.featureVotes||[]).forEach(feat => {
+      const f = canonFeature(feat);
+      if(seen.has(f)) return;            // don't double-count a person who listed both variants
+      seen.add(f);
+      (whoByFeature[f] = whoByFeature[f] || []).push(p.name);
+    });
+  });
   const shortName = full => full.startsWith('Juan Pablo (Duet') ? 'Juan Pablo (Duet)'
                     : full.startsWith('Juan Pablo') ? 'Juan Pablo' : full.split(' ')[0];
   const colDefs = [
