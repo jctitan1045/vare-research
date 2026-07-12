@@ -18,9 +18,18 @@ Best-practice + correctness review of the Waha research dashboard (started 2026-
 - [x] **C9 — Accessibility gaps.** Section headers are now real `<button>`s (`aria-expanded`/`aria-controls`, native keyboard, focus ring) inside `role="heading" aria-level="2"`; section bodies are `role="region"` labelled by their heading; added a page `<h1>` and made the TOC a `<nav aria-label>`. `aria-expanded` stays in sync on toggle / expand-all / anchor-open. *Done 2026-07-09.*
 - [x] **C10 — No "last updated" date.** Added a "Data as of {latest call date} · N participants across M calls · updates as calls are added" stamp in the exec summary. Date derived from the most recent participant date, so it self-updates. *Done 2026-07-09.*
 - [ ] **C11 — No print/PDF handling.** Print stylesheet that force-expands all sections.
-- [ ] **C12 — Collapsed-by-default trade-off.** Consider defaulting Moat + Market open.
+- [x] **C12 — Collapsed-by-default trade-off.** Now opens a defined core-story set on load (Who's in this / ICPs / Where we win); detail/reference sections stay collapsed. `OPEN_BY_DEFAULT` set in setupCollapsible. *Done 2026-07-12.*
 
 ## D. Bigger enhancements (maybe / later)
 - [x] **D13 — Segment filter.** "View data for" chips (All / Consumers / Supply-side / Locals / Expats) in the research section; re-renders the data + roadmap views (`ACTIVE` set) while curated strategy sections stay full. render() made re-runnable (Chart.js destroy + Leaflet re-init guard). *Done 2026-07-09.*
 - [x] **D14 — Dedicated supply-side view.** New "Supply side — instructors & community partners" section: `supply` field on the 8 supply-side participants (single-source), rendered as cards (Offers / Audience / Collaboration model / Needs) + an intro capturing the recurring per-head-fee-then-50/50 model. In the TOC + collapsible. *Done 2026-07-09.*
 - [ ] **D15 — Objections/dealbreakers view + theme-saturation curve.**
+
+## E. Actionability / usability pass (2026-07-12)
+Goal: less duplication, more "so what." From the three-move plan.
+- [x] **E-move1 — Cut duplicate persona section.** Removed standalone "Customer avatars"; folded each avatar into the ICP click-through (Based-on names → avatar persona → full profile), with per-avatar Strong/Partial/Loose match ranking. Also removed the "People pipeline" section. *Done.*
+- [x] **E-moveB — Takeaway per section.** Each analytical section leads with a grounded "What this tells us" line (`SECTION_TAKEAWAYS`, injected in setupCollapsible). *Done.*
+- [x] **E-move2 — Consolidate willingness-to-pay.** Stated WTP was in 3 places; pulled the stated-ceiling chart out of the demographics grid and merged it with revealed spend into one "What they'll pay — stated vs. revealed" section. *Done.*
+- [x] **E-move3 — Merge Market + Moat → "Where we win."** One section: "The gap — what already exists" (landscape) + "Why it's ours — the moat." *Done.*
+- [ ] **E-moveC — Design prompts → Appendix.** Move the builder-only design/Midjourney prompts behind a collapsed appendix so main scroll is the argument. *(next candidate)*
+- [ ] **Other flagged duplicates:** demand shown 3× (ranking chart §2 / roadmap / ICP starter packs) — relates to A4; two map widgets (where they live vs. want it).
