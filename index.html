@@ -288,6 +288,13 @@ html { scroll-behavior:smooth; }
 .venue-photo img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
 .venue-photo-emoji { font-size:42px; opacity:0.92; filter:drop-shadow(0 1px 2px rgba(0,0,0,0.25)); }
 .venue-card.vare .venue-photo { background:linear-gradient(135deg,#5A7A6A,#1E3028); }
+.venue-card:not(.vare) .venue-photo { cursor:pointer; }
+.venue-map-frame { position:absolute; inset:0; width:100%; height:100%; border:0; z-index:1; }
+.venue-map-hint { position:absolute; bottom:7px; right:8px; font-size:9px; font-weight:600; color:rgba(240,236,216,0.92); background:rgba(20,35,28,0.55); padding:2px 8px; border-radius:10px; letter-spacing:0.03em; }
+.venue-photo.has-map .venue-map-hint, .venue-photo.has-map .venue-photo-emoji { display:none; }
+.venue-map-close { position:absolute; top:6px; right:6px; z-index:2; display:none; width:22px; height:22px; border:0; border-radius:50%; background:rgba(20,35,28,0.75); color:#fff; font-size:12px; line-height:1; cursor:pointer; }
+.venue-photo.has-map .venue-map-close { display:block; }
+.venue-photo.has-map { cursor:default; }
 .venue-body { padding:14px 16px 16px; display:flex; flex-direction:column; gap:8px; }
 .venue-head { display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
 .venue-name { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; color:var(--dark); line-height:1.15; }
@@ -2491,6 +2498,24 @@ function renderSpend(){
     </div>`;
 }
 
+// Expand/collapse a live Google Maps embed inside a venue card's photo banner.
+// Lazy — the iframe is only created on click, so 21 maps never load at once.
+window.toggleVenueMap = function(el, ev){
+  if(ev) ev.stopPropagation();
+  const photo = el.classList.contains('venue-photo') ? el : el.closest('.venue-photo');
+  if(!photo) return;
+  const existing = photo.querySelector('iframe');
+  if(existing){ existing.remove(); photo.classList.remove('has-map'); return; }
+  const f = document.createElement('iframe');
+  f.src = photo.dataset.map;
+  f.className = 'venue-map-frame';
+  f.loading = 'lazy';
+  f.setAttribute('allowfullscreen','');
+  f.referrerPolicy = 'no-referrer-when-downgrade';
+  photo.appendChild(f);
+  photo.classList.add('has-map');
+};
+
 function renderMarketLandscape(){
   const el = document.getElementById('market-landscape');
   if(!el) return;
@@ -2532,9 +2557,13 @@ function renderMarketLandscape(){
   const venueCard = (c, opts={}) => {
     const price = c.priceNum ? `${c.price} (~$${USD(c.priceNum)})` : c.price;
     const photo = opts.vare ? '' : `<img src="assets/venues/${slugify(c.name)}.jpg" alt="${c.name}" loading="lazy" onerror="this.style.display='none'">`;
+    const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(c.name.split(' (')[0]+' Medellín Colombia')}&output=embed`;
+    const banner = opts.vare
+      ? `<div class="venue-photo"><span class="venue-photo-emoji">${opts.emoji||'✦'}</span></div>`
+      : `<div class="venue-photo" data-map="${mapEmbed}" onclick="toggleVenueMap(this)" title="View on Google Maps">${photo}<span class="venue-photo-emoji">${opts.emoji||venueEmoji(c.cat)}</span><span class="venue-map-hint">📍 Tap for map</span><button class="venue-map-close" onclick="toggleVenueMap(this,event)" aria-label="Close map">✕</button></div>`;
     return `
       <div class="venue-card${opts.vare?' vare':''}">
-        <div class="venue-photo">${photo}<span class="venue-photo-emoji">${opts.emoji||venueEmoji(c.cat)}</span></div>
+        ${banner}
         <div class="venue-body">
           <div class="venue-head">
             <div class="venue-name">${opts.vare?'★ ':''}${c.name}</div>
