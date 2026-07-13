@@ -304,7 +304,7 @@ html { scroll-behavior:smooth; }
 <nav id="toc" aria-label="Section contents" style="margin-bottom:30px"></nav>
 
 <!-- ① WHO ARE THEY? (no heading — the 'View data for' chips lead this block) -->
-<div class="section-takeaway" style="margin-top:4px"><span class="takeaway-kicker">What this tells us</span>Both sides of the marketplace, high intent — 8 would-be members and 8 instructors/partners, a median consumer ceiling near 1.05M COP/mo, with Movement, Community and Mental reset as the near-universal wants.</div>
+<div class="section-takeaway" style="margin-top:4px"><span class="takeaway-kicker">What this tells us</span>Both sides of the marketplace, high intent — 8 would-be members and 8 instructors/partners, a median consumer ceiling near 1.05M COP/mo (~$263), with Movement, Community and Mental reset as the near-universal wants.</div>
 <div id="segment-filter" style="margin-bottom:16px"></div>
 <div class="metrics">
   <div class="metric"><div class="metric-label">Participants</div><div class="metric-value" id="m-total">—</div><div class="metric-sub">Target: 30+</div></div>
@@ -392,6 +392,11 @@ html { scroll-behavior:smooth; }
 
 <script>
 const PALETTE=['#1E3028','#4A6358','#D04090','#F07030','#7040D0','#30B860','#8A9E95','#C8D4CE'];
+// ── Currency: COP is primary, USD (~$) in parentheses right after. Rate ≈ 1 USD = 4,000 COP.
+// Data values are in "k" (thousands of COP), so USD = k / 4.
+const USD  = k => Math.round(k/4);
+const copk = k => k>=1000 ? (k/1000).toFixed(1).replace(/\.0$/,'')+'M' : k+'k';
+const money = k => `${copk(k)} COP (~$${USD(k)})`;
 
 const AVATARS = [
   {
@@ -1580,8 +1585,8 @@ function render(){
       </div>
       <div class="three-col" style="margin-top:14px">
         <div class="inner"><div class="inner-label">Ranking (top 3)</div>${x.rankingTop3.map((r,i)=>`<div class="inner-row">${i===0?'<strong>':''}${i+1}. ${r}${i===0?'</strong>':''}</div>`).join('')}</div>
-        <div class="inner"><div class="inner-label">Monthly spend (COP)</div>${Object.entries(x.monthlySpend).map(([k,v])=>`<div class="inner-row">${k} — ${v}k</div>`).join('')}</div>
-        <div class="inner"><div class="inner-label">Price calibration</div><div class="inner-row">Good deal: <strong>${x.priceGoodDeal}k/mo</strong></div><div class="inner-row">Ceiling: <strong>${x.priceCeiling}k/mo</strong></div>${x.dayPassRange?`<div class="inner-row">Day pass: <strong>${x.dayPassRange[0]}–${x.dayPassRange[1]}k</strong></div>`:''}</div>
+        <div class="inner"><div class="inner-label">Monthly spend (COP)</div>${Object.entries(x.monthlySpend).map(([k,v])=>`<div class="inner-row">${k} — ${money(v)}</div>`).join('')}</div>
+        <div class="inner"><div class="inner-label">Price calibration</div><div class="inner-row">Good deal: <strong>${money(x.priceGoodDeal)}/mo</strong></div><div class="inner-row">Ceiling: <strong>${money(x.priceCeiling)}/mo</strong></div>${x.dayPassRange?`<div class="inner-row">Day pass: <strong>${copk(x.dayPassRange[0])}–${copk(x.dayPassRange[1])} COP (~$${USD(x.dayPassRange[0])}–${USD(x.dayPassRange[1])})</strong></div>`:''}</div>
       </div>
       <div class="two-col" style="margin-top:10px">
         <div class="inner"><div class="inner-label">Competitors</div>${x.competitorsStayed.map(c=>`<div class="inner-row success">✓ ${c}</div>`).join('')}${x.competitorsLeft.map(c=>`<div class="inner-row danger">✗ ${c}</div>`).join('')}</div>
@@ -1994,9 +1999,9 @@ const MARKET_LANDSCAPE = {
   vare: { "Gym":"full","Movement / Yoga":"full","Sauna":"full","Cold plunge":"full","Cowork":"full","Healthy food":"full","Community / events":"full","Recovery tech":"part" },
   takeaways: [
     "There IS a close analog now: Wake BioHotel's Sastra Longevity Club — gym, movement studio, infrared sauna, contrast jacuzzi, a farm-to-table restaurant and diagnostics-led biohacking, sold as one membership. Kiin (Tesoro coliving) and INNTU (Laureles, public-access gym + sauna + pool) round out the near-all-in-ones. The remaining wedge: a warm daily community + cowork at an accessible ($150–200) price — versus Wake's premium, clinical longevity positioning.",
-    "Recovery is more crowded than the calls implied — but it's transactional. Poblado alone stacks Nordika, Reset, Celestino, Element, Clínica Antienvejecimiento, El Cielo and Wellcomm for sauna / cold plunge — mostly day-pass or à-la-carte (Celestino day ~100k, Element cold plunge 50k/10min). Almost none sell it as a daily membership + community. That, not 'sauna exists,' is the wedge.",
-    "Single verticals are cheap and confirmed. Web-verified monthly: SmartFit Black ~120k, Power Club ~209k, 108 Yoga 305k unlimited. Members already stack 3–4 of these plus a food delivery.",
-    "Price position holds — but must be earned. Waha's 350–500k membership sits above any single vertical and below the cost of assembling gym + recovery + cowork + food separately. Since each piece exists cheaply elsewhere, the premium has to be justified by the bundle, the community, and the daily-anchor experience."
+    "Recovery is more crowded than the calls implied — but it's transactional. Poblado alone stacks Nordika, Reset, Celestino, Element, Clínica Antienvejecimiento, El Cielo and Wellcomm for sauna / cold plunge — mostly day-pass or à-la-carte (Celestino day ~100k COP/~$25, Element cold plunge 50k/~$13 per 10min). Almost none sell it as a daily membership + community. That, not 'sauna exists,' is the wedge.",
+    "Single verticals are cheap and confirmed. Web-verified monthly: SmartFit Black ~120k (~$30), Power Club ~209k (~$52), 108 Yoga 305k (~$76) unlimited. Members already stack 3–4 of these plus a food delivery.",
+    "Price position holds — but must be earned. Waha's 350–500k COP (~$88–125) membership sits above any single vertical and below the cost of assembling gym + recovery + cowork + food separately. Since each piece exists cheaply elsewhere, the premium has to be justified by the bundle, the community, and the daily-anchor experience."
   ],
   competitors: [
     { name:"Kiin", cat:"Coliving + wellness club", area:"Tesoro — Cra 29", model:"Coliving + membership", src:"call+web", price:"~672k/mo (member-reported)", priceNum:672,
@@ -2123,7 +2128,7 @@ const OPEN_BY_DEFAULT = new Set(['sec-icp','sec-market']);
 const SECTION_TAKEAWAYS = {
   'sec-icp': "Five profiles, but revenue concentrates in the Expat Optimizer and Wellness Professional — while the Senior Executive carries the highest ceiling. Build the founding tier around these.",
   'sec-location': "Demand clusters on two walkable axes — Poblado / Envigado and Laureles–Belén — where proximity (dodging Las Palmas traffic) matters more than the exact address.",
-  'sec-spend': "This isn't new spend — the median participant already pays ~620k COP/mo piecemeal across these categories, so revealed preference backs the stated ceiling. The pitch is consolidation.",
+  'sec-spend': "This isn't new spend — the median participant already pays ~620k COP/mo (~$155) piecemeal across these categories, so revealed preference backs the stated ceiling. The pitch is consolidation.",
   'sec-market': "21+ venues mapped and not one bundles the full stack — the closest are hotel-attached, priced for tourists. Our edge is that combination plus day-one community, which no incumbent can assemble quickly.",
   'sec-roadmap': "Sequence by demand: Movement, Community and Mental reset are must-haves across nearly everyone; coworking is a smaller, segment-specific pull.",
   'sec-supply': "Supply is ready and cheap to activate — instructors will fill programming for a per-head fee + revenue share; what they need is a reliably-held schedule and proper rooms, not more money."
@@ -2269,7 +2274,7 @@ function renderExecSummary(){
       <div style="display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 4px">
         ${stat(n, 'participants', `across ${calls} calls · target 30+`)}
         ${stat(venues+'+', 'venues mapped', 'none do the full stack')}
-        ${stat('$150–200', 'stated WTP', `median already spends ~${medSpend}k`)}
+        ${stat('600–800k', 'stated WTP · COP (~$150–200)', `median already spends ~${money(medSpend)}`)}
         ${stat(moatN, 'moat pillars', 'incl. day-one community')}
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px">
@@ -2418,15 +2423,15 @@ function renderSpend(){
         <div style="position:absolute;top:0;bottom:0;left:${bandLo/max*100}%;width:${(bandHi-bandLo)/max*100}%;background:#1E302816"></div>
         <div style="position:absolute;top:0;bottom:0;left:0;width:${r.total/max*100}%;background:${barColor(r.total)};border-radius:3px"></div>
       </div>
-      <div style="width:48px;font-size:11px;color:var(--dark);flex-shrink:0">${fmt(r.total)}</div>
+      <div style="width:96px;font-size:11px;color:var(--dark);flex-shrink:0">${fmt(r.total)} <span style="color:var(--light)">(~$${USD(r.total)})</span></div>
     </div>`).join('');
 
   // Stated ceiling — max monthly budget named on the call, bucketed.
   const PRICE_BUCKETS = [
-    { label:'Under 300k', min:0,    max:299   },
-    { label:'300–500k',   min:300,  max:500   },
-    { label:'500k–1M',    min:501,  max:999   },
-    { label:'1M+',        min:1000, max:99999 },
+    { label:'Under 300k · <$75',   min:0,    max:299   },
+    { label:'300–500k · $75–125',  min:300,  max:500   },
+    { label:'500k–1M · $125–250',  min:501,  max:999   },
+    { label:'1M+ · $250+',         min:1000, max:99999 },
   ].map(b=>({ ...b, count:0 }));
   const ceils = [];
   ACTIVE.forEach(x=>{ if(!x.priceCeiling) return; ceils.push(x.priceCeiling); const b=PRICE_BUCKETS.find(b=>x.priceCeiling>=b.min&&x.priceCeiling<=b.max); if(b) b.count++; });
@@ -2435,7 +2440,7 @@ function renderSpend(){
   const bMax = Math.max(1, ...PRICE_BUCKETS.map(b=>b.count));
   const statedBars = PRICE_BUCKETS.map(b=>`
     <div style="display:flex;align-items:center;gap:8px;margin:2px 0">
-      <div style="width:104px;font-size:11px;color:var(--mid);text-align:right;flex-shrink:0">${b.label}</div>
+      <div style="width:150px;font-size:11px;color:var(--mid);text-align:right;flex-shrink:0">${b.label}</div>
       <div style="flex:1;position:relative;height:15px;background:var(--cream-bright);border-radius:3px;overflow:hidden">
         <div style="position:absolute;top:0;bottom:0;left:0;width:${b.count/bMax*100}%;background:#4A6358;border-radius:3px"></div>
       </div>
@@ -2447,19 +2452,19 @@ function renderSpend(){
       <div class="chart-title">Willingness to pay — what they say vs. what they already spend</div>
       <div class="chart-sub">Two signals in one place. <strong>Stated</strong> = the max monthly budget they named on the call (directional, and anchored by how the $150 → $200 → $250 question was walked up). <strong>Revealed</strong> = money already leaving the wallet each month across the categories Waha bundles (gym, recovery, food, coworking, movement &amp; community) — the stronger signal.</div>
 
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--light);margin:18px 0 8px">Stated — max monthly budget${medCeil?` · median ~${fmt(medCeil)}`:''}</div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--light);margin:18px 0 8px">Stated — max monthly budget${medCeil?` · median ~${money(medCeil)}`:''}</div>
       <div>${statedBars}</div>
 
       <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--light);margin:22px 0 4px">Revealed — already spending each month</div>
-      <div style="font-size:10.5px;color:var(--light);margin-bottom:10px">Bars ≥ 500k are darkest; shaded stripe = Waha's <strong>350–500k</strong> target band.</div>
+      <div style="font-size:10.5px;color:var(--light);margin-bottom:10px">Bars ≥ 500k (~$125) are darkest; shaded stripe = Waha's <strong>350–500k COP (~$88–125)</strong> target band.</div>
       <div style="display:flex;gap:22px;flex-wrap:wrap;margin:0 0 12px">
-        ${stat('~'+fmt(median), 'median already spent / mo')}
-        ${stat(fmt(totals[0])+'–'+fmt(totals[totals.length-1]), 'range across participants')}
-        ${stat(pct350+'%', 'already spend ≥ 350k')}
+        ${stat('~'+fmt(median), `median / mo (~$${USD(median)})`)}
+        ${stat(fmt(totals[0])+'–'+fmt(totals[totals.length-1]), `range (~$${USD(totals[0])}–${USD(totals[totals.length-1])})`)}
+        ${stat(pct350+'%', 'already spend ≥ 350k (~$88)')}
       </div>
       <div style="margin-top:6px">${bars}</div>
       <div style="font-size:12px;color:var(--mid);line-height:1.65;background:var(--cream-bright);border-radius:8px;padding:12px 14px;margin-top:16px">
-        <strong style="color:var(--dark)">Stated vs. revealed.</strong> Most participants <em>said</em> they'd pay $150–200/mo. In practice the median participant <strong>already spends ~${fmt(median)}/mo (≈ $${Math.round(median/4)})</strong> assembling this stack across separate memberships, and the top third spend 1M+. Waha's target band sits <strong>inside the proven-spend zone</strong> — the pitch is consolidation at a discount, not a new expense.
+        <strong style="color:var(--dark)">Stated vs. revealed.</strong> Most participants <em>said</em> they'd pay <strong>600–800k COP (~$150–200)</strong>/mo. In practice the median participant <strong>already spends ~${money(median)}/mo</strong> assembling this stack across separate memberships, and the top third spend 1M+ (~$250+). Waha's target band sits <strong>inside the proven-spend zone</strong> — the pitch is consolidation at a discount, not a new expense.
       </div>
     </div>`;
 }
@@ -2491,8 +2496,8 @@ function renderMarketLandscape(){
         <table style="border-collapse:collapse;width:100%;min-width:760px">
           <thead><tr>${th}</tr></thead>
           <tbody>
-            ${row('Waha (planned)', M.vare, '350–500k / $150–200', {vare:true, cat:'The all-in-one', area:'', model:'Membership + community'})}
-            ${M.competitors.map(c=>row(c.name, c.cover, c.price, {cat:c.cat, area:c.area, model:c.model, src:c.src})).join('')}
+            ${row('Waha (planned)', M.vare, '350–500k COP (~$88–125)', {vare:true, cat:'The all-in-one', area:'', model:'Membership + community'})}
+            ${M.competitors.map(c=>row(c.name, c.cover, c.priceNum ? `${c.price} (~$${USD(c.priceNum)})` : c.price, {cat:c.cat, area:c.area, model:c.model, src:c.src})).join('')}
           </tbody>
         </table>
       </div>
@@ -2507,11 +2512,11 @@ function renderMarketLandscape(){
       <div style="position:relative;height:70px;margin:22px 8px 8px">
         <div style="position:absolute;top:34px;left:0;right:0;height:2px;background:var(--border)"></div>
         <div style="position:absolute;top:20px;height:30px;left:${350/maxP*100}%;width:${(500-350)/maxP*100}%;background:#1E302818;border:1px dashed #1E3028;border-radius:4px" title="Waha target 350–500k"></div>
-        <div style="position:absolute;top:2px;left:${350/maxP*100}%;font-size:9px;color:#1E3028;font-weight:600">Waha 350–500k</div>
+        <div style="position:absolute;top:2px;left:${350/maxP*100}%;font-size:9px;color:#1E3028;font-weight:600">Waha 350–500k (~$88–125)</div>
         ${ladderPts.map((c,i)=>`
           <div style="position:absolute;top:28px;left:${Math.min(c.priceNum,maxP)/maxP*100}%;transform:translateX(-50%)">
             <div style="width:9px;height:9px;border-radius:50%;background:${SRC[c.src]?SRC[c.src].c:'#4A6358'};margin:0 auto"></div>
-            <div style="font-size:9px;color:var(--mid);white-space:nowrap;transform:translateX(-50%);margin-left:50%;margin-top:${i%2?14:2}px">${c.name.split(' (')[0]} ${c.priceNum}</div>
+            <div style="font-size:9px;color:var(--mid);white-space:nowrap;transform:translateX(-50%);margin-left:50%;margin-top:${i%2?14:2}px">${c.name.split(' (')[0]} ${c.priceNum}k·$${USD(c.priceNum)}</div>
           </div>`).join('')}
       </div>
     </div>`;
@@ -3130,7 +3135,7 @@ const ICPS = {
       emoji: "⚡",
       color: "#1E3028",
       demo: "American / Canadian · Ages 30–42 · Remote worker or entrepreneur",
-      wtp: "500k – 1M COP/mo",
+      wtp: "500k–1M COP/mo (~$125–250)",
       psychographic: "Already spending on wellness piecemeal — SmartFit, Reset, yoga separately. Knows what contrast therapy is and wants it done right. Values a clean, uncrowded environment over price. Will consolidate immediately if the quality is there.",
       draws: ["Sauna + cold plunge done properly", "Functional gym (not SmartFit volume)", "Quiet hours and booking that works", "Community of similar people"],
       sp: { figure:"🧑🏻‍💻", items:[
@@ -3149,7 +3154,7 @@ const ICPS = {
       emoji: "🌿",
       color: "#4A6358",
       demo: "Mixed nationality · Ages 30–45 · Coach, therapist, or instructor",
-      wtp: "300k – 600k COP/mo personal",
+      wtp: "300k–600k COP/mo (~$75–150) personal",
       psychographic: "Wants the space for their own wellness AND as a professional tool — hosting sessions, bringing clients, running groups. Disproportionate word-of-mouth value. Becomes an ambassador, not just a member. The sauna is a therapy room for them.",
       draws: ["Studio space to host sessions", "Sauna for client facilitation", "Professional wellness community", "Founding member visibility"],
       sp: { figure:"🧘🏽‍♀️", items:[
@@ -3168,7 +3173,7 @@ const ICPS = {
       emoji: "🏆",
       color: "#2D5040",
       demo: "American · Ages 50–65 · High-income professional or executive",
-      wtp: "1M+ COP/mo",
+      wtp: "1M+ COP/mo (~$250+)",
       psychographic: "Physical recovery is the primary driver — not social, not community. Has the highest absolute price ceiling of any segment. The barrier is environment, not cost: needs to feel comfortable, non-judgmental, and genuinely premium. One member like this anchors a membership tier.",
       draws: ["Recovery-first programming", "Non-judgmental, comfortable atmosphere", "Frictionless booking and access", "Premium feel that justifies the price"],
       sp: { figure:"👨🏼‍💼", items:[
@@ -3189,7 +3194,7 @@ const ICPS = {
       emoji: "🤝",
       color: "#5A7A6A",
       demo: "Mixed · Ages 28–45 · Community organizer, event host, or networker",
-      wtp: "300k – 500k COP/mo",
+      wtp: "300k–500k COP/mo (~$75–125)",
       psychographic: "Runs or leads communities — wellness circles, entrepreneurs, expat groups. Not just a member but a potential event host and pipeline generator. Mid-range personal WTP but their network value is disproportionate. Bring 5–10 people when they show up.",
       draws: ["Event hosting capability", "Group sauna / contrast sessions", "Community-first culture", "Founder or partner-level recognition"],
       sp: { figure:"🙋🏽‍♀️", items:[
@@ -3208,7 +3213,7 @@ const ICPS = {
       emoji: "🌱",
       color: "#3A5A4A",
       demo: "Colombian · Ages 22–35 · Young professional or entrepreneur",
-      wtp: "200k – 400k COP/mo",
+      wtp: "200k–400k COP/mo (~$50–100)",
       psychographic: "Wellness-curious but price-sensitive. Sees international venues as 'dollar prices' and self-excludes before even visiting. Needs a free or guest-pass first experience to convert. Not the primary revenue driver today, but critical for local legitimacy and long-term market positioning.",
       draws: ["Free intro event or guest pass", "Local pricing tier", "Colombian community feel", "Accessible location"],
       sp: { figure:"🧑🏽", items:[
@@ -3332,8 +3337,8 @@ function showProfile(name) {
     </div>
     <div class="three-col" style="margin-bottom:10px">
       <div class="inner"><div class="inner-label">Ranking (top 3)</div>${x.rankingTop3.map((r,i)=>`<div class="inner-row">${i===0?'<strong>':''}${i+1}. ${r}${i===0?'</strong>':''}</div>`).join('')}</div>
-      <div class="inner"><div class="inner-label">Monthly spend (COP)</div>${Object.entries(x.monthlySpend).map(([k,v])=>`<div class="inner-row">${k} — ${v}k</div>`).join('')}</div>
-      <div class="inner"><div class="inner-label">Price calibration</div><div class="inner-row">Good deal: <strong>${x.priceGoodDeal}k/mo</strong></div><div class="inner-row">Ceiling: <strong>${x.priceCeiling}k/mo</strong></div>${x.dayPassRange?`<div class="inner-row">Day pass: <strong>${x.dayPassRange[0]}–${x.dayPassRange[1]}k</strong></div>`:''}</div>
+      <div class="inner"><div class="inner-label">Monthly spend (COP)</div>${Object.entries(x.monthlySpend).map(([k,v])=>`<div class="inner-row">${k} — ${money(v)}</div>`).join('')}</div>
+      <div class="inner"><div class="inner-label">Price calibration</div><div class="inner-row">Good deal: <strong>${money(x.priceGoodDeal)}/mo</strong></div><div class="inner-row">Ceiling: <strong>${money(x.priceCeiling)}/mo</strong></div>${x.dayPassRange?`<div class="inner-row">Day pass: <strong>${copk(x.dayPassRange[0])}–${copk(x.dayPassRange[1])} COP (~$${USD(x.dayPassRange[0])}–${USD(x.dayPassRange[1])})</strong></div>`:''}</div>
     </div>
     <div class="two-col" style="margin-bottom:10px">
       <div class="inner"><div class="inner-label">Competitors</div>${x.competitorsStayed.map(c=>`<div class="inner-row success">✓ ${c}</div>`).join('')}${x.competitorsLeft.map(c=>`<div class="inner-row danger">✗ ${c}</div>`).join('')}</div>
