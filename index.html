@@ -280,6 +280,26 @@ html { scroll-behavior:smooth; }
 .leaflet-tooltip-clean::before { display:none; }
 .leaflet-div-icon.loc-bubble-icon { background:transparent; border:none; }
 .loc-bubble { display:flex; align-items:center; justify-content:center; border-radius:50%; background:#F07030; color:#1E3028; font-weight:700; font-size:11px; line-height:1; border:1.5px solid #1E3028; box-shadow:0 1px 4px rgba(20,35,28,0.3); }
+/* ── VENUE CARDS (market landscape) ── */
+.venue-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; margin-bottom:18px; }
+.venue-card { background:var(--white); border:1px solid var(--border); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; }
+.venue-card.vare { border-color:#1E3028; box-shadow:0 0 0 1.5px #1E3028; }
+.venue-photo { position:relative; height:134px; background:linear-gradient(135deg,#3A5647,#1E3028); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.venue-photo img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.venue-photo-emoji { font-size:42px; opacity:0.92; filter:drop-shadow(0 1px 2px rgba(0,0,0,0.25)); }
+.venue-card.vare .venue-photo { background:linear-gradient(135deg,#5A7A6A,#1E3028); }
+.venue-body { padding:14px 16px 16px; display:flex; flex-direction:column; gap:8px; }
+.venue-head { display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
+.venue-name { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; color:var(--dark); line-height:1.15; }
+.venue-price { font-size:11px; color:var(--mid); text-align:right; flex-shrink:0; max-width:132px; line-height:1.35; }
+.venue-meta { font-size:10px; color:var(--light); text-transform:uppercase; letter-spacing:0.05em; line-height:1.45; }
+.venue-cover { display:flex; flex-wrap:wrap; gap:5px; margin:1px 0 2px; }
+.venue-chip { font-size:10px; padding:2px 9px; border-radius:20px; background:#1E3028; color:var(--cream-bright); white-space:nowrap; }
+.venue-chip.partial { background:transparent; color:var(--mid); border:1px solid var(--border); }
+.venue-line { font-size:12px; color:var(--mid); line-height:1.55; display:flex; gap:7px; }
+.venue-plus { color:#2FA45B; flex-shrink:0; }
+.venue-minus { color:#C0407F; flex-shrink:0; }
+.venue-who { font-size:10px; color:var(--light); border-top:1px solid var(--border); padding-top:8px; margin-top:2px; }
 
 @media(max-width:700px){.metrics,.demo-charts,.demo-charts-2,.three-col,.two-col,.patterns-grid,.avatar-grid,.insights-row,.kanban-board,.product-kanban,.quote-wall-grid{grid-template-columns:1fr;}}
 </style>
@@ -2474,35 +2494,6 @@ function renderMarketLandscape(){
   if(!el) return;
   const M = MARKET_LANDSCAPE, P = M.pillars;
   const SRC = { 'call':{c:'#30B860',t:'Named in calls',label:'in calls'}, 'web':{c:'#4A9EC4',t:'Web-researched (official site)',label:'web'}, 'call+web':{c:'#1E3028',t:'Confirmed — named in calls + verified on the web',label:'confirmed'} };
-  const srcDot = s => s ? `<span title="${SRC[s].t}" style="color:${SRC[s].c};font-size:11px">●</span> ` : '';
-  const dot = v => v==='full' ? '<span style="color:#1E3028;font-size:14px">●</span>'
-                 : v==='part' ? '<span style="color:#8A9E95;font-size:14px" title="partial">◐</span>'
-                 : v==='info' ? '<span style="color:#C9A54A;font-size:12px;font-weight:700" title="needs info — to be confirmed">?</span>'
-                 : '<span style="color:#D8D8D2;font-size:12px">·</span>';
-  const th = `<th style="text-align:left;padding:8px 10px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--light);position:sticky;left:0;background:var(--white)">Venue</th>`
-    + P.map(p=>`<th style="padding:8px 6px;font-size:9.5px;font-weight:600;color:var(--light);width:64px;line-height:1.2">${p}</th>`).join('')
-    + `<th style="padding:8px 10px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--light);text-align:right">Price</th>`;
-  const row = (name, cover, price, opts={}) => `
-    <tr style="border-top:1px solid var(--border);${opts.vare?'background:#EDF4EF':''}">
-      <td style="padding:9px 10px;font-size:12px;font-weight:${opts.vare?600:500};color:var(--dark);position:sticky;left:0;background:${opts.vare?'#EDF4EF':'var(--white)'};white-space:nowrap">${opts.vare?'★ ':srcDot(opts.src)}${name}${opts.cat?`<div style="font-size:9.5px;color:var(--light);font-weight:400">${opts.cat}${opts.area&&opts.area!=='—'?' · '+opts.area:''}${opts.model?' · '+opts.model:''}</div>`:''}</td>
-      ${P.map(p=>`<td style="text-align:center;padding:9px 6px">${dot(cover[p])}</td>`).join('')}
-      <td style="padding:9px 10px;font-size:11px;color:var(--mid);text-align:right;white-space:nowrap">${price||'—'}</td>
-    </tr>`;
-  const matrix = `
-    <div class="chart-card" style="margin-bottom:16px">
-      <div class="chart-title">Who covers what — and where the white space is</div>
-      <div class="chart-sub">● offered &nbsp; ◐ partial &nbsp; <span style="color:#C9A54A;font-weight:700">?</span> needs info &nbsp; · not offered. Only Waha spans the full stack; Wake, Kiin and INNTU come closest. Row dot = source: <span style="color:#30B860">●</span> in calls · <span style="color:#4A9EC4">●</span> web · <span style="color:#1E3028">●</span> confirmed both.</div>
-      <div style="overflow-x:auto;margin-top:12px">
-        <table style="border-collapse:collapse;width:100%;min-width:760px">
-          <thead><tr>${th}</tr></thead>
-          <tbody>
-            ${row('Waha (planned)', M.vare, '350–500k COP (~$88–125)', {vare:true, cat:'The all-in-one', area:'', model:'Membership + community'})}
-            ${M.competitors.map(c=>row(c.name, c.cover, c.priceNum ? `${c.price} (~$${USD(c.priceNum)})` : c.price, {cat:c.cat, area:c.area, model:c.model, src:c.src})).join('')}
-          </tbody>
-        </table>
-      </div>
-    </div>`;
-
   const maxP = 700;
   const ladderPts = M.competitors.filter(c=>c.priceNum).sort((a,b)=>a.priceNum-b.priceNum);
   const ladder = `
@@ -2521,19 +2512,46 @@ function renderMarketLandscape(){
       </div>
     </div>`;
 
-  const cards = `
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:16px">
-      ${M.competitors.map(c=>`
-        <div class="chart-card" style="padding:16px">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--dark)">${c.name}</div>
-            <div style="font-size:11px;color:var(--mid);white-space:nowrap">${c.price}</div>
+  // Each venue = its own card with a photo banner (drop assets/venues/<slug>.jpg
+  // to replace the branded placeholder), coverage as chips, clean strength/gap.
+  const slugify = s => s.split(' (')[0].toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const venueEmoji = cat => { const c = cat.toLowerCase();
+    if(/coliving/.test(c)) return '🏡';
+    if(/longevity|biohack/.test(c)) return '🧬';
+    if(/hotel|luxury/.test(c)) return '🏨';
+    if(/yoga/.test(c)) return '🧘';
+    if(/cowork|café|cafe/.test(c)) return '☕';
+    if(/medical|aesthetic|clinic/.test(c)) return '🩺';
+    if(/sauna|recovery|spa|thermal/.test(c)) return '🧖';
+    if(/gym|hyrox/.test(c)) return '🏋️';
+    return '📍'; };
+  const coverChips = cover => P.filter(p=>cover[p]==='full'||cover[p]==='part')
+    .map(p=>`<span class="venue-chip${cover[p]==='part'?' partial':''}">${p}${cover[p]==='part'?' (part)':''}</span>`).join('');
+  const venueCard = (c, opts={}) => {
+    const price = c.priceNum ? `${c.price} (~$${USD(c.priceNum)})` : c.price;
+    const photo = opts.vare ? '' : `<img src="assets/venues/${slugify(c.name)}.jpg" alt="${c.name}" loading="lazy" onerror="this.style.display='none'">`;
+    return `
+      <div class="venue-card${opts.vare?' vare':''}">
+        <div class="venue-photo">${photo}<span class="venue-photo-emoji">${opts.emoji||venueEmoji(c.cat)}</span></div>
+        <div class="venue-body">
+          <div class="venue-head">
+            <div class="venue-name">${opts.vare?'★ ':''}${c.name}</div>
+            <div class="venue-price">${price||'—'}</div>
           </div>
-          <div style="font-size:10px;color:var(--light);text-transform:uppercase;letter-spacing:0.05em;margin:2px 0 8px">${c.cat}${c.area&&c.area!=='—'?' · '+c.area:''} · ${c.model} <span style="color:${SRC[c.src].c};text-transform:none;font-weight:600">· ${SRC[c.src].label}</span></div>
-          <div style="font-size:12px;color:var(--mid);line-height:1.55"><span style="color:#30B860">▲</span> ${c.strength}</div>
-          <div style="font-size:12px;color:var(--mid);line-height:1.55;margin-top:5px"><span style="color:#D04090">▼</span> ${c.gap}</div>
-          ${c.who.length?`<div style="font-size:10px;color:var(--light);margin-top:8px;border-top:1px solid var(--border);padding-top:7px">Named by: ${c.who.join(', ')}</div>`:''}
-        </div>`).join('')}
+          <div class="venue-meta">${c.cat}${c.area&&c.area!=='—'?' · '+c.area:''} · ${c.model}${c.src?` <span style="color:${SRC[c.src].c}">· ${SRC[c.src].label}</span>`:''}</div>
+          <div class="venue-cover">${coverChips(c.cover)}</div>
+          ${c.strength?`<div class="venue-line"><span class="venue-plus">▲</span><span>${c.strength}</span></div>`:''}
+          ${c.gap?`<div class="venue-line"><span class="venue-minus">▼</span><span>${c.gap}</span></div>`:''}
+          ${(c.who&&c.who.length)?`<div class="venue-who">Named by ${c.who.join(', ')}</div>`:''}
+        </div>
+      </div>`;
+  };
+  const wahaCard = { name:'Waha (planned)', cat:'The all-in-one', area:'', model:'Membership + community', src:null, price:'350–500k COP (~$88–125)', priceNum:null, cover:M.vare,
+    strength:'The only place that bundles the full stack — gym, movement, sauna + cold plunge, cowork, healthy food and a real community — into one membership.', gap:'', who:[] };
+  const cards = `
+    <div class="venue-grid">
+      ${venueCard(wahaCard, {vare:true, emoji:'✦'})}
+      ${M.competitors.map(c=>venueCard(c)).join('')}
     </div>`;
 
   const takeaways = `
@@ -2554,9 +2572,9 @@ function renderMarketLandscape(){
   const excluded = (M.excluded && M.excluded.length) ? `
     <div style="font-size:10.5px;color:var(--light);line-height:1.5;margin-bottom:10px"><strong style="color:var(--mid)">Checked and excluded:</strong> ${M.excluded.map(e=>`${e.name} — ${e.reason}`).join(' ')}</div>` : '';
 
-  const note = `<div style="font-size:10px;color:var(--light);font-style:italic;line-height:1.5">Source per row: <span style="color:#30B860">●</span> named by the ${DATA.participants.length} participants ·<span style="color:#4A9EC4">●</span> web-researched from official sites (Jul 2026) · <span style="color:#1E3028">●</span> confirmed by both. Local spa/hotel pricing is often WhatsApp-gated and shown as n/a; blank cells mean not offered or not confirmed, not necessarily absent. Smash (Jordan's partner's brand) is the on-site food concept, not a competitor.</div>`;
+  const note = `<div style="font-size:10px;color:var(--light);font-style:italic;line-height:1.5">Source tag per venue: <span style="color:#30B860">●</span> named by the ${DATA.participants.length} participants · <span style="color:#4A9EC4">●</span> web-researched from official sites (Jul 2026) · <span style="color:#1E3028">●</span> confirmed by both. Coverage chips show only what a venue offers (solid = full, outline = partial). Local spa/hotel pricing is often WhatsApp-gated and shown as n/a. Photos are placeholders until added to <code>assets/venues/</code>. Smash (Jordan's partner's brand) is the on-site food concept, not a competitor.</div>`;
 
-  el.innerHTML = takeaways + matrix + ladder + cards + excluded + models + note;
+  el.innerHTML = takeaways + cards + ladder + excluded + models + note;
 }
 
 function renderProductRoadmap(){
