@@ -2514,7 +2514,7 @@ function renderMarketLandscape(){
 
   // Each venue = its own card with a photo banner (drop assets/venues/<slug>.jpg
   // to replace the branded placeholder), coverage as chips, clean strength/gap.
-  const slugify = s => s.split(' (')[0].toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const slugify = s => s.split(' (')[0].normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
   const venueEmoji = cat => { const c = cat.toLowerCase();
     if(/coliving/.test(c)) return '🏡';
     if(/longevity|biohack/.test(c)) return '🧬';
