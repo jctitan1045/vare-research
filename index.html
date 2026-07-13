@@ -309,6 +309,8 @@ html { scroll-behavior:smooth; }
 .venue-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:10px; color:var(--light); border-top:1px solid var(--border); padding-top:8px; margin-top:2px; }
 .venue-foot a { color:var(--mid); text-decoration:none; white-space:nowrap; font-weight:500; }
 .venue-foot a:hover { color:var(--dark); text-decoration:underline; }
+.model-borrow { font-size:12px; color:var(--mid); line-height:1.55; background:var(--cream-bright); border-left:3px solid #CDA349; border-radius:0 8px 8px 0; padding:9px 12px; }
+.model-borrow-label { display:block; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#B08828; margin-bottom:3px; }
 /* ── MOAT (stat strip + comparison matrix) ── */
 .moat-stat { background:var(--cream-bright); border:1px solid var(--border); border-radius:12px; padding:11px 20px; min-width:132px; }
 .moat-stat-big { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; color:var(--dark); line-height:1; }
@@ -2165,9 +2167,21 @@ const MARKET_LANDSCAPE = {
   ],
   excluded: [],
   models: [
-    { name:"Nirvana Life", area:"Bali", note:"The gold-standard all-in-one cited unprompted — massive gym, customizable food, every class, deep recovery. 'It became a bubble everyone wanted to be part of.' ~$200–300/mo." },
-    { name:"Othership", area:"Toronto / NYC", note:"Large-format guided sauna + cold-plunge classes (30–40-person sauna). The 'classes inside the sauna' model two participants referenced." },
-    { name:"Soho House", area:"Global", note:"Members-club tiering — open floor below, member floors above, welcome drinks and credits. The structure Ali wants 'in a Medellín jungle style.'" }
+    { name:"Nirvana Life", area:"Bali", emoji:"🌴",
+      what:"All-in-one wellness club",
+      signature:"Massive gym, customizable food, every class and deep recovery under one roof at an accessible (~$200–300/mo · ~800k–1.2M COP) price — it 'became a bubble everyone wanted to be part of.'",
+      borrow:"The whole thesis: the full stack under one membership, plus the belonging that turns amenities into a place people organize their week around.",
+      citedBy:"Zach's gold-standard benchmark" },
+    { name:"Othership", area:"Toronto / NYC", emoji:"🔥",
+      what:"Guided sauna + cold-plunge classes",
+      signature:"A 30–40-person sauna run as facilitated classes — breathwork and hot→cold contrast journeys led by a host, social and ritualized, not solo drop-ins.",
+      borrow:"Our biggest-sauna-as-classes differentiator — the 'classes inside the sauna' format that doesn't exist in Medellín yet.",
+      citedBy:"Referenced by Juan Pablo (Duet) & Zach" },
+    { name:"Soho House", area:"Global", emoji:"🏛️",
+      what:"Members' club",
+      signature:"Tiered membership — open floor below, member floors above — with welcome drinks, credits and a generous guest policy. Belonging and access are the product, not any single amenity.",
+      borrow:"Membership tiering + guest policy + the members'-club feel — what Ali wants 'in a Medellín jungle style.'",
+      citedBy:"Ali (tiering) & Alex (guest policy)" }
   ]
 };
 
@@ -2609,14 +2623,31 @@ function renderMarketLandscape(){
       ${M.takeaways.map(t=>`<div style="display:flex;gap:9px;margin-bottom:9px"><span style="color:#4A6358;flex-shrink:0">→</span><span style="font-size:12.5px;color:var(--mid);line-height:1.6">${t}</span></div>`).join('')}
     </div>`;
 
+  const modelCard = m => {
+    const q = encodeURIComponent(m.name + ' ' + m.area);
+    return `
+      <div class="venue-card">
+        <div class="venue-photo" data-map="https://www.google.com/maps?q=${q}&output=embed" onclick="toggleVenueMap(this)" title="View on Google Maps">
+          <img src="assets/models/${slugify(m.name)}.jpg" alt="${m.name}" loading="lazy" onerror="this.style.display='none'">
+          <span class="venue-photo-emoji">${m.emoji||'⭐'}</span>
+          <span class="venue-map-hint">📍 Tap for map</span>
+          <button class="venue-map-close" onclick="toggleVenueMap(this,event)" aria-label="Close map">✕</button>
+        </div>
+        <div class="venue-body">
+          <div class="venue-head"><div class="venue-name">${m.name}</div><div class="venue-price">${m.area}</div></div>
+          <div class="venue-meta">${m.what}</div>
+          <div class="venue-line"><span class="venue-plus">★</span><span>${m.signature}</span></div>
+          <div class="model-borrow"><span class="model-borrow-label">What Wãha borrows</span>${m.borrow}</div>
+          <div class="venue-foot"><span>${m.citedBy}</span><a href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">See it on Google Maps ↗</a></div>
+        </div>
+      </div>`;
+  };
   const models = `
-    <div class="chart-card" style="margin-bottom:12px;padding:18px">
-      <div class="chart-title">North-star models (out of market, cited unprompted)</div>
-      <div class="chart-sub">Not competitors — the references participants reached for when describing the ideal.</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:12px">
-        ${M.models.map(m=>`<div style="border:1px dashed var(--border);border-radius:10px;padding:12px"><div style="font-size:13px;font-weight:600;color:var(--dark)">${m.name} <span style="font-size:10px;color:var(--light);font-weight:400">· ${m.area}</span></div><div style="font-size:11.5px;color:var(--mid);line-height:1.5;margin-top:5px">${m.note}</div></div>`).join('')}
-      </div>
-    </div>`;
+    <div class="chart-card" style="padding:18px 20px;margin-bottom:14px">
+      <div class="chart-title">North-star models — what "great" looks like</div>
+      <div class="chart-sub">Out-of-market references participants reached for when describing the ideal — not competitors. <strong style="color:var(--mid)">What they all share:</strong> none sells a single amenity — each sells <strong style="color:var(--dark)">belonging + a bundled experience</strong> at an accessible-premium price, a destination you build your week around rather than a place you transact with. Wãha is these three fused for Medellín: Nirvana's all-in-one bundle, Othership's ritualized sauna classes, and Soho House's members'-club tiering.</div>
+    </div>
+    <div class="venue-grid" style="margin-bottom:16px">${M.models.map(modelCard).join('')}</div>`;
 
   const excluded = (M.excluded && M.excluded.length) ? `
     <div style="font-size:10.5px;color:var(--light);line-height:1.5;margin-bottom:10px"><strong style="color:var(--mid)">Checked and excluded:</strong> ${M.excluded.map(e=>`${e.name} — ${e.reason}`).join(' ')}</div>` : '';
