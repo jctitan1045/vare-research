@@ -299,7 +299,9 @@ html { scroll-behavior:smooth; }
 .venue-line { font-size:12px; color:var(--mid); line-height:1.55; display:flex; gap:7px; }
 .venue-plus { color:#2FA45B; flex-shrink:0; }
 .venue-minus { color:#C0407F; flex-shrink:0; }
-.venue-who { font-size:10px; color:var(--light); border-top:1px solid var(--border); padding-top:8px; margin-top:2px; }
+.venue-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:10px; color:var(--light); border-top:1px solid var(--border); padding-top:8px; margin-top:2px; }
+.venue-foot a { color:var(--mid); text-decoration:none; white-space:nowrap; font-weight:500; }
+.venue-foot a:hover { color:var(--dark); text-decoration:underline; }
 
 @media(max-width:700px){.metrics,.demo-charts,.demo-charts-2,.three-col,.two-col,.patterns-grid,.avatar-grid,.insights-row,.kanban-board,.product-kanban,.quote-wall-grid{grid-template-columns:1fr;}}
 </style>
@@ -2542,7 +2544,7 @@ function renderMarketLandscape(){
           <div class="venue-cover">${coverChips(c.cover)}</div>
           ${c.strength?`<div class="venue-line"><span class="venue-plus">▲</span><span>${c.strength}</span></div>`:''}
           ${c.gap?`<div class="venue-line"><span class="venue-minus">▼</span><span>${c.gap}</span></div>`:''}
-          ${(c.who&&c.who.length)?`<div class="venue-who">Named by ${c.who.join(', ')}</div>`:''}
+          ${opts.vare?'':`<div class="venue-foot"><span>${(c.who&&c.who.length)?'Named by '+c.who.join(', '):''}</span><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.name.split(' (')[0]+' Medellín Colombia')}" target="_blank" rel="noopener">See it on Google Maps ↗</a></div>`}
         </div>
       </div>`;
   };
