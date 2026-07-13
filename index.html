@@ -301,12 +301,8 @@ html { scroll-behavior:smooth; }
 <div id="exec-summary" style="margin-bottom:16px"></div>
 <nav id="toc" aria-label="Section contents" style="margin-bottom:30px"></nav>
 
-<!-- ① WHO ARE THEY? -->
-<div class="section-label" id="sec-who">Who's in this research</div>
-<div class="method-note">
-  <span class="method-label">How to read this research</span>
-  These are 16 discovery conversations, <strong>warm-network sourced</strong> — people reached through the founders' own communities (run club, expat &amp; wellness circles) — so the sample skews toward <strong>expats (11 of 16)</strong> and people already engaged in wellness. Half are <strong>supply-side (8 instructors &amp; partners)</strong>, so consumer-demand figures rest on the other 8 members-to-be. Read the patterns as strong <strong>directional signal, not representative market share</strong>; the next step is broadening toward the 30+ target with more cold-sourced locals.
-</div>
+<!-- ① WHO ARE THEY? (no heading — the 'View data for' chips lead this block) -->
+<div class="section-takeaway" style="margin-top:4px"><span class="takeaway-kicker">What this tells us</span>Both sides of the marketplace, high intent — 8 would-be members and 8 instructors/partners, a median consumer ceiling near 1.05M COP/mo, with Movement, Community and Mental reset as the near-universal wants.</div>
 <div id="segment-filter" style="margin-bottom:16px"></div>
 <div class="metrics">
   <div class="metric"><div class="metric-label">Participants</div><div class="metric-value" id="m-total">—</div><div class="metric-sub">Target: 30+</div></div>
@@ -2118,12 +2114,11 @@ const MARKET_LANDSCAPE = {
 // Sections open on first load — the core "story" (who / customer / gap / why-us).
 // Detail & reference sections (location, spend, roadmap, supply, quotes, design)
 // start collapsed so the page reads as an argument, not a wall of data.
-const OPEN_BY_DEFAULT = new Set(['sec-who','sec-icp','sec-market']);
+const OPEN_BY_DEFAULT = new Set(['sec-icp','sec-market']);
 
 // One-line "what this tells us" per section — the conclusion the data supports,
 // so each section reads as a decision, not just a chart. Grounded in the sample.
 const SECTION_TAKEAWAYS = {
-  'sec-who': "Both sides of the marketplace, high intent — 8 would-be members and 8 instructors/partners, a median consumer ceiling near 1.05M COP/mo, with Movement, Community and Mental reset as the near-universal wants.",
   'sec-icp': "Five profiles, but revenue concentrates in the Expat Optimizer and Wellness Professional — while the Senior Executive carries the highest ceiling. Build the founding tier around these.",
   'sec-location': "Demand clusters on two walkable axes — Poblado / Envigado and Laureles–Belén — where proximity (dodging Las Palmas traffic) matters more than the exact address.",
   'sec-spend': "This isn't new spend — the median participant already pays ~620k COP/mo piecemeal across these categories, so revealed preference backs the stated ceiling. The pitch is consolidation.",
@@ -2222,7 +2217,6 @@ function renderTOC(){
   if(!el) return;
   const items = [
     ['exec-summary','Overview'],
-    ['sec-who',"Who's in this research"],
     ['sec-icp','Ideal client profiles'],
     ['sec-location','Where they want it'],
     ['sec-spend','What they pay'],
