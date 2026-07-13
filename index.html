@@ -309,6 +309,30 @@ html { scroll-behavior:smooth; }
 .venue-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:10px; color:var(--light); border-top:1px solid var(--border); padding-top:8px; margin-top:2px; }
 .venue-foot a { color:var(--mid); text-decoration:none; white-space:nowrap; font-weight:500; }
 .venue-foot a:hover { color:var(--dark); text-decoration:underline; }
+/* ── MOAT (stat strip + comparison matrix) ── */
+.moat-stat { background:var(--cream-bright); border:1px solid var(--border); border-radius:12px; padding:11px 20px; min-width:132px; }
+.moat-stat-big { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; color:var(--dark); line-height:1; }
+.moat-stat-small { font-size:10.5px; color:var(--light); margin-top:4px; }
+.moat-head { display:flex; justify-content:space-between; gap:12px; padding:11px 18px; background:var(--cream-bright); border-bottom:1px solid var(--border); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--light); }
+.moat-head em { font-weight:400; text-transform:none; letter-spacing:0; font-style:italic; }
+.moat-row { border-bottom:1px solid var(--border); padding:13px 18px; cursor:pointer; transition:background 0.12s; }
+.moat-row:last-child { border-bottom:0; }
+.moat-row:hover { background:#FBF9F1; }
+.moat-row-top { display:grid; grid-template-columns:minmax(190px,1fr) 1.4fr; gap:18px; align-items:center; }
+.moat-diff { display:flex; align-items:center; gap:9px; flex-wrap:wrap; }
+.moat-icon { font-size:19px; }
+.moat-title { font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:600; color:var(--dark); }
+.moat-badge { font-size:8.5px; font-weight:700; letter-spacing:0.06em; color:#1E3028; background:#EDF4EF; border:1px solid var(--border); border-radius:20px; padding:2px 8px; white-space:nowrap; }
+.moat-vs { font-size:12px; color:var(--mid); line-height:1.5; }
+.moat-chev { color:var(--light); margin-left:6px; transition:transform 0.2s; display:inline-block; }
+.moat-row.open .moat-chev { transform:rotate(180deg); }
+.moat-detail { display:none; margin-top:12px; padding-top:12px; border-top:1px dashed var(--border); flex-direction:column; gap:8px; }
+.moat-row.open .moat-detail { display:flex; }
+.moat-detail-line { font-size:12.5px; color:var(--mid); line-height:1.6; }
+.moat-plus { color:#2FA45B; font-weight:600; white-space:nowrap; }
+.moat-minus { color:#C0407F; font-weight:600; white-space:nowrap; }
+.moat-evidence { font-size:11px; color:var(--light); line-height:1.5; }
+@media(max-width:640px){ .moat-row-top { grid-template-columns:1fr; gap:7px; } .moat-head { display:none; } }
 
 @media(max-width:700px){.metrics,.demo-charts,.demo-charts-2,.three-col,.two-col,.patterns-grid,.avatar-grid,.insights-row,.kanban-board,.product-kanban,.quote-wall-grid{grid-template-columns:1fr;}}
 </style>
@@ -2341,12 +2365,6 @@ const MOAT = {
       detail:"No seed oils — with the option to choose your cooking fat (grass-fed butter, ghee, and more).",
       whoElse:"No Medellín restaurant markets a seed-oil-free kitchen or lets you pick your fat. It's exactly what converts health-optimizers who currently cook every meal at home.",
       evidence:"Zach ('good oils, not fried, and I'd eat out'), Armin (minimal oils / grass-fed butter), Ali (minimal oils)." }
-  ],
-  // pyramid tiers, apex → base
-  pyramid: [
-    { label:"ONE OF ONE", sub:"an unbeatable position", fill:"#1E3028" },
-    { label:"6 THINGS NO ONE ELSE HAS", sub:"the differentiators below", fill:"#4A6358" },
-    { label:"THE ALL-IN-ONE BUNDLE", sub:"grounded in 15 calls + a 20-venue scan", fill:"#8A9E95" }
   ]
 };
 
@@ -2379,52 +2397,52 @@ function renderMoat(){
   const el = document.getElementById('moat');
   if(!el) return;
   const M = MOAT;
-  // 3-tier pyramid geometry (triangle apex 200,20 → base 40..360 at y=230)
-  const apex=[200,20], bl=[40,230], br=[360,230];
-  const xAt=(y,side)=>{ const f=(y-apex[1])/(bl[1]-apex[1]); return side<0 ? apex[0]-(apex[0]-bl[0])*f : apex[0]+(br[0]-apex[0])*f; };
-  const ys=[20,90,160,230];
-  const bands = M.pyramid.map((t,i)=>{
-    const y0=ys[i], y1=ys[i+1];
-    const pts = i===0
-      ? `${apex[0]},${y0} ${xAt(y1,1)},${y1} ${xAt(y1,-1)},${y1}`
-      : `${xAt(y0,-1)},${y0} ${xAt(y0,1)},${y0} ${xAt(y1,1)},${y1} ${xAt(y1,-1)},${y1}`;
-    const my=(y0+y1)/2 + (i===0?8:0);
-    return `<polygon points="${pts}" fill="${t.fill}"></polygon>
-      <text x="200" y="${my-2}" text-anchor="middle" fill="#F4F1E8" font-size="${i===0?11:13}" font-weight="700" letter-spacing="0.06em">${t.label}</text>
-      <text x="200" y="${my+13}" text-anchor="middle" fill="#F4F1E8" font-size="9" opacity="0.8">${t.sub}</text>`;
-  }).join('');
-  const pyramid = `
-    <svg viewBox="0 0 400 250" style="width:100%;max-width:360px;height:auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Moat pyramid">
-      ${bands}
-    </svg>`;
 
-  const top = `
-    <div class="chart-card" style="padding:22px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:24px;align-items:center">
-      <div style="flex:1;min-width:240px;text-align:center">${pyramid}</div>
-      <div style="flex:1.3;min-width:260px">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--dark);line-height:1.25;margin-bottom:10px">Not a feature. A combination no one in Medellín offers.</div>
-        <div style="font-size:13px;color:var(--mid);line-height:1.7">${M.thesis}</div>
+  // ① Stat strip — replaces the hard-to-read pyramid with a scannable headline + chips.
+  const chip = (big,small) => `<div class="moat-stat"><div class="moat-stat-big">${big}</div><div class="moat-stat-small">${small}</div></div>`;
+  const strip = `
+    <div class="chart-card" style="padding:26px 24px;margin-bottom:16px;text-align:center">
+      <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--light);font-weight:700">The moat</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--dark);margin:7px 0 6px">Wãha is one of one</div>
+      <div style="font-size:14px;color:var(--mid);line-height:1.65;max-width:580px;margin:0 auto 18px">The only all-in-one in Medellín — plus six things no competitor has, launched into a community we already have. No one offers them together, and no one opens with our built-in audience.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center">
+        ${chip('8', 'pillars · one membership')}
+        ${chip('6', 'outright firsts / onlys')}
+        ${chip('Day 1', 'community, not built later')}
       </div>
     </div>`;
 
-  const cards = `
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
-      ${M.pillars.map((p,i)=>`
-        <div class="chart-card" style="padding:18px;display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;align-items:flex-start;gap:11px">
-            <div style="font-size:24px;line-height:1;flex-shrink:0">${p.icon}</div>
-            <div>
-              <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--dark);line-height:1.2">${p.title}</div>
-              <div style="display:inline-block;margin-top:4px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#1E3028;background:#EDF4EF;border:1px solid var(--border);border-radius:20px;padding:2px 9px">${p.claim}</div>
-            </div>
-          </div>
-          <div style="font-size:12.5px;color:var(--mid);line-height:1.6">${p.detail}</div>
-          <div style="font-size:11.5px;color:var(--mid);line-height:1.55;background:var(--cream-bright);border-radius:8px;padding:9px 11px"><span style="color:#D04090;font-weight:600">Who else does this?</span> ${p.whoElse}</div>
-          <div style="font-size:10.5px;color:var(--light);line-height:1.5;margin-top:auto;border-top:1px solid var(--border);padding-top:7px"><span style="color:#4A6358;font-weight:600">From the research:</span> ${p.evidence}</div>
-        </div>`).join('')}
+  // ② Comparison matrix — each differentiator vs. the closest anyone else comes.
+  // Badge + short "closest else" line per pillar (order matches M.pillars); the
+  // full detail + who-else + evidence expand on tap.
+  const BADGE = ["FROM DAY ONE","BIGGEST","MEDELLÍN'S FIRST","THE ONLY ONE","ONLY COMBO","ONLY KITCHEN"];
+  const VS = [
+    "Rivals are hotel-attached (tourist traffic); local venues lack the deep expat network",
+    "Nordika, Celestino & Element are transactional drop-ins — no facilitated classes",
+    "None in the 20-venue scan — the closest is a café cacao menu, not a social bar",
+    "Rivertown, Pergamino & Hardin all close early; no night-time work-and-social space",
+    "Gyms sell volume, not curated mobility; no restaurant here lists macros",
+    "No Medellín restaurant markets a seed-oil-free kitchen or lets you pick your fat"
+  ];
+  const rows = M.pillars.map((p,i)=>`
+    <div class="moat-row" onclick="this.classList.toggle('open')">
+      <div class="moat-row-top">
+        <div class="moat-diff"><span class="moat-icon">${p.icon}</span><span class="moat-title">${p.title}</span><span class="moat-badge">${BADGE[i]}</span></div>
+        <div class="moat-vs">${VS[i]}<span class="moat-chev">▾</span></div>
+      </div>
+      <div class="moat-detail">
+        <div class="moat-detail-line"><span class="moat-plus">▲ Waha</span> ${p.detail}</div>
+        <div class="moat-detail-line"><span class="moat-minus">▼ The field</span> ${p.whoElse}</div>
+        <div class="moat-evidence"><strong>From the research:</strong> ${p.evidence}</div>
+      </div>
+    </div>`).join('');
+  const matrix = `
+    <div class="chart-card" style="padding:0;overflow:hidden">
+      <div class="moat-head"><span>The differentiator</span><span>The closest anyone else comes · <em>tap a row for detail</em></span></div>
+      ${rows}
     </div>`;
 
-  el.innerHTML = top + cards;
+  el.innerHTML = strip + matrix;
 }
 
 function renderSpend(){
