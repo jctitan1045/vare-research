@@ -278,6 +278,8 @@ html { scroll-behavior:smooth; }
 /* ── LEAFLET TOOLTIP ── */
 .leaflet-tooltip-clean { background:rgba(237,233,216,0.95); border:1px solid #D5D0BC; border-radius:4px; padding:3px 8px; color:#1E3028; font-family:'Inter',sans-serif; box-shadow:none; }
 .leaflet-tooltip-clean::before { display:none; }
+.leaflet-div-icon.loc-bubble-icon { background:transparent; border:none; }
+.loc-bubble { display:flex; align-items:center; justify-content:center; border-radius:50%; background:#F07030; color:#1E3028; font-weight:700; font-size:11px; line-height:1; border:1.5px solid #1E3028; box-shadow:0 1px 4px rgba(20,35,28,0.3); }
 
 @media(max-width:700px){.metrics,.demo-charts,.demo-charts-2,.three-col,.two-col,.patterns-grid,.avatar-grid,.insights-row,.kanban-board,.product-kanban,.quote-wall-grid{grid-template-columns:1fr;}}
 </style>
@@ -344,7 +346,7 @@ html { scroll-behavior:smooth; }
 <div class="section-label" id="sec-location" style="margin-bottom:12px">Where they want it</div>
 <div class="chart-card" style="margin-bottom:28px">
   <div class="chart-title">Explicit location preference</div>
-  <div class="chart-sub">Where they said they'd put it — not where they live. Click a dot for names. Hover for label.</div>
+  <div class="chart-sub">Where they said they'd put it — not where they live. Each bubble is sized by demand and shows the number of people who'd put it there; click one for names.</div>
   <div id="location-map" style="height:280px;border-radius:10px;overflow:hidden;margin-top:12px"></div>
 </div>
 
@@ -3017,8 +3019,7 @@ function renderLocationMap(){
   // re-init guard: reset the container if Leaflet already initialized it (segment re-render)
   const mapEl = document.getElementById('location-map');
   if(mapEl._leaflet_id){ mapEl._leaflet_id = null; mapEl.innerHTML = ''; }
-  const map = L.map('location-map', { zoomControl: true, scrollWheelZoom: false })
-    .setView([6.2442, -75.5812], 13);
+  const map = L.map('location-map', { zoomControl: true, scrollWheelZoom: false });
 
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO',
@@ -3026,30 +3027,49 @@ function renderLocationMap(){
   }).addTo(map);
 
   const maxCount = Math.max(...Object.values(counts), 1);
+  const pts = [];
 
   Object.entries(counts).forEach(([name, count]) => {
     const latlng = NEIGHBORHOOD_COORDS[name];
     if (!latlng) return;
+    pts.push(latlng);
     const pct = count / maxCount;
     const people = (names[name]||[]).join('<br>');
+    const size = Math.round(24 + pct * 16);   // 24–40px, scaled by demand
 
-    L.circleMarker(latlng, {
-      radius: 5 + pct * 4,
-      color: '#1E3028',
-      fillColor: '#F07030',
-      fillOpacity: 0.85,
-      weight: 1.5
-    }).addTo(map)
+    // Bubble marker with the count printed inside — always visible, no hover needed
+    const icon = L.divIcon({
+      className: 'loc-bubble-icon',
+      html: `<div class="loc-bubble" style="width:${size}px;height:${size}px">${count}</div>`,
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2]
+    });
+
+    L.marker(latlng, { icon }).addTo(map)
       .bindPopup(`
         <strong style="font-size:13px">${name}</strong><br>
-        <span style="font-size:11px;color:#666">${count} vote${count!==1?'s':''}</span><br>
+        <span style="font-size:11px;color:#666">${count} ${count!==1?'people':'person'}</span><br>
         <span style="font-size:11px">${people}</span>
       `)
-      .bindTooltip(`<span style="font-size:11px;font-weight:600">${name} · ${count}</span>`, {
-        permanent: false, direction: 'top', offset: [0, -8],
+      .bindTooltip(`<span style="font-size:11px;font-weight:600">${name}</span>`, {
+        direction: 'top', offset: [0, -(size/2)-2],
         className: 'leaflet-tooltip-clean'
       });
   });
+
+  // Fit every marker in view (no manual zoom-out). The section can be collapsed,
+  // and a Leaflet map sized in a hidden container needs invalidateSize + a re-fit
+  // once it becomes visible — so defer via ResizeObserver when it starts hidden.
+  const fit = () => {
+    map.invalidateSize();
+    if (pts.length) map.fitBounds(L.latLngBounds(pts), { padding: [34, 34], maxZoom: 14 });
+    else map.setView([6.2442, -75.5812], 13);
+  };
+  if (mapEl.clientWidth > 0) fit();
+  else if (window.ResizeObserver) {
+    const ro = new ResizeObserver(() => { if (mapEl.clientWidth > 0) { fit(); ro.disconnect(); } });
+    ro.observe(mapEl);
+  } else { fit(); }
 }
 
 function toggleProfile(card){
