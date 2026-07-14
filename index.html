@@ -309,6 +309,29 @@ html { scroll-behavior:smooth; }
 .venue-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:10px; color:var(--light); border-top:1px solid var(--border); padding-top:8px; margin-top:2px; }
 .venue-foot a { color:var(--mid); text-decoration:none; white-space:nowrap; font-weight:500; }
 .venue-foot a:hover { color:var(--dark); text-decoration:underline; }
+/* ── LAUNCH GANTT ── */
+.gantt-scroll { overflow-x:auto; margin-top:14px; }
+.gantt { min-width:800px; }
+.gantt-row { display:flex; align-items:stretch; }
+.gantt-label { width:224px; flex-shrink:0; padding:8px 12px 8px 0; box-sizing:border-box; }
+.gantt-name { font-size:12px; font-weight:600; color:var(--dark); line-height:1.25; }
+.gantt-detail { font-size:10px; color:var(--light); line-height:1.35; margin-top:2px; }
+.gantt-track { position:relative; flex:1; min-height:36px; }
+.gantt-head .gantt-track { min-height:0; }
+.gantt-months { display:flex; }
+.gantt-mcell { flex:1; font-size:9.5px; font-weight:700; color:var(--light); text-align:center; border-right:1px solid var(--border); padding:5px 0; text-transform:uppercase; letter-spacing:0.03em; }
+.gantt-mcell:first-child { border-left:1px solid var(--border); }
+.gantt-yr { color:var(--mid); margin-left:2px; }
+.gantt-row:not(.gantt-head) .gantt-track { background:repeating-linear-gradient(to right, transparent, transparent calc(100%/12 - 1px), var(--border) calc(100%/12 - 1px), var(--border) calc(100%/12)); border-bottom:1px solid var(--border); }
+.gantt-bar { position:absolute; top:9px; height:17px; border-radius:9px; box-shadow:0 1px 2px rgba(20,35,28,0.22); }
+.gantt-today { position:absolute; top:0; bottom:0; width:0; border-left:2px dashed #C0407F; z-index:2; }
+.gantt-today-label { position:absolute; top:5px; font-size:8.5px; font-weight:700; color:#C0407F; white-space:nowrap; padding-left:3px; }
+.gantt-ms-row .gantt-track { min-height:46px; }
+.gantt-ms { position:absolute; top:5px; transform:translateX(-50%); text-align:center; z-index:3; }
+.gantt-diamond { color:#CDA349; font-size:15px; display:block; line-height:1; }
+.gantt-ms-label { font-size:9px; font-weight:600; color:var(--mid); white-space:nowrap; }
+.gantt-legend { font-size:10.5px; color:var(--mid); display:inline-flex; align-items:center; gap:5px; margin:0 6px; }
+.gantt-swatch { width:11px; height:11px; border-radius:3px; display:inline-block; }
 .model-borrow { font-size:12px; color:var(--mid); line-height:1.55; background:var(--cream-bright); border-left:3px solid #CDA349; border-radius:0 8px 8px 0; padding:9px 12px; }
 .model-borrow-label { display:block; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#B08828; margin-bottom:3px; }
 /* ── MOAT (stat strip + comparison matrix) ── */
@@ -420,7 +443,8 @@ html { scroll-behavior:smooth; }
 
 <div class="divider"></div>
 <!-- ⑦ PRODUCT ROADMAP -->
-<div class="section-label" id="sec-roadmap" style="margin-bottom:12px">Product roadmap by vertical</div>
+<div class="section-label" id="sec-roadmap" style="margin-bottom:12px">Product roadmap — the plan &amp; build order</div>
+<div id="launch-timeline" style="margin-bottom:22px"></div>
 <div id="product-roadmap" style="margin-bottom:28px"></div>
 
 <div class="divider"></div>
@@ -1667,6 +1691,7 @@ function render(){
   renderTOC();
   renderMarketLandscape();
   renderMoat();
+  renderLaunchTimeline();
   renderProductRoadmap();
   renderSupply();
   renderQuoteWall();
@@ -2655,6 +2680,82 @@ function renderMarketLandscape(){
   const note = `<div style="font-size:10px;color:var(--light);font-style:italic;line-height:1.5">Source tag per venue: <span style="color:#30B860">●</span> named by the ${DATA.participants.length} participants · <span style="color:#4A9EC4">●</span> web-researched from official sites (Jul 2026) · <span style="color:#1E3028">●</span> confirmed by both. Coverage chips show only what a venue offers (solid = full, outline = partial). Local spa/hotel pricing is often WhatsApp-gated and shown as n/a. Photos are placeholders until added to <code>assets/venues/</code>. Smash (Jordan's partner's brand) is the on-site food concept, not a competitor.</div>`;
 
   el.innerHTML = takeaways + cards + ladder + excluded + models + note;
+}
+
+// Proposed launch timeline (a Gantt) — anchored to today, Tue 14 Jul 2026.
+// Durations are a starting proposal grounded in the decisions; adjust as plans firm.
+const LAUNCH_PLAN = {
+  start: { y:2026, m:6 },          // Jul 2026 (m is 0-indexed: 6 = July)
+  months: 12,                       // Jul 2026 → Jun 2027
+  today: { y:2026, m:6, d:14 },     // Tue, 14 Jul 2026
+  phases: [
+    { key:'now',  label:'Foundation · now',  color:'#1E3028' },
+    { key:'next', label:'Build · next',      color:'#4A6358' },
+    { key:'grow', label:'Grow · later',      color:'#8A9E95' }
+  ],
+  bars: [
+    { name:'Partnership & concept lock',            detail:'Jordan + Lorenzo — Milestone 1, weekly Tue syncs',              phase:'now',  start:0,   end:1.5 },
+    { name:'Site selection & lease',                detail:'Poblado ↔ Laureles axis · walkable, dodge Las Palmas',          phase:'now',  start:1,   end:3   },
+    { name:'Anchor instructors & supply LOIs',      detail:'Laurel, Juan Pablo (Duet), Juliana · per-head + 50/50',         phase:'now',  start:2,   end:4   },
+    { name:'Design & build-out',                    detail:'Gym, biggest sauna, seed-oil-free kitchen, recovery, zones',    phase:'next', start:4,   end:8   },
+    { name:'Founding-member pre-sales',             detail:'Convert the strong-match hot leads first',                      phase:'next', start:5,   end:7.5 },
+    { name:'Programming calendar + free intro events', detail:'Weekly cadence · GTM into the founders’ communities',   phase:'next', start:6,   end:8.5 },
+    { name:'Phase-2 verticals',                     detail:'Late-night cowork, non-alcoholic bar, more programming',        phase:'grow', start:9.4, end:12  }
+  ],
+  milestones: [
+    { name:'Soft launch',   at:8.3 },
+    { name:'Grand opening', at:9.3 }
+  ]
+};
+
+function renderLaunchTimeline(){
+  const el = document.getElementById('launch-timeline');
+  if(!el) return;
+  const P = LAUNCH_PLAN;
+  const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const pct = v => (v / P.months) * 100;
+  const todayOff = (P.today.y-P.start.y)*12 + (P.today.m - P.start.m) + (P.today.d-1)/30;
+  const todayPct = pct(todayOff);
+
+  let months = '';
+  for(let i=0;i<P.months;i++){ const mi=(P.start.m+i)%12; const yr=P.start.y+Math.floor((P.start.m+i)/12);
+    months += `<div class="gantt-mcell">${MN[mi]}${mi===0?`<span class="gantt-yr">'${String(yr).slice(2)}</span>`:''}</div>`; }
+
+  const phaseColor = k => (P.phases.find(p=>p.key===k)||{}).color || '#4A6358';
+  const rows = P.bars.map(b=>`
+    <div class="gantt-row">
+      <div class="gantt-label"><div class="gantt-name">${b.name}</div><div class="gantt-detail">${b.detail}</div></div>
+      <div class="gantt-track">
+        <div class="gantt-today" style="left:${todayPct}%"></div>
+        <div class="gantt-bar" style="left:${pct(b.start)}%;width:${pct(b.end-b.start)}%;background:${phaseColor(b.phase)}" title="${b.name}"></div>
+      </div>
+    </div>`).join('');
+  const msRow = `
+    <div class="gantt-row gantt-ms-row">
+      <div class="gantt-label"><div class="gantt-name">Milestones</div></div>
+      <div class="gantt-track">
+        <div class="gantt-today" style="left:${todayPct}%"></div>
+        ${P.milestones.map(m=>`<div class="gantt-ms" style="left:${pct(m.at)}%"><span class="gantt-diamond">◆</span><span class="gantt-ms-label">${m.name}</span></div>`).join('')}
+      </div>
+    </div>`;
+  const legend = P.phases.map(ph=>`<span class="gantt-legend"><span class="gantt-swatch" style="background:${ph.color}"></span>${ph.label}</span>`).join('')
+    + `<span class="gantt-legend"><span class="gantt-diamond" style="font-size:12px;color:#CDA349">◆</span>milestone</span>`;
+
+  el.innerHTML = `
+    <div class="chart-card" style="padding:18px 20px">
+      <div class="chart-title">Launch plan — how it sequences</div>
+      <div class="chart-sub">A proposed timeline from today (<strong>Tue, Jul 14 2026</strong>) — durations are a starting point, adjust as plans firm up. ${legend}</div>
+      <div class="gantt-scroll">
+        <div class="gantt">
+          <div class="gantt-row gantt-head">
+            <div class="gantt-label"></div>
+            <div class="gantt-track gantt-months">${months}<div class="gantt-today" style="left:${todayPct}%"></div><div class="gantt-today-label" style="left:${todayPct}%">▼ today</div></div>
+          </div>
+          ${rows}
+          ${msRow}
+        </div>
+      </div>
+    </div>`;
 }
 
 function renderProductRoadmap(){
