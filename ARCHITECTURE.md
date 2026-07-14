@@ -22,26 +22,32 @@ Market research infrastructure for the Waha Wellness Center (Medellín). Tracks 
   tenure, neighborhood, community, source,
   wellnessNote,
   rankingTop3, primaryDraw, socialMode,
-  monthlySpend: { "Place": amountCOP },
-  priceGoodDeal, priceCeiling, dayPassRange,
+  monthlySpend: { "Place": amountCOP },     // values in "k" (thousands COP)
+  priceGoodDeal, priceCeiling, dayPassRange, // all in "k"
   replaceVsAdd,
   competitorsStayed, competitorsLeft,
   locationPull,
   call2, referrals,
-  services: [{ name, note }],   // what they want + why
-  quotes: ["...", "...", "..."], // top 3 verbatim
+  supply: { type, offers, audience, model, needs }, // supply-side participants only
+  featureVotes: ["<feature string>", ...],  // drives the roadmap kanban tally
+  icps: [{ n:"<ICP name>", m:3|2|1 }],       // which ICP(s) + match tier (3 Strong/2 Partial/1 Loose)
+  services: [{ name, note }],                // what they want + why
+  quotes: [{ theme, text }],                 // verbatim, rendered with theme as label
   gaps: [{ tag, text }]
 }
 ```
 
-**Sections rendered:**
-1. Demographics — 4 metric cards + 5 bar charts (nationality, work type, tenure, neighborhood, community)
-2. Aggregate "Services in demand" — horizontal bar chart, sorted by frequency across all calls
-3. Per-call profile cards — ranking top 3, spend, price calibration, competitors, services with notes, 3 quotes
-4. Gap section — aggregated across all calls
-5. Patterns to watch
+Other top-level data blocks in `index.html`: `AVATARS` (one persona per participant, surfaced inside the ICP click-through — not a standalone section), `ICPS`, `MOAT`, `MARKET_LANDSCAPE` (competitors + north-star `models`), `PRODUCT_PRIORITIES` (roadmap kanban), `LAUNCH_PLAN` (the Gantt), `SECTION_TAKEAWAYS`, `OPEN_BY_DEFAULT`.
 
-**Dependencies:** Chart.js 4.4.1 via cdnjs CDN. No build tools, no npm, no framework.
+**Currency:** COP is primary, USD in parens (~1 USD = 4,000 COP). Helper `money(k)` / `USD(k)=k/4` — values stored in "k" (thousands COP).
+
+**Sections rendered (top→bottom):** exec summary → demographics block (led by "View data for" segment chips: All/Consumers/Supply/Locals/Expats) → Ideal Client Profiles (cards + avatar/profile click-through) → Where they want it (Leaflet map, fit-all + count bubbles) → What they'll pay (stated vs revealed) → **Where we win** (venue photo cards w/ Google Maps embeds → moat stat-strip + comparison matrix → north-star model cards) → **Product roadmap** (launch Gantt + Now/Next/Later feature kanban) → Supply side → What they said (quote wall). Collapsible sections (WAI-ARIA disclosure); core-story ones open by default.
+
+**Segment filter:** `ACTIVE` global + `render()` is re-runnable (Chart.js `destroy` loop + Leaflet re-init guard) so chips re-render the data views.
+
+**Photos:** venue/model cards load `assets/venues/<slug>.jpg` / `assets/models/<slug>.jpg` with a branded emoji placeholder + `onerror` fallback; banner taps expand a keyless Google Maps `output=embed` iframe (lazy). A future Maps *Embed API* key would swap these to photo-forward `place` embeds.
+
+**Dependencies:** Chart.js 4.4.1 + Leaflet (CARTO tiles) via CDN; Google Maps `output=embed` iframes (no key). No build tools, no npm, no framework.
 
 ---
 

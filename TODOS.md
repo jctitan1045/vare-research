@@ -1,41 +1,42 @@
 # TODOS — Waha Research
 
-## Active
+## Next
 
-- [ ] **Delete orphaned single mood board images** — `design-sauna.jpg`, `design-yoga.jpg`, `design-restaurant.jpg`, `design-social.jpg`, `design-coworking.jpg` no longer used, still in repo.
-- [ ] **Yelp scraper for physical wellness venues** — Othership Toronto, Remedy Place, HigherDOSE, Bathhouse NYC, Perspire Sauna, Medellín wellness/spa/yoga places, Bodytech Medellín, 108 Yoga Medellín
-- [ ] **Google Maps reviews** — same targets. May need SerpAPI or Outscraper if scraping is blocked.
-- [ ] **Drop data into NotebookLM** — once Yelp/Google data collected. Ask: emotional drivers, what people wish existed, why they leave premium clubs, how they describe themselves.
-- [ ] **Update discovery script** — add 7 demographic questions to opening section (nationality, age, work, tenure, neighborhood, communities). Rebuild DOCX.
-- [ ] **Community leader branch** — optional add-back to discovery script for participants who are community organizers.
+- [ ] **Build "Decisions & next moves" section** (actionability #1) — surface price / site / Phase-1 build / anchor instructors / GTM as owned decisions with status chips, under the exec summary. *The single next move.*
+- [ ] **Calibrate the launch Gantt to a real target open date** — `LAUNCH_PLAN` in `index.html` currently assumes ~Q1–Q2 2027; needs Jordan's actual target / lease + build timelines.
+- [ ] **Add real venue + model photos** — drop JPGs into `assets/venues/<slug>.jpg` and `assets/models/<slug>.jpg` (owned/licensed only). See USER_GUIDE.
 
-## Backlog
+## Soon
 
-- [ ] Run more discovery calls — target: 30+. Each call → add to dashboard.
+- [ ] **Hot-leads / founding-members list** (actionability #2) — ranked follow-up list of strong-match, high-WTP, already-spending participants.
+- [ ] **C11 — print/PDF stylesheet** — force-expand all sections + light background for a clean investor PDF export.
+- [ ] **D15 — objections / dealbreakers view** (+ theme-saturation curve) — the risk register.
+- [ ] **B7 — low-sample markers** — tag n≤2 roadmap features as "emerging."
+- [ ] **Finish the price prose sweep** — narrative COP/USD mentions in gap/notes text (verbatim quotes stay unchanged).
+- [ ] **"Where they live" map polish** — apply the same fit-all + count-label treatment used on the "where they want it" map.
+- [ ] **Maps Embed API key** (Jordan creates) → wire photo-forward `place` embeds on venue/model banners.
+- [ ] Run more discovery calls — target 30+; each call → add to dashboard.
 - [ ] Reach out to Reggie (investor) and Brett (trainer) — referrals from Andrew.
-- [ ] Competitive analysis: pull pricing pages for Othership, Remedy Place, Perspire — what does a founding membership look like?
+
+## Someday
+
+- [ ] Delete orphaned mood-board images (`design-sauna.jpg`, etc.) if still in the repo.
+- [ ] Yelp scraper for physical wellness venues (Othership Toronto, Remedy Place, HigherDOSE, Bathhouse NYC, Perspire; Medellín spa/yoga, Bodytech, 108 Yoga).
+- [ ] Google Maps reviews — same targets (may need SerpAPI / Outscraper).
+- [ ] Drop collected review data into NotebookLM — emotional drivers, what people wish existed, why they leave premium clubs.
+- [ ] Update discovery script — 7 demographic Qs in opening; rebuild DOCX. Optional community-leader branch.
+- [ ] Competitive pricing pages (Othership, Remedy Place, Perspire) → design the founding-membership offer.
 - [ ] Build Call 2 script — brand reveal, space concept, founding membership offer.
+- [ ] Optional cosmetic: rename repo/Pages URL `vare-research` → `waha` (breaks current link).
 
 ## Done
 
-- [x] **Retire Fathom auto-sync auto-injection (2 corruption incidents)** — cloud Action rewritten notify-only (`scripts/notify_new_calls.py` → GitHub issue), JS smoke-check (`scripts/validate_index.js`) added as a deploy gate, old `update_calls.py` deleted, local `vare-fathom-sync` task confirmed retired. **Pushed to `main` + verified running in Actions** (deploy gate logged 15 participants OK; notifier run returned new_count=0).
+- [x] **Dashboard actionability + UX overhaul (2026-07-14)** — folded avatars into ICP click-through w/ Strong/Partial/Loose match ranking; per-section "what this tells us" takeaways; WTP consolidated; Market+Moat merged into "Where we win"; prices standardized COP-primary + USD; location map fit-all + count bubbles; market landscape re-imagined as per-venue photo cards + tap-to-expand Google Maps embeds; moat pyramid → stat strip + comparison matrix; North Star models built out as rich cards; launch **Gantt** + Now/Next/Later phase-tagged kanban; removed design-prompts, "Who's in this research" heading, and People-pipeline; fixed avatar handle + `[object Object]` profile quotes. (See WORKBENCH + DASHBOARD_AUDIT.)
+- [x] Audit items A1–A4, actionability moves 1/B/2/3/C, C10, C12, D13, D14 (see `DASHBOARD_AUDIT.md`).
+- [x] Retire Fathom auto-sync auto-injection (notify-only + deploy smoke-check gate).
 - [x] Gitignore local `.claude/` and the 31MB `PROP 01 VARÉ.pdf`.
-- [x] Add Community Events + Practitioner Services verticals to product roadmap (7 total)
-- [x] Cluster feature card gaps by theme (data restructured to {theme, text})
-- [x] Organize quote wall by theme instead of person — 7 themes, 35 quotes
-- [x] Replace single mood board image per section with 3-photo collage (15 AI images via Pollinations FLUX)
-- [x] Replace D3 work type treemap with named cluster groups (readable at N=11)
-- [x] Build research dashboard (index.html) — live at jctitan1045.github.io/vare-research
-- [x] Load Andrew Topping's call data into dashboard
-- [x] Add demographics section to dashboard
-- [x] Add aggregate "Services in demand" chart
-- [x] Per-call services with context notes
-- [x] Top 3 quotes per participant
-- [x] Build discovery script (Call 1, 30 min)
-- [x] Build DOCX version of script
-- [x] Build ranking slide (HTML, dark, screen-share ready)
-- [x] Push to GitHub Pages (jctitan1045/vare-research)
-- [x] Confirm Waha brand name
-- [x] Confirm Fathom call naming convention
-- [x] Pull 330 Othership App Store reviews
-- [x] Pull 4,515 wellness App Store reviews (wide sweep)
+- [x] Add Community Events + Practitioner Services verticals to product roadmap (7 total).
+- [x] Cluster feature-card gaps by theme; organize quote wall by theme (7 themes, 35 quotes).
+- [x] Build research dashboard (index.html) — live at jctitan1045.github.io/vare-research.
+- [x] Build discovery script (Call 1) + DOCX + ranking slide; confirm Waha brand + Fathom naming.
+- [x] Pull 330 Othership + 4,515 wellness App Store reviews.

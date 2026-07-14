@@ -12,6 +12,20 @@
 
 **Heads up on new calls:** a daily GitHub Action checks Fathom and opens a GitHub issue when a research call isn't on the dashboard yet, so you don't have to remember. It only notifies — it never edits the dashboard. To silence a call you're intentionally skipping (e.g. a failed one), add its guest name or Fathom call-id to `scripts/notify_skip.txt`.
 
+## Adding real photos to the venue / North-star cards
+
+Each competitor and north-star card shows a branded placeholder until a real photo is added. To add one, drop a JPG into the repo:
+- Competitors → `assets/venues/<slug>.jpg` (e.g. `kiin.jpg`, `power-club.jpg`, `clinica-antienvejecimiento-wellness-spa.jpg`)
+- North-star models → `assets/models/<slug>.jpg` (`nirvana-life.jpg`, `othership.jpg`, `soho-house.jpg`)
+
+The slug is the venue name, lowercased, spaces→hyphens, accents stripped, anything after "(" dropped. Commit + push; the photo appears automatically (16:9 crop). Only use photos you own or have permission for — don't copy a business's own photos onto this public page. Tapping any card banner already expands a live Google Map of the place (no photo needed).
+
+**Photo-forward option (needs a key):** to show each venue's *actual* first photo as the card image (instead of tap-to-map), a Google Maps **Embed API key** is required — create it in your own Google Cloud console (billing must be enabled; the Embed API itself is free), restrict it to the Maps Embed API + `jctitan1045.github.io/*`, and hand it over to wire in.
+
+## Adjusting the launch timeline (Gantt)
+
+The Product-roadmap section opens with a proposed launch Gantt (Jul 2026 → Jun 2027). All of it is one object, `LAUNCH_PLAN`, near the top of the `<script>` in `index.html`. To re-scale: edit each bar's `start`/`end` (month offsets from July 2026 = 0) or the `milestones` `at:` values, or bump `months`. Give a real target open date and the bars can be recalibrated to match.
+
 ## Running a discovery call
 
 1. Open `Vare_Discovery_Script_Call1.docx` (printed or on second screen)

@@ -2,6 +2,36 @@
 
 ---
 
+## 2026-07-14 02:08, Claude Code
+
+**Focus:** Big dashboard UX + actionability overhaul — turn a data-rich report into a decision tool, and rework the densest sections.
+
+**Next session, start here:**
+- Read: `index.html` (dashboard) + `DASHBOARD_AUDIT.md` (checklist).
+- In flight: nothing mid-edit — launch Gantt + phase-tagged kanban just shipped, all pushed to `main`.
+- Single next move: build the **"Decisions & next moves"** section (actionability #1) — surface price / site / Phase-1 build / anchor instructors / GTM as owned decisions with status chips, under the exec summary.
+
+**What happened:**
+- Folded Customer Avatars into the ICP click-through with Strong/Partial/Loose match ranking; removed People-pipeline + "Who's in this research" heading + design-prompts section.
+- Added per-section "What this tells us" takeaways; consolidated WTP into one section; merged Market + Moat into "Where we win."
+- Standardized prices COP-primary + USD in parens; location map now fits all markers + shows count labels.
+- Re-imagined market landscape as per-venue photo cards; reworked the moat pyramid → stat strip + comparison matrix; built out North Star models as rich cards; fixed avatar handle + `[object Object]` profile quotes.
+- Made the Product Roadmap an actual roadmap: launch **Gantt** (`LAUNCH_PLAN`, Jul 2026→Jun 2027, today-marker) + Now/Next/Later phase tags on every feature card.
+
+**Decisions:**
+- [DECISION] Won't scrape/host real venue photos on a public investor site (copyright) and won't create the Google Maps API key on Jordan's account (credentials/billing) — instead: photo slots + branded placeholders + tap-to-expand Google Maps *embeds* (Google serves it, legit).
+- [DECISION] Roadmap = launch Gantt with editable single-source `LAUNCH_PLAN`; durations are a labeled proposal, not authoritative.
+- [DECISION] Prices standardized at 1 USD ≈ 4,000 COP (`USD = k/4`); verbatim participant quotes left unchanged.
+
+**Still open:**
+- Photo-forward upgrade waits on Jordan's Maps Embed API key.
+- Price prose sweep (narrative mentions) not done; C11 print/PDF, D15 objections view, B7 low-sample markers unbuilt.
+- Calibrate Gantt to a real target open date; build hot-leads/founding-members list.
+
+**Files touched:** index.html, DASHBOARD_AUDIT.md, assets/venues/ (new), assets/models/ (new), WORKBENCH.md, ARCHITECTURE.md, USER_GUIDE.md, TODOS.md
+
+---
+
 ## 2026-07-08 09:27, Claude Code
 
 **Focus:** Kill the recurring GitHub-Actions corruption of the dashboard — 2nd incident — and ship a safe replacement.
