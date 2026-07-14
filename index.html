@@ -250,7 +250,8 @@ html { scroll-behavior:smooth; }
 .product-feature-card:last-child { margin-bottom:0; }
 .product-feature-card:hover { border-color:var(--mid); }
 .product-feature-header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
-.product-feature-name { font-size:13px; font-weight:500; color:var(--dark); line-height:1.4; }
+.product-feature-name { font-size:13px; font-weight:500; color:var(--dark); line-height:1.4; flex:1; }
+.feat-phase { font-size:8px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#F4F1E8; border-radius:20px; padding:1px 7px; white-space:nowrap; flex-shrink:0; }
 .product-feature-chevron { font-size:11px; color:var(--light); flex-shrink:0; transition:transform 0.2s; }
 .product-feature-card.open .product-feature-chevron { transform:rotate(90deg); }
 .product-feature-summary { font-size:11px; color:var(--light); line-height:1.5; margin-top:5px; }
@@ -2786,11 +2787,12 @@ function renderProductRoadmap(){
   const shortName = full => full.startsWith('Juan Pablo (Duet') ? 'Juan Pablo (Duet)'
                     : full.startsWith('Juan Pablo') ? 'Juan Pablo' : full.split(' ')[0];
   const colDefs = [
-    { key:'must',   label:'Must have',    color:'#1E3028', bg:'#EDF4EF' },
-    { key:'should', label:'Should have',  color:'#4A6358', bg:'#F2F5F2' },
-    { key:'nice',   label:'Nice to have', color:'#8A9E95', bg:'#F7F7F4' }
+    { key:'must',   label:'Must have',    color:'#1E3028', bg:'#EDF4EF', phase:'Now'   },
+    { key:'should', label:'Should have',  color:'#4A6358', bg:'#F2F5F2', phase:'Next'  },
+    { key:'nice',   label:'Nice to have', color:'#8A9E95', bg:'#F7F7F4', phase:'Later' }
   ];
-  document.getElementById('product-roadmap').innerHTML = PRODUCT_PRIORITIES.map(v=>`
+  const phaseNote = `<div style="font-size:11px;color:var(--light);line-height:1.5;margin-bottom:14px">Each feature is tagged <strong style="color:#1E3028">Now</strong> / <strong style="color:#4A6358">Next</strong> / <strong style="color:#8A9E95">Later</strong> — the same phases as the timeline above: <strong>Now</strong> (must-haves) opens day one, <strong>Next</strong> (should-haves) follows, <strong>Later</strong> (nice-to-haves) comes post-launch.</div>`;
+  document.getElementById('product-roadmap').innerHTML = phaseNote + PRODUCT_PRIORITIES.map(v=>`
     <div class="product-vertical">
       <div class="product-vertical-header" style="border-left:4px solid ${v.accent}">
         <span class="product-vertical-emoji">${v.emoji}</span>
@@ -2804,6 +2806,7 @@ function renderProductRoadmap(){
               <div class="product-feature-card" onclick="this.classList.toggle('open')">
                 <div class="product-feature-header">
                   <div class="product-feature-name">${f.feature}</div>
+                  <span class="feat-phase" style="background:${col.color}">${col.phase}</span>
                   <span class="product-feature-chevron">▶</span>
                 </div>
                 <div class="product-feature-summary">${who.length}/${N} people${f.next ? ' · ' + f.next : ''}</div>
