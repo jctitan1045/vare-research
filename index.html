@@ -1425,7 +1425,7 @@ function showAvatar(name, icpName){
       <div class="avatar-icon" style="background:${a.color};width:48px;height:48px;font-size:22px">${a.emoji}</div>
       <div>
         <div class="call-name" style="font-size:22px">${a.name}</div>
-        <div class="call-meta">${a.handle}</div>
+        <div class="call-meta">${a.handle.replace(/^[^·]*·\s*/,'')}</div>
       </div>
     </div>
     ${matchChip}
@@ -3450,7 +3450,7 @@ function showProfile(name) {
     ${x.gap?`<div class="inner" style="margin-bottom:14px"><div class="inner-label">Key gap</div><div style="font-size:13px;color:var(--mid);line-height:1.7;margin-top:4px">${x.gap}</div></div>`:''}
     ${x.gaps&&x.gaps.length?`<div class="inner" style="margin-bottom:14px"><div class="inner-label">Gaps &amp; signals</div>${x.gaps.map(g=>`<div class="gap-item"><span class="gap-tag">${g.tag}</span><span class="gap-text">${g.text}</span></div>`).join('')}</div>`:''}
     <div style="display:flex;flex-direction:column;gap:8px">
-      ${x.quotes.map((q,i)=>`<div class="quote-block"><div class="quote-label">Quote ${i+1}</div><div class="quote-text">"${q}"</div></div>`).join('')}
+      ${x.quotes.map((q,i)=>`<div class="quote-block"><div class="quote-label">${typeof q==='object'&&q.theme?q.theme:`Quote ${i+1}`}</div><div class="quote-text">"${typeof q==='object'?q.text:q}"</div></div>`).join('')}
     </div>
   `;
   document.getElementById('profileModal').classList.add('open');
