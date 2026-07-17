@@ -12,6 +12,10 @@
 
 **Heads up on new calls:** a daily GitHub Action checks Fathom and opens a GitHub issue when a research call isn't on the dashboard yet, so you don't have to remember. It only notifies — it never edits the dashboard. To silence a call you're intentionally skipping (e.g. a failed one), add its guest name or Fathom call-id to `scripts/notify_skip.txt`.
 
+**⚠️ Don't trust Fathom's AI summary for facts.** Use it to orient, but verify every demographic against the transcript and confirm anything ambiguous. Seen in practice: it infers nationality from wherever someone *says* they're from and got it wrong twice (Thierry — summary said Belgium, he's Canadian; Emilis — said "Buenos Aires," he's Lithuanian), and it flipped speaker labels mid-call (Lais). Ages sometimes garble ("Three" for 33) — leave the field out rather than guess, then ask. Only research calls titled **"Wellness Center Market Research Call"** belong in `DATA.participants`; skip TMRC / S&C / brand / ops calls.
+
+**Two places to add a person:** `DATA.participants` (drives every chart, count and profile) **and** the `AVATARS` array (their persona, surfaced in the ICP click-through). The name must match exactly in three spots — the participant `name`, the avatar `handle`, and the avatar's `participants: […]` — or the ICP click-through won't resolve. Give the participant an `icps` entry with a match tier, or they'll appear nowhere. Add a `supply` object only for instructors / facilitators / community partners — that's what flips them to the Supply-side segment.
+
 ## Adding real photos to the venue / North-star cards
 
 Each competitor and north-star card shows a branded placeholder until a real photo is added. To add one, drop a JPG into the repo:

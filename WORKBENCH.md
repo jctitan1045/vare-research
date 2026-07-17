@@ -2,6 +2,35 @@
 
 ---
 
+## 2026-07-16 22:47, Claude Code
+
+**Focus:** Pull the backlog of Fathom research calls (Jul 14–16) onto the dashboard — 16 → 22 participants.
+
+**Next session, start here:**
+- Read: `index.html` (`DATA.participants`) + `TODOS.md`.
+- In flight: nothing — all 6 participants added, smoke-checked and pushed.
+- Single next move: build the **"Decisions & next moves"** section (actionability #1, still unbuilt) — price / site / Phase-1 / anchor instructors / GTM as owned decisions under the exec summary.
+
+**What happened:**
+- Added 6 research participants, each a full transcript-grounded object (canonical `featureVotes`, COP-k prices, `icps` with match tiers, 3 verbatim quotes, gaps) plus an `AVATARS` persona: Thierry Muller (17), Alain Alisca (18), Laisvidas "Lais" Karvelis (19), Niko Bo (20), Emilis Karvelis (21), Gabe Krebs (22).
+- Niko got a `supply` field (facilitator, percentage-deal model) → Supply-side now 9. Segments: Consumers 13 / Supply 9 / Locals 5 / Expats 17.
+- Skipped non-research calls (TMRC, S&C, Luna, BACANO, Dine stand-up, BRANDBOOK WAHA).
+- Jordan corrections applied: Gabe is 33; Emilis is Emilis Karvelis, Lais's brother, Lithuanian.
+
+**Decisions:**
+- [DECISION] Treat Fathom's AI summary as a lead, not truth — verify every demographic against the transcript. Its nationality inference was wrong twice (Thierry "Belgium"→Canadian; Emilis "Buenos Aires"→Lithuanian) and speaker labels flipped in Lais's call.
+- [DECISION] Omitted Gabe's age rather than guess when the transcript garbled it ("Three") — a blank is honest and the age chart tolerates it; Jordan then supplied 33.
+- [DECISION] Niko = supply-side (`supply` field), Lais = Consumer, though both organize communities — Niko's call was facilitator economics, Lais's was member preferences.
+
+**Still open:**
+- 22 of the 30 initial discovery calls — 8 to go.
+- Brand Book review with Lorenzo → consolidated feedback to Nick.
+- Decisions section; C11 print/PDF; D15 objections; B7 low-sample; price prose sweep; Gantt target date; venue/model photos + Maps Embed key.
+
+**Files touched:** index.html, WORKBENCH.md, USER_GUIDE.md, TODOS.md
+
+---
+
 ## 2026-07-14 02:08, Claude Code
 
 **Focus:** Big dashboard UX + actionability overhaul — turn a data-rich report into a decision tool, and rework the densest sections.
